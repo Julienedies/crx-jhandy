@@ -1,0 +1,39 @@
+{
+  "manifest_version": 2,
+
+  "name": "contextMenuUtils",
+  "description": "The utils to add in contextMenu",
+  "version": "1.0",
+
+  "permissions": [
+  	"tabs",
+  	"contextMenus",
+  	"downloads",  
+  	"storage",
+  	"\u003Call_urls\u003E",
+    "http://*/*"
+  ],
+  
+  "background": { "scripts": ["assets/js/background.js"] },
+  
+  /*
+  "content_scripts": [  
+  	{  
+    	"matches": ["http://www.taobao.com/"],
+    	"js": ["assets/js/content_script.js"]  
+ 	 }  
+  ],  
+  */
+  
+  "icons": {
+          "16": "assets/img/icon-bitty.png",
+          "48": "assets/img/icon-small.png",
+          "128": "assets/img/icon-large.png"
+   },
+   
+  "browser_action": {
+    "default_icon": "assets/img/icon-large.png",
+    "default_popup": "popup.html",
+    "default_title": "在右键菜单中添加一些小功能"
+  }
+}
