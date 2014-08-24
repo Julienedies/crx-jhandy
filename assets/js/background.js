@@ -55,7 +55,21 @@ var utils = [
         				});            		 	
             		 	
             		 }
-             }
+             },
+             
+             {
+            	 'title': 'ng',
+            	 "onclick" : function(info, tab){
+            		 
+            		 //发消息给content_script.js
+            		 chrome.tabs.getSelected(null, function(tab) {
+            			  chrome.tabs.sendRequest(tab.id, {}, function(response) {
+            				  
+            			  });
+            			});
+     				
+            	 }
+             }            
 
 ];
 		
@@ -76,7 +90,7 @@ for ( var i in utils) {
 
 // 向当前html注入js
 chrome.tabs.executeScript(null, {
-	file : "content_script.js"
+	file : "assets/js/libs/jquery.min.js"
 });
 
 

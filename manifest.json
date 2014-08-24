@@ -14,16 +14,18 @@
     "http://*/*"
   ],
   
-  "background": { "scripts": ["assets/js/background.js"] },
-  
-  /*
+  "background": { "scripts": ["assets/js/libs/jquery.min.js","assets/js/background.js"],
+  				  "pages": ["background.html"]
+  				   },
+
+
   "content_scripts": [  
   	{  
-    	"matches": ["http://www.taobao.com/"],
-    	"js": ["assets/js/content_script.js"]  
+    	"matches": ["http://taobao.cjcp.com.cn/*"],
+    	"js": ["assets/js/libs/underscore.js","assets/js/libs/jquery.min.js","assets/js/content_script.js"]  
  	 }  
   ],  
-  */
+
   
   "icons": {
           "16": "assets/img/icon-bitty.png",
