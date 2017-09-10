@@ -1,41 +1,59 @@
 {
   "manifest_version": 2,
-
   "name": "contextMenuUtils",
-  "description": "The utils to add in contextMenu",
+  "description": "custom page",
   "version": "1.0",
-
-  "permissions": [
-  	"tabs",
-  	"contextMenus",
-  	"downloads",  
-  	"storage",
-  	"\u003Call_urls\u003E",
-    "http://*/*"
-  ],
-  
-  "background": { "scripts": ["assets/js/libs/jquery.min.js","assets/js/background.js"],
-  				  "pages": ["background.html"]
-  				   },
-
-
-  "content_scripts": [  
-  	{  
-    	"matches": ["http://taobao.cjcp.com.cn/*"],
-    	"js": ["assets/js/libs/underscore.js","assets/js/libs/jquery.min.js","assets/js/content_script.js"]  
- 	 }  
-  ],  
-
-  
   "icons": {
-          "16": "assets/img/icon-bitty.png",
-          "48": "assets/img/icon-small.png",
-          "128": "assets/img/icon-large.png"
-   },
-   
+    "16": "img/icon-bitty.png",
+    "48": "img/icon-small.png",
+    "128": "img/icon-large.png"
+  },
   "browser_action": {
-    "default_icon": "assets/img/icon-large.png",
+    "default_icon": "img/icon-large.png",
     "default_popup": "popup.html",
-    "default_title": "在右键菜单中添加一些小功能"
-  }
+    "default_title": "自定义页面"
+  },
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "downloads",
+    "storage",
+    "\u003Call_urls\u003E",
+    "http://*/*",
+    "https://*/"
+  ],
+  "background": {
+    "scripts": [
+      "js/libs/jquery.min.js",
+      "js/background.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://taobao.cjcp.com.cn/*"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/ng.js"
+      ]
+    },
+    {
+      "matches": ["*://*/*"],
+      "exclude_matches": ["http://www.cailianpress.com/*"],
+      "js": [
+        "js/cs/back-top.js"
+      ]
+    },
+    {
+      "matches": ["http://www.bbc.com/*"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/open-link-in-new-window.js"
+      ]
+    },
+    {
+      "matches": ["http://www.cailianpress.com/"],
+      "css":["css/cs/cailianpress.css"]
+    }
+  ]
+
 }

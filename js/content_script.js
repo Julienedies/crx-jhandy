@@ -17,41 +17,49 @@ chrome.extension.onRequest.addListener(function (request, sender, sendResponse) 
 //
 function call(id) {
 
+    function each15(i) {
+
+        var row = $(this);
+        var cells = row.find('td');
+        var num = cells.eq(1).text() * 1;
+        var red = cells.eq(2).text().split(' ');
+
+        red.forEach(function (v, i, arr) {
+            arr[i] = v * 1;
+        });
+
+        red.pop();
+
+        result.push({num: num, red: red});
+    }
+
+    function each33(i) {
+
+        var red = [];
+
+        var row = $(this);
+        var cells = row.find('td');
+        var num = cells.eq(1).text() * 1;
+
+        cells.filter('.z_font_red').each(function (i) {
+            red.push($(this).text() * 1);
+        });
+
+
+        var blue = cells.filter('.z_font_ls').eq(0).text() * 1;
+
+        var dobj = {num: num, red: red, blue: blue};
+
+        result.push(dobj);
+
+    }
+
     var each = {
 
-        '33': function each33(i) {
-
-            var red = [];
-
-            var row = $(this);
-            var cells = row.find('td');
-            var num = cells.eq(1).text() * 1;
-
-            cells.filter('.z_font_red').each(function (i) {
-                red.push($(this).text() * 1);
-            });
-
-
-            var blue = cells.filter('.z_font_ls').text() * 1;
-
-            var dobj = {num: num, red: red, blue: blue};
-
-            result.push(dobj);
-
-        },
-        '15': function each15(i) {
-
-                var row = $(this);
-                var cells = row.find('td');
-                var num = cells.eq(1).text() * 1;
-                var red = cells.eq(2).text().split(' ');
-
-                red.forEach(function (v, i, arr) {
-                    arr[i] = v * 1;
-                });
-
-                result.push({num: num, red: red});
-            }
+        '35': each33,
+        '33': each33,
+        '15': each15,
+        '30': each15
     };
 
 
