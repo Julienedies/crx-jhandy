@@ -37,8 +37,8 @@
       ]
     },
     {
-      "matches": ["*://*/*"],
-      "exclude_matches": ["http://www.cailianpress.com/*"],
+      "matches": ["https://www.taoguba.com.cn/*"],
+      "exclude_matches": ["https://www.zhihu.com/*"],
       "js": [
         "js/cs/back-top.js"
       ]
