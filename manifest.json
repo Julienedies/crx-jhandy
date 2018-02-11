@@ -58,7 +58,7 @@
       ]
     },
     {
-      "matches": ["https://gupiao.baidu.com/stock/*"],
+      "matches": ["https://gupiao.baidu.com/stock/*", "http://finance.sina.com.cn/realstock/company/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/fix-baidu-stock.js"
