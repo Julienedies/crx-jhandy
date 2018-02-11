@@ -37,21 +37,35 @@
       ]
     },
     {
-      "matches": ["https://www.taoguba.com.cn/*"],
+      "matches": ["https://www.taoguba.com.cn/*", "http://chinadigitaltimes.net/*", "https://www.amazon.cn/*", "https://www.futunn.com/*"],
       "exclude_matches": ["https://www.zhihu.com/*"],
       "js": [
         "js/cs/back-top.js"
       ]
     },
     {
-      "matches": ["http://www.bbc.com/*"],
+      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
       ]
     },
     {
-      "matches": ["http://www.cailianpress.com/"],
+      "matches": ["https://www.taoguba.com.cn/*"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/reset-stock-link.js"
+      ]
+    },
+    {
+      "matches": ["https://gupiao.baidu.com/stock/*"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/fix-baidu-stock.js"
+      ]
+    },
+    {
+      "matches": ["https://www.cailianpress.com/"],
       "css":["css/cs/cailianpress.css"]
     }
   ]
