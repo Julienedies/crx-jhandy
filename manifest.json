@@ -44,14 +44,14 @@
       ]
     },
     {
-      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*"],
+      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*", "https://*.tumblr.com/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
       ]
     },
     {
-      "matches": ["https://www.taoguba.com.cn/*"],
+      "matches": ["https://www.taoguba.com.cn/*", "http://127.0.0.1:2018/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/reset-stock-link.js"
