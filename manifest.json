@@ -44,7 +44,7 @@
       ]
     },
     {
-      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*", "https://*.tumblr.com/*"],
+      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*", "https://*.tumblr.com/*", "https://www.pornhub.com/*/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
@@ -64,6 +64,31 @@
         "js/cs/fix-baidu-stock.js"
       ]
     },
+    {
+      "matches": ["http://quote.eastmoney.com/stocklist.html"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/get-stock-code-list.js"
+      ]
+    },
+    {
+      "matches": ["http://www.maofou.com/*"],
+      "css":["css/cs/maofou.css"]
+    },
+    {
+      "matches": ["https://www.taoguba.com.cn/*"],
+      "css":["css/cs/taoguba.css"]
+    },
+    {
+      "matches": ["http://stockpage.10jqka.com.cn/*/company/"],
+      "css":["css/cs/10jqka.css"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/data/stock-code.js",
+        "js/cs/10jqka.js"
+      ]
+    },
+
     {
       "matches": ["https://www.cailianpress.com/"],
       "css":["css/cs/cailianpress.css"]

@@ -1,0 +1,19 @@
+#in_channelhead, .new_detail.fl, .self_select.fr.zxg_1{
+    display: none;
+}
+#in_squote{
+    height:0;
+    overflow: hidden;
+  }
+.m_header{
+    height:0;
+    overflow: hidden;
+}
+
+.m_logo{
+    position:fixed;
+    top:132px;
+    left:124px;
+    height:86px!important;
+    overflow: hidden;
+}

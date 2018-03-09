@@ -1,5 +1,13 @@
 
 
+$('#get_stock_code_list').on('click', function(e){
+
+    //向当前页面注入js
+    //window.chrome && chrome.tabs && chrome.tabs.executeScript(null, {file: "js/cs/get-stock-code-list.js"});
+
+});
+
+
 brick.controllers.reg('get_u_p_ctrl', function(scope){
 
     var $elm = scope.$elm;
