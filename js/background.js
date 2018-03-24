@@ -1,28 +1,24 @@
 /**
- *  创建右键菜单。
+ *
  */
+
 // 接收content script发过来的消息
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         var code = request.code;
-        if(code){
-            chrome.tabs.query({url:'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function(tabs){
+        if (code) {
+            chrome.tabs.query({url: 'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function (tabs) {
                 var tab = tabs[0];
                 chrome.tabs.sendMessage(tab.id, {
                     code: code,
                     greeting: "Can you hear me?"
-                }, function(response){});
+                }, function (response) {
+                });
             });
         }
 
     }
 );
-
-
-
-
-
-
 
 
 var utils = [
@@ -31,7 +27,7 @@ var utils = [
         "onclick": function (info, tab) {
             //右键菜单响应
             chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendRequest(tab.id, {id:33}, function (response) {
+                chrome.tabs.sendRequest(tab.id, {id: 33}, function (response) {
 
                 });
             });
@@ -43,7 +39,7 @@ var utils = [
         "onclick": function (info, tab) {
             //右键菜单响应
             chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendRequest(tab.id, {id:15}, function (response) {
+                chrome.tabs.sendRequest(tab.id, {id: 15}, function (response) {
 
                 });
             });
@@ -55,7 +51,7 @@ var utils = [
         "onclick": function (info, tab) {
             //右键菜单响应
             chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendRequest(tab.id, {id:30}, function (response) {
+                chrome.tabs.sendRequest(tab.id, {id: 30}, function (response) {
 
                 });
             });
@@ -67,42 +63,42 @@ var utils = [
         "onclick": function (info, tab) {
             //右键菜单响应
             chrome.tabs.getSelected(null, function (tab) {
-                chrome.tabs.sendRequest(tab.id, {id:35}, function (response) {
+                chrome.tabs.sendRequest(tab.id, {id: 35}, function (response) {
 
                 });
             });
         }
     },
 
-   /* {
-        'title': 'return top',
-        "onclick": function (info, tab) {
-            function x() {
-                console.log('return top');
-                document.documentElement.scrollTop = document.body.scrollTop = 0;
-                //jQuery('body').animate({'scrollTop':0},400)
-            }
+    /* {
+     'title': 'return top',
+     "onclick": function (info, tab) {
+     function x() {
+     console.log('return top');
+     document.documentElement.scrollTop = document.body.scrollTop = 0;
+     //jQuery('body').animate({'scrollTop':0},400)
+     }
 
-            chrome.tabs.executeScript(null, {
-                code: '(' + x + ')();'
-            });
+     chrome.tabs.executeScript(null, {
+     code: '(' + x + ')();'
+     });
 
-        }
-    },
-*/
-/*    {
-        'title': 'close window',
-        "onclick": function (info, tab) {
-            function x() {
-                console.log('close window');
-                window.close();
-            }
+     }
+     },
+     */
+    /*    {
+     'title': 'close window',
+     "onclick": function (info, tab) {
+     function x() {
+     console.log('close window');
+     window.close();
+     }
 
-            chrome.tabs.executeScript(null, {
-                code: '(' + x + ')();'
-            });
-        }
-    },*/
+     chrome.tabs.executeScript(null, {
+     code: '(' + x + ')();'
+     });
+     }
+     },*/
 
     {
         'title': 'keep active',
@@ -131,16 +127,16 @@ var utils = [
 
 /*var showForPages = ["http://taobao.cjcp.com.cn*//*"];
 
-for (var i in utils) {
+ for (var i in utils) {
 
-    var item = utils[i];
+ var item = utils[i];
 
-    var id = chrome.contextMenus.create({
-        "title": item.title,
-        "onclick": item.onclick,
-        "documentUrlPatterns":showForPages
-    });
+ var id = chrome.contextMenus.create({
+ "title": item.title,
+ "onclick": item.onclick,
+ "documentUrlPatterns":showForPages
+ });
 
-}*/
+ }*/
 
 
