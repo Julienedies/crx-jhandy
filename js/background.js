@@ -1,6 +1,28 @@
 /**
  *  创建右键菜单。
  */
+// 接收content script发过来的消息
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        var code = request.code;
+        if(code){
+            chrome.tabs.query({url:'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function(tabs){
+                var tab = tabs[0];
+                chrome.tabs.sendMessage(tab.id, {
+                    code: code,
+                    greeting: "Can you hear me?"
+                }, function(response){});
+            });
+        }
+
+    }
+);
+
+
+
+
+
+
 
 
 var utils = [
@@ -107,7 +129,7 @@ var utils = [
 ];
 
 
-var showForPages = ["http://taobao.cjcp.com.cn/*"];
+/*var showForPages = ["http://taobao.cjcp.com.cn*//*"];
 
 for (var i in utils) {
 
@@ -119,6 +141,6 @@ for (var i in utils) {
         "documentUrlPatterns":showForPages
     });
 
-}
+}*/
 
 
