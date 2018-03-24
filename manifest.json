@@ -51,7 +51,7 @@
       ]
     },
     {
-      "matches": ["https://www.taoguba.com.cn/*", "http://127.0.0.1:2018/*"],
+      "matches": ["https://www.taoguba.com.cn/**", "http://127.0.0.1:2018/*"],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/reset-stock-link.js"
@@ -80,11 +80,11 @@
       "css":["css/cs/taoguba.css"]
     },
     {
-      "matches": ["http://stockpage.10jqka.com.cn/*/company/"],
+      "matches": ["http://basic.10jqka.com.cn/*/"],
       "css":["css/cs/10jqka.css"],
       "js": [
         "js/libs/jquery.min.js",
-        "js/data/stock-code.js",
+        "js/data/880360.js",
         "js/cs/10jqka.js"
       ]
     },
