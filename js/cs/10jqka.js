@@ -14,7 +14,9 @@ var prev = index - 1 < 0 ? STOCK_CODE.length - 1 : index - 1;
 var next = index + 1 > STOCK_CODE.length - 1 ? 0 : index + 1;
 
 //发送消息给background.js，通过background.js同步个股K线页面
-chrome.runtime.sendMessage({code: current});
+if(STOCK_CODE.indexOf(current) > -1){
+    chrome.runtime.sendMessage({id: '10jqka', code: current});
+}
 
 var href = location.href;
 var url = /company.html$/.test(href) ? href.replace('company.html', '') : href + 'company.html';

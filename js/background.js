@@ -1,24 +1,25 @@
 /**
  *
  */
-
-// 接收content script发过来的消息
-chrome.runtime.onMessage.addListener(
-    function (request, sender, sendResponse) {
-        var code = request.code;
-        if (code) {
-            chrome.tabs.query({url: 'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function (tabs) {
-                var tab = tabs[0];
-                chrome.tabs.sendMessage(tab.id, {
-                    code: code,
-                    greeting: "Can you hear me?"
-                }, function (response) {
-                });
+function for_10jqka(request, sender, sendResponse) {
+    var code = request.code;
+    if (request.id == '10jqka' && code) {
+        chrome.tabs.query({url: 'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function (tabs) {
+            var tab = tabs[0];
+            tab && chrome.tabs.sendMessage(tab.id, {
+                code: code,
+                greeting: "Can you hear me?"
+            }, function (response) {
             });
-        }
-
+        });
     }
-);
+}
+// 接收10jqka页面 content script发过来的消息，同步新浪财经K线页面
+chrome.runtime.onMessage.addListener(for_10jqka);
+
+
+
+
 
 
 var utils = [

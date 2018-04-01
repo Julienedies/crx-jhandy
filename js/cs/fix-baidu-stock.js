@@ -8,7 +8,10 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     var code = message.code;
     if (code) {
         code = /^6/.test(code) ? 'sh' + code : 'sz' + code;
-        location.href = location.href.replace(/s[hz]\d{6}/, code);
+        var _href = location.href.replace(/s[hz]\d{6}/, code);
+        if(_href !=location.href) {
+            location.href = _href;
+        }
     }
 });
 
@@ -22,4 +25,12 @@ document.documentElement.scrollTop = 310;
 $('[data-id="KKE_tab_kd"]').click();
 $('.kke_cfg_fullscreen').click();
 
+$(document.body).append('<div style="z-index:10000;position:fixed;top:13px;right:120px;color:blue;font-size:1.5em;">' + $('title').text().split('_')[0] + '</div>');
 
+
+
+/*
+$(document.body).on('mousewheel', function(e){
+    e.originalEvent;
+    console.log(e.originalEvent);
+});*/

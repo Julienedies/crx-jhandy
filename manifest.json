@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "contextMenuUtils",
   "description": "custom page",
-  "version": "1.0",
+  "version": "1.1",
   "icons": {
     "16": "img/icon-bitty.png",
     "48": "img/icon-small.png",
@@ -24,7 +24,6 @@
   ],
   "background": {
     "scripts": [
-      "js/libs/jquery.min.js",
       "js/background.js"
     ]
   },
@@ -37,28 +36,45 @@
       ]
     },
     {
-      "matches": ["https://www.taoguba.com.cn/*", "http://chinadigitaltimes.net/*", "https://www.amazon.cn/*", "https://www.futunn.com/*"],
+      "matches": [
+        "https://www.taoguba.com.cn/*",
+        "http://chinadigitaltimes.net/*",
+        "https://www.amazon.cn/*",
+        "https://www.futunn.com/*"
+      ],
       "exclude_matches": ["https://www.zhihu.com/*"],
       "js": [
         "js/cs/back-top.js"
       ]
     },
     {
-      "matches": ["http://www.bbc.com/*", "http://chinadigitaltimes.net/*","https://www.5zipai.com/*", "https://*.tumblr.com/*", "https://www.pornhub.com/*/*"],
+      "matches": [
+        "http://www.bbc.com/*",
+        "http://chinadigitaltimes.net/*",
+        "https://www.5zipai.com/*",
+        "https://*.tumblr.com/*",
+        "https://www.pornhub.com/*/*"
+      ],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
       ]
     },
     {
-      "matches": ["https://www.taoguba.com.cn/**", "http://127.0.0.1:2018/*"],
+      "matches": [
+        "https://www.taoguba.com.cn/**",
+        "http://127.0.0.1:2018/*"
+      ],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/reset-stock-link.js"
       ]
     },
     {
-      "matches": ["https://gupiao.baidu.com/stock/*", "http://finance.sina.com.cn/realstock/company/*"],
+      "matches": [
+        "https://gupiao.baidu.com/stock/*",
+        "http://finance.sina.com.cn/realstock/company/*"
+      ],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/fix-baidu-stock.js"
@@ -73,25 +89,24 @@
     },
     {
       "matches": ["http://www.maofou.com/*"],
-      "css":["css/cs/maofou.css"]
+      "css": ["css/cs/maofou.css"]
     },
     {
       "matches": ["https://www.taoguba.com.cn/*"],
-      "css":["css/cs/taoguba.css"]
+      "css": ["css/cs/taoguba.css"]
     },
     {
       "matches": ["http://basic.10jqka.com.cn/*/"],
-      "css":["css/cs/10jqka.css"],
+      "css": ["css/cs/10jqka.css"],
       "js": [
         "js/libs/jquery.min.js",
-        "js/data/880360.js",
+        "js/data/T.js",
         "js/cs/10jqka.js"
       ]
     },
     {
       "matches": ["https://www.cailianpress.com/"],
-      "css":["css/cs/cailianpress.css"]
+      "css": ["css/cs/cailianpress.css"]
     }
   ]
-
 }
