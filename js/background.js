@@ -1,5 +1,9 @@
 /**
  *
+ DRAWTEXT_FIX(1,0.00,0,0,‘行业：‘)COLOR0080FF;
+ DRAWTEXT_FIX(1,0.03,0,0,HYBLOCK)COLOR0080FF;
+ DRAWTEXT_FIX(1,0.00,0.04,0,‘概念：‘)COLOR00FFFF;
+ DRAWTEXT_FIX(1,0.03,0.04,0,GNBLOCK)COLOR00FFFF;
  */
 function for_10jqka(request, sender, sendResponse) {
     var code = request.code;

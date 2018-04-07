@@ -107,6 +107,10 @@
     {
       "matches": ["https://www.cailianpress.com/"],
       "css": ["css/cs/cailianpress.css"]
+    },
+    {
+      "matches": ["*://www3.55188.com/*"],
+      "css": ["css/cs/960.css"]
     }
   ]
 }
