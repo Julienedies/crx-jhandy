@@ -22,23 +22,30 @@ var href = location.href;
 var url = /company.html$/.test(href) ? href.replace('company.html', '') : href + 'company.html';
 var $body = $(document.body);
 
-$body.append('<iframe src="*"></iframe>'.replace('*', url));
+if (/^http:\/\/basic\.10jqka\.com.cn\/\d{6}\/?$/img.test(location.href)) {
 
-var callback = function (e) {
+    $('.wrapper').addClass('J');
+    $body.append('<iframe src="*"></iframe>'.replace('*', url));
 
-    //正负值表示滚动方向
-    var isUp = e && e.originalEvent.deltaY < 0;
+    var callback = function (e) {
 
-    var href = location.href.replace(reg, '/' + ( isUp ? STOCK_CODE[prev] : STOCK_CODE[next] ) + '/');
+        //正负值表示滚动方向
+        var isUp = e && e.originalEvent.deltaY < 0;
 
-    console.log(href);
+        var href = location.href.replace(reg, '/' + ( isUp ? STOCK_CODE[prev] : STOCK_CODE[next] ) + '/');
 
-    location.href = href;
+        console.log(href);
 
-    return false;
-};
+        location.href = href;
 
-$body.on('mousewheel', callback);
+        return false;
+    };
+
+    $body.on('mousewheel', callback);
+}
+
+
+
 
 //setTimeout(callback, 2 * 60 * 1000);
 

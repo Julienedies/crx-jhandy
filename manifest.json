@@ -50,10 +50,7 @@
     {
       "matches": [
         "http://www.bbc.com/*",
-        "http://chinadigitaltimes.net/*",
-        "https://www.5zipai.com/*",
-        "https://*.tumblr.com/*",
-        "https://www.pornhub.com/*/*"
+        "http://chinadigitaltimes.net/*"
       ],
       "js": [
         "js/libs/jquery.min.js",
@@ -97,6 +94,8 @@
     },
     {
       "matches": ["http://basic.10jqka.com.cn/*/"],
+      "exclude_matches": [
+      ],
       "css": ["css/cs/10jqka.css"],
       "js": [
         "js/libs/jquery.min.js",

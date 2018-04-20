@@ -1,10 +1,60 @@
-/**
+/*
  *
  DRAWTEXT_FIX(1,0.00,0,0,‘行业：‘)COLOR0080FF;
  DRAWTEXT_FIX(1,0.03,0,0,HYBLOCK)COLOR0080FF;
  DRAWTEXT_FIX(1,0.00,0.04,0,‘概念：‘)COLOR00FFFF;
  DRAWTEXT_FIX(1,0.03,0.04,0,GNBLOCK)COLOR00FFFF;
+
+ {
+  "matches": ["http://basic.10jqka.com.cn/"],
+"exclude_matches": [
+    "http://basic.10jqka.com.cn/"
+],
+    "css": ["css/cs/10jqka.css"],
+    "js": [
+    "js/libs/jquery.min.js",
+    "js/data/T.js",
+    "js/cs/10jqka.js"
+]
+},
  */
+
+function inject(files) {
+    files = typeof files == 'string' ? [files] : files;
+    (function f(files) {
+        var file = files.shift();
+        if (file) {
+            //console.log(file);
+            if (/\S+\.css$/.test(file)) {
+                chrome.tabs.insertCSS(null, {file: file}, function(){
+                    f(files);
+                });
+            } else {
+                chrome.tabs.executeScript(null, {file: file}, function(){
+                    f(files);
+                });
+            }
+        }
+    })(files);
+}
+
+/*chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+
+    if (changeInfo.status === "complete") {
+
+        if (/^http:\/\/basic\.10jqka\.com.cn\/\d{6}\/?$/img.test(tab.url)) {
+
+            inject(['css/cs/10jqka.css', 'js/libs/jquery.min.js', 'js/data/T.js', 'js/cs/10jqka.js']);
+            //chrome.tabs.insertCSS(null, {file: 'css/cs/10jqka.css'});
+            //chrome.tabs.executeScript(null, {file: 'js/libs/jquery.min.js'}, function(){
+            //chrome.tabs.executeScript(null, {file: 'js/data/T.js'});
+            //chrome.tabs.executeScript(null, {file: });
+        }
+    }
+
+});*/
+
+
 function for_10jqka(request, sender, sendResponse) {
     var code = request.code;
     if (request.id == '10jqka' && code) {
@@ -20,10 +70,6 @@ function for_10jqka(request, sender, sendResponse) {
 }
 // 接收10jqka页面 content script发过来的消息，同步新浪财经K线页面
 chrome.runtime.onMessage.addListener(for_10jqka);
-
-
-
-
 
 
 var utils = [
