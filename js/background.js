@@ -8,13 +8,16 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     var url = request.close_url;
     if (request.id == '10jqka' && url) {
         url += '/*';
-        url = url.replace('//*', '/*');
-
+        url = url.replace('//*', '/*').replace(/^https?/, '*');
+        console.log(url);
         chrome.tabs.query({url: url}, function (tabs) {
             console.log(tabs);
             var tab = tabs[0];
+            tabs = tabs.map(function(tab){
+                return tab.id;
+            });
             tab && chrome.tabs.remove(tab.id, function () {
-            })
+            });
         });
 
     }

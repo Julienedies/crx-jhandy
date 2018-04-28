@@ -2,3 +2,7 @@
 	min-width:600px;
 }
 
+[ic-ctrl]{
+	padding:5px;
+	margin:10px 0;
+}

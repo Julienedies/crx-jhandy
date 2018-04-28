@@ -12,18 +12,28 @@ $('#get_stock_code_list').on('click', function (e) {
 brick.controllers.reg('stock_auto_ctrl', function(scope){
 
     var $elm = scope.$elm;
-    $elm.on('click', 'button', function(e){
+
+    $elm.on('click', '#set_is_stock_auto', function(e){
         var val;
         chrome.storage.sync.get('is_stock_auto', function(result){
             val = result.is_stock_auto;
             val = !val;
             chrome.storage.sync.set({'is_stock_auto': val}, function() {
-                // 通知保存完成。
+                chrome.tabs.reload();
             });
-            $('#message').text(val);
+            $elm.find('#message').text(val);
         });
+    });
 
-
+    $elm.on('click', '#set_interval', function(e){
+        var val = $elm.find('#interval').val();
+        if(!val) {
+            alert('输入数字');
+            return;
+        }
+        chrome.storage.sync.set({'interval': val}, function() {
+            chrome.tabs.reload();
+        });
     });
 
 

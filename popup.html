@@ -35,8 +35,16 @@
 
     <section ic-ctrl="stock_auto_ctrl">
         <h3>个股资料页面自动切换</h3>
-        <button>开启自动切换</button>
-        <div id="message"></div>
+        <div>
+            <input type="number" id="interval" placeholder="默认基准40秒（3*2*1）">
+            <button id="set_interval">设置间隔基准</button>
+        </div>
+
+        <div>
+            <button id="set_is_stock_auto">开启自动切换</button>
+            <div id="message"></div>
+        </div>
+
     </section>
 </div>
 </body>
