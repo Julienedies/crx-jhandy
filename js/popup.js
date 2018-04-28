@@ -9,6 +9,29 @@ $('#get_stock_code_list').on('click', function (e) {
 
 });
 
+brick.controllers.reg('stock_auto_ctrl', function(scope){
+
+    var $elm = scope.$elm;
+    $elm.on('click', 'button', function(e){
+        var val;
+        chrome.storage.sync.get('is_stock_auto', function(result){
+            val = result.is_stock_auto;
+            val = !val;
+            chrome.storage.sync.set({'is_stock_auto': val}, function() {
+                // 通知保存完成。
+            });
+            $('#message').text(val);
+        });
+
+
+    });
+
+
+
+
+});
+
+
 
 brick.controllers.reg('get_u_p_ctrl', function (scope) {
 

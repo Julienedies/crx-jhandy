@@ -94,7 +94,7 @@
       ]
     },
     {
-      "matches": ["http://basic.10jqka.com.cn/*/"],
+      "matches": ["http://basic.10jqka.com.cn/*/*"],
       "exclude_matches": [
       ],
       "css": ["css/cs/10jqka.css"],
