@@ -29,6 +29,22 @@
   },
   "content_scripts": [
     {
+      "matches": ["http://www.maofou.com/*"],
+      "css": ["css/cs/maofou.css"]
+    },
+    {
+      "matches": ["https://www.taoguba.com.cn/*"],
+      "css": ["css/cs/taoguba.css"]
+    },
+    {
+      "matches": ["https://www.cailianpress.com/"],
+      "css": ["css/cs/cailianpress.css"]
+    },
+    {
+      "matches": ["*://www3.55188.com/*"],
+      "css": ["css/cs/960.css"]
+    },
+    {
       "matches": ["http://taobao.cjcp.com.cn/*"],
       "js": [
         "js/libs/jquery.min.js",
@@ -49,8 +65,7 @@
     },
     {
       "matches": [
-        "http://www.bbc.com/*",
-        "http://chinadigitaltimes.net/*"
+        "http://www.bbc.com/*"
       ],
       "js": [
         "js/libs/jquery.min.js",
@@ -70,27 +85,13 @@
     {
       "matches": [
         "https://gupiao.baidu.com/stock/*",
-        "http://finance.sina.com.cn/realstock/company/*"
+        "http://finance.sina.com.cn/realstock/company/*",
+        "https://xueqiu.com/S/*"
       ],
       "js": [
         "js/libs/jquery.min.js",
-        "js/cs/fix-baidu-stock.js"
+        "js/cs/fix-stock-k-line.js"
       ]
-    },
-    {
-      "matches": ["http://quote.eastmoney.com/stocklist.html"],
-      "js": [
-        "js/libs/jquery.min.js",
-        "js/cs/get-stock-code-list.js"
-      ]
-    },
-    {
-      "matches": ["http://www.maofou.com/*"],
-      "css": ["css/cs/maofou.css"]
-    },
-    {
-      "matches": ["https://www.taoguba.com.cn/*"],
-      "css": ["css/cs/taoguba.css"]
     },
     {
       "matches": ["http://basic.10jqka.com.cn/*/"],
@@ -102,14 +103,6 @@
         "js/data/T.js",
         "js/cs/10jqka.js"
       ]
-    },
-    {
-      "matches": ["https://www.cailianpress.com/"],
-      "css": ["css/cs/cailianpress.css"]
-    },
-    {
-      "matches": ["*://www3.55188.com/*"],
-      "css": ["css/cs/960.css"]
     }
   ]
 }

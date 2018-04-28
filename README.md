@@ -1,5 +1,6 @@
 chrome-extension-contextMenuUtils
 ==========================
+cs目录：content_script脚本目录。
 
 自定义页面，添加一些小功能；
 

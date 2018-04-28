@@ -1,6 +1,6 @@
 /**
  * Created by j on 18/2/11.
- * 修改淘股吧实盘比赛选手实盘纪录链接方便复盘。
+ * 修改淘股吧实盘比赛选手实盘纪录个股链接，方便复盘。
  */
 
 //alert('I am reset-stock-link.js.');
@@ -17,9 +17,14 @@ $(document.body).on('click', 'a[href*=https://shuo.taoguba.com.cn/stockBarWeibo?
             code = that.href.match(/[^=]{8}$/)[0];
         }
 
-        //'https://www.futunn.com/quote/stock?m=sz&code=002898' //富途股票页面
-        //that._href = 'https://gupiao.baidu.com/stock/sh601989.html'.replace(/[^/]{8}(?=\.html$)/i,code); //百度股票页面
-        that._href = 'http://finance.sina.com.cn/realstock/company/sh600519/nc.shtml'.replace(/[^/]{8}(?=\/nc\.shtml$)/i,code); //新浪股票页面
+        //富途股票页面
+        //'https://www.futunn.com/quote/stock?m=sz&code=002898';
+        //百度股票页面
+        //that._href = 'https://gupiao.baidu.com/stock/sh601989.html'.replace(/[^/]{8}(?=\.html$)/i,code);
+        //新浪股票页面
+        //that._href = 'http://finance.sina.com.cn/realstock/company/sh600519/nc.shtml'.replace(/[^/]{8}(?=\/nc\.shtml$)/i,code);
+        //雪球
+        that._href = 'https://xueqiu.com/S/'+ code;
     }
 
     if(w && !w.closed){

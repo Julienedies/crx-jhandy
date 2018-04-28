@@ -1,30 +1,17 @@
-/*
+/**
  *
- DRAWTEXT_FIX(1,0.00,0,0,‘行业：‘)COLOR0080FF;
- DRAWTEXT_FIX(1,0.03,0,0,HYBLOCK)COLOR0080FF;
- DRAWTEXT_FIX(1,0.00,0.04,0,‘概念：‘)COLOR00FFFF;
- DRAWTEXT_FIX(1,0.03,0.04,0,GNBLOCK)COLOR00FFFF;
-
- {
-  "matches": ["http://basic.10jqka.com.cn/"],
-"exclude_matches": [
-    "http://basic.10jqka.com.cn/"
-],
-    "css": ["css/cs/10jqka.css"],
-    "js": [
-    "js/libs/jquery.min.js",
-    "js/data/T.js",
-    "js/cs/10jqka.js"
-]
-},
+ *
+ *
+ *
  */
+
+
 
 function inject(files) {
     files = typeof files == 'string' ? [files] : files;
     (function f(files) {
         var file = files.shift();
         if (file) {
-            //console.log(file);
             if (/\S+\.css$/.test(file)) {
                 chrome.tabs.insertCSS(null, {file: file}, function(){
                     f(files);
@@ -57,9 +44,13 @@ function inject(files) {
 
 function for_10jqka(request, sender, sendResponse) {
     var code = request.code;
+    var k_url;
+    k_url = 'http://finance.sina.com.cn/realstock/company/*/nc.shtml';
+    k_url = 'https://xueqiu.com/S/*';
     if (request.id == '10jqka' && code) {
-        chrome.tabs.query({url: 'http://finance.sina.com.cn/realstock/company/*/nc.shtml'}, function (tabs) {
+        chrome.tabs.query({url: k_url}, function (tabs) {
             var tab = tabs[0];
+            console.log(tab, code);
             tab && chrome.tabs.sendMessage(tab.id, {
                 code: code,
                 greeting: "Can you hear me?"
@@ -68,9 +59,10 @@ function for_10jqka(request, sender, sendResponse) {
         });
     }
 }
-// 接收10jqka页面 content script发过来的消息，同步新浪财经K线页面
+// 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
 chrome.runtime.onMessage.addListener(for_10jqka);
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 var utils = [
     {
@@ -174,7 +166,6 @@ var utils = [
         }
     }
 ];
-
 
 /*var showForPages = ["http://taobao.cjcp.com.cn*//*"];
 

@@ -27,6 +27,10 @@
 
 .wrapper.J{
     margin:0 0 0 auto!important;
+    font-size:1.4em!important;
+}
+.wrapper *{
+    font-size:15px!important;
 }
 iframe{
     position:fixed;
@@ -36,6 +40,9 @@ iframe{
     height:100%;
     overflow: hidden;
     border:none;
+}
+iframe:hover{
+    z-index: 1000;
 }
 .header{
     padding-bottom: 0!important;
