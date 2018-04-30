@@ -34,7 +34,7 @@ if(host.match('sina')){
 
 //雪球个股页面 https://xueqiu.com/S/SZ300686
 if(host.match('xueqiu')){
-
+    document.documentElement.scrollTop = 25;
     setTimeout(function(){
         $('.stockChart [data-period="1day"]').click();
         $('.stockChart .enter-fs a').click();

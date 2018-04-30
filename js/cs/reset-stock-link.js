@@ -6,6 +6,21 @@
 //alert('I am reset-stock-link.js.');
 var w; //新窗口引用。
 
+//将淘股吧里的股票code添加股票名称，方便识别。
+$('a').each(function(){
+    var $th = $(this);
+    var code = $th.text().replace(/(^\s+)|(\s+$)/img, '');
+    if(/^[036]\d{5}$/.test(code)){
+        for(var i in STOCK_LIST){
+            if(STOCK_LIST[i][0] == code){
+                console.log(code);
+                $th.text(code + '(*)'.replace('*', STOCK_LIST[i][1]));
+                return;
+            }
+        }
+    }
+});
+
 $(document.body).on('click', 'a[href*=https://shuo.taoguba.com.cn/stockBarWeibo?stockCode=], a[href^=https://www.taoguba.com.cn/barRedirect?stockCode=], a[href^="/public/static/img/p/"]', function(e){
     var that = e.target;
     var code;

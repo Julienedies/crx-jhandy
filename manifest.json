@@ -74,10 +74,11 @@
     },
     {
       "matches": [
-        "https://www.taoguba.com.cn/**",
+        "https://www.taoguba.com.cn/*",
         "http://127.0.0.1:2018/*"
       ],
       "js": [
+        "js/data/stock-list.js",
         "js/libs/jquery.min.js",
         "js/cs/reset-stock-link.js"
       ]
