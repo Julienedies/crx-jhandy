@@ -63,3 +63,11 @@ iframe:hover{
 #detail[stat="compnay_detail"]{
     font-size:16px!important;
 }
+
+#concept .scrollbar-macosx{
+    display: block!important;
+}
+
+#profile table td a.alltext {
+
+}

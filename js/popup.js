@@ -12,6 +12,7 @@ $('#get_stock_code_list').on('click', function (e) {
 brick.controllers.reg('stock_auto_ctrl', function(scope){
 
     var $elm = scope.$elm;
+    var $message = $elm.find('#message');
 
     $elm.on('click', '#set_is_stock_auto', function(e){
         var val;
@@ -21,7 +22,7 @@ brick.controllers.reg('stock_auto_ctrl', function(scope){
             chrome.storage.sync.set({'is_stock_auto': val}, function() {
                 chrome.tabs.reload();
             });
-            $elm.find('#message').text(val);
+            $message.text(val);
         });
     });
 
@@ -37,7 +38,9 @@ brick.controllers.reg('stock_auto_ctrl', function(scope){
     });
 
 
-
+    chrome.storage.sync.get('interval', function(result) {
+        $message.text(result.interval);
+    });
 
 });
 

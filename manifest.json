@@ -37,7 +37,7 @@
       "css": ["css/cs/taoguba.css"]
     },
     {
-      "matches": ["https://www.cailianpress.com/"],
+      "matches": ["https://www.cailianpress.com/*"],
       "css": ["css/cs/cailianpress.css"]
     },
     {
