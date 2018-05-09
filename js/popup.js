@@ -33,7 +33,7 @@ brick.controllers.reg('stock_auto_ctrl', function(scope){
             return;
         }
         chrome.storage.sync.set({'interval': val}, function() {
-            chrome.tabs.reload();
+            //chrome.tabs.reload();
         });
     });
 
@@ -45,6 +45,24 @@ brick.controllers.reg('stock_auto_ctrl', function(scope){
 });
 
 
+brick.controllers.reg('speak_ctrl', function(scope){
+
+    var $elm = scope.$elm;
+    var $btn = $elm.find('#set_is_speak');
+
+    chrome.storage.sync.get('is_speak', function(result) {
+        $btn.text(result.is_speak ?  '关闭' : '开启');
+    });
+
+    $btn.on('click', function(){
+        var val = $btn.text() == '开启' ? 1 : 0;
+        $btn.text(val ? '关闭' : '开启');
+        chrome.storage.sync.set({'is_speak': val}, function() {
+            //chrome.tabs.reload();
+        });
+    });
+
+});
 
 brick.controllers.reg('get_u_p_ctrl', function (scope) {
 

@@ -34,10 +34,34 @@ if(host.match('sina')){
 
 //雪球个股页面 https://xueqiu.com/S/SZ300686
 if(host.match('xueqiu')){
-    document.documentElement.scrollTop = 25;
+
     setTimeout(function(){
+        document.documentElement.scrollTop = 25;
         $('.stockChart [data-period="1day"]').click();
         $('.stockChart .enter-fs a').click();
+
+        setTimeout(function(){
+            var $widgets = $('.float-right.stock__side .stock-widget');
+            var $widget_1 = $widgets.eq(1);
+
+            $widgets.each(function(index){
+                var $th = $(this);
+                var title = $th.find('.widget-header .title').text();
+                if(title.match('行业：')){
+                    $th.insertAfter($widget_1);
+                }else if(title.match('大家还关注')){
+                    $th.css({
+                        position: 'absolute',
+                        left: '50px',
+                        top: '80px',
+                        width: '170px',
+                        padding: '20px 0',
+                        background: 'white'
+                    });
+                }
+            });
+        }, 1000);
+
     }, 500);
 }
 

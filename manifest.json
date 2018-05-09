@@ -38,7 +38,11 @@
     },
     {
       "matches": ["https://www.cailianpress.com/*"],
-      "css": ["css/cs/cailianpress.css"]
+      "css": ["css/cs/cailianpress.css"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/cailianpress.js"
+      ]
     },
     {
       "matches": ["*://www3.55188.com/*"],
@@ -70,6 +74,15 @@
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://www.yuncaijing.com/quote/*"
+      ],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/ycj.js"
       ]
     },
     {
