@@ -54,9 +54,11 @@ if(host.match('xueqiu')){
                         position: 'absolute',
                         left: '50px',
                         top: '80px',
-                        width: '170px',
-                        padding: '20px 0',
+                        width: '240px',
+                        padding: '20px 10px',
                         background: 'white'
+                    }).find('.quote-current').css({
+                        'padding-right' : '15px'
                     });
                 }
             });

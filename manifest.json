@@ -108,6 +108,16 @@
       ]
     },
     {
+      "matches": [
+        "https://www.iwencai.com/data-robot/*"
+      ],
+      "css": ["css/cs/iwencai.css"],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/iwencai.js"
+      ]
+    },
+    {
       "matches": ["http://basic.10jqka.com.cn/*/*"],
       "exclude_matches": [
       ],

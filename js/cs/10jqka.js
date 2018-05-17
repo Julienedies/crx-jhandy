@@ -68,7 +68,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
     var open_concept = function () {
         win = window.open('http://basic.10jqka.com.cn/*/concept.html#ifind'.replace('*', current));
-        setTimeout(open_ycj, 1000 * interval * 1.5);
+        setTimeout(open_ycj, 1000 * interval * 2);
     };
 
     var open_ycj = function () {
@@ -89,7 +89,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
         if (result.is_stock_auto) {
 
             interval = result.interval || interval;
-            timer = interval * (2 + 1.5 + 1 + 3 + 1);
+            timer = interval * (2 + 2 + 1 + 3 + 1);
 
             setTimeout(open_concept, 1000 * interval * 2);
 
