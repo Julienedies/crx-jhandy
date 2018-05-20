@@ -36,10 +36,29 @@ if(host.match('sina')){
 if(host.match('xueqiu')){
 
     setTimeout(function(){
+        //
         document.documentElement.scrollTop = 25;
+        //
         $('.stockChart [data-period="1day"]').click();
         $('.stockChart .enter-fs a').click();
 
+        //
+        var f = function(){
+            $('table.quote-info td').each(function(){
+                var $th = $(this);
+                var text = $th.text();
+                if(/(成交额)|(换手率)|(流通市值)/img.test(text)){
+                    $th.css({
+                        background:'#06c',
+                        color:'white'
+                    });
+                }
+            });
+        };
+        f();
+        setInterval(f, 5000);
+
+        //
         setTimeout(function(){
             var $widgets = $('.float-right.stock__side .stock-widget');
             var $widget_1 = $widgets.eq(1);
