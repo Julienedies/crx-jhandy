@@ -33,6 +33,14 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
     $('.wrapper').addClass('J');
     $body.append('<iframe src="*"></iframe>'.replace('*', url));
 
+    var $c = $('<div style="position:fixed;bottom:0;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2;width:4em;text-align: center;cursor: pointer; font-size: 1.4em;"></div>').appendTo($body);
+    var $prev = $('<div> prev </div>').appendTo($c).on('click', function(){
+        callback({originalEvent: {deltaY: -1}});
+    });
+    var $next = $('<div> next </div>').appendTo($c).on('click', function(){
+        callback({originalEvent: {deltaY: 1}});
+    });
+
     var callback = function (e) {
         //正负值表示滚动方向
         var isUp = e && e.originalEvent.deltaY < 0;

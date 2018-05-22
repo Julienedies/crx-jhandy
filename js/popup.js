@@ -59,6 +59,16 @@ brick.controllers.reg('speak_ctrl', function(scope){
         $btn.text(val ? '关闭' : '开启');
         chrome.storage.sync.set({'is_speak': val}, function() {
             //chrome.tabs.reload();
+            var url = 'https://www.cailianpress.com/*';
+            chrome.tabs.query({url: url}, function (tabs) {
+                console.log(tabs);
+                var tab = tabs[0];
+                tabs = tabs.map(function(tab){
+                    return tab.id;
+                });
+                tab && chrome.tabs.reload(tab.id, function () {
+                });
+            });
         });
     });
 

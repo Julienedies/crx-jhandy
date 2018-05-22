@@ -29,6 +29,10 @@
   },
   "content_scripts": [
     {
+      "matches": ["http://es6.ruanyifeng.com/*"],
+      "css": ["css/cs/es6.css"]
+    },
+    {
       "matches": ["http://www.maofou.com/*"],
       "css": ["css/cs/maofou.css"]
     },
