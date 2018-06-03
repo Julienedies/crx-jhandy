@@ -91,8 +91,7 @@
     },
     {
       "matches": [
-        "https://www.taoguba.com.cn/*",
-        "http://127.0.0.1:2018/*"
+        "https://www.taoguba.com.cn/*"
       ],
       "js": [
         "js/data/stock-list.js",
