@@ -19,6 +19,8 @@ var next = stocks[index + 1] || stocks[0];
 var prefix_code = (/^6/.test(current) ? 'sh' : 'sz') + current;
 var ycj_url = 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code);
 var xueqiu_url = 'https://xueqiu.com/S/*'.replace('*', prefix_code);
+var ths_new_url = 'http://basic.10jqka.com.cn/*/'.replace('*', current);
+var ths_c_url = 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current);
 var site_url;
 
 var $body = $(document.body);
@@ -117,15 +119,15 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
         if (result.is_stock_auto) {
 
-            var interval = result.interval || 40;
+            var interval = result.interval || 30;
 
             titleTimer(interval);
 
             var queue = [
-                {url: 'http://basic.10jqka.com.cn/000001/', duration: interval * 2},
-                //{url: 'http://basic.10jqka.com.cn/000001/concept.html', duration: interval * 2},
-                {url: ycj_url, duration: interval * 2}
-                //{url: site_url, duration: interval * 2}
+                {url: ths_new_url, duration: interval * 2},
+                {url: ths_c_url, duration: interval * 2},
+                {url: ycj_url, duration: interval * 2},
+                {url: site_url, duration: interval * 10}
             ];
 
             setTimeout(function () {
