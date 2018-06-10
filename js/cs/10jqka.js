@@ -7,6 +7,10 @@
 //alert('I am 10jqka.js.');
 
 STOCKS = STOCKS || [];
+
+if(location.search.match(/\?self[=][1]/)){
+    STOCKS = [];
+}
 var stocks = STOCKS.map(function (x) {
         return x[0];
     }) || [];
@@ -25,11 +29,19 @@ var site_url;
 
 var $body = $(document.body);
 
+function getNameByCode(code){
+    var item = STOCKS.filter(function(item){
+        return item && item[0] == code;
+    });
+    return item[0] && item[0][1];
+}
+
 var goToNext = function (code) {
+    console.log('goto:', code);
     if(code){
         location.href = location.href.replace(reg, '/' + code + '/');
     }else{
-        chrome.runtime.sendMessage({id: '10jqka', close_url: location.href});
+        chrome.runtime.sendMessage({id: '10jqka', close_url: location.href.replace('company.html?self=1','')});
     }
 };
 
@@ -40,24 +52,22 @@ var callback = function (e) {
 };
 
 var createNav = function () {
-    var $c = $('<div style="position:fixed;bottom:0;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2;width:4em;text-align: center;cursor: pointer; font-size: 1.4em;"></div>').appendTo($body);
-    var $prev = $('<div> prev (*)</div>'.replace('*', prev)).appendTo($c).on('click', function () {
+    var $c = $('<div style="position:fixed;bottom:0;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
+    var $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev) )).appendTo($c).on('click', function () {
         goToNext(prev);
     });
-    var $next = $('<div> next (*)</div>'.replace('*', next)).appendTo($c).on('click', function () {
+    var $next = $('<div>  *</div>'.replace('*', getNameByCode(next) )).appendTo($c).on('click', function () {
         goToNext(next);
     });
 };
 
 var createLinks = function () {
-    setTimeout(function () {
-        var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a></span>'
-            .replace('#', xueqiu_url)
-            .replace('*', ycj_url);
-        //$url = $('iframe').contents().find('#detail a').eq(0);
-        var $url = $('#detail a').eq(0).after(html);
-        site_url = $url.attr('href');
-    }, 500);
+    var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a></span>'
+        .replace('#', xueqiu_url)
+        .replace('*', ycj_url);
+    //$url = $('iframe').contents().find('#detail a').eq(0);
+    var $url = $('#detail a').eq(0).after(html);
+    site_url = $url.attr('href');
 };
 
 var createIframe = function(){
@@ -66,10 +76,10 @@ var createIframe = function(){
     $body.append('<iframe src="*"></iframe>'.replace('*', url));
 };
 
-var titleTimer = function (interval) {
+var titleTimer = function (interval, amount) {
     var $title = $('title');
     var title = $title.text();
-    var timer = interval * (2 + 2 + 1 + 3 + 1);
+    var timer = interval * amount;
     setInterval(function () {
         timer -= 1;
         $title.text(timer + ' # ' + title);
@@ -121,20 +131,20 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             var interval = result.interval || 30;
 
-            titleTimer(interval);
+            titleTimer(interval, 5);
 
             var queue = [
                 {url: ths_new_url, duration: interval * 2},
-                {url: ths_c_url, duration: interval * 2},
+                //{url: ths_c_url, duration: interval * 2},
                 {url: ycj_url, duration: interval * 2},
-                {url: site_url, duration: interval * 10}
+                //{url: site_url, duration: interval * 10}
             ];
 
             setTimeout(function () {
                 g(queue, function(){
                     goToNext(next);
                 });
-            }, interval * 2 * 1000);
+            }, interval * 1 * 1000);
 
         } else {
 
