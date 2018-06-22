@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css"/>
-    <script src="js/libs/underscore.js"></script>
-    <script src="js/libs/jquery.min.js"></script>
-    <script src="js/libs/brick/0.7/brick.mobile.js"></script>
-    <script src="js/popup.js"></script>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="css/basic/basic.base.css" />
+    <link rel="stylesheet" type="text/css" href="css/vendor/bulma/bulma.css" />
+    <link rel="stylesheet" type="text/css" href="css/common.css"/>
 </head>
 
 <body>
@@ -23,15 +22,6 @@
             <button id="get_stock_code_list">获取股票代码列表</button>
         </li>
     </ul>
-
-    <section ic-ctrl="get_u_p_ctrl">
-        <h3>get u/p</h3>
-        <input type="text" name="u">
-        <br/>
-        <input type="text" name="p">
-        <button id="get_or_set_u_p">get or set u or p</button>
-    </section>
-
 
     <section ic-ctrl="stock_auto_ctrl">
         <h3>个股资料页面自动切换</h3>
@@ -51,5 +41,10 @@
         <button id="set_is_speak">开启 / 关闭</button>
     </section>
 </div>
+
+<script src="js/libs/underscore.js"></script>
+<script src="js/libs/jquery.min.js"></script>
+<script src="js/libs/brick/0.7/brick.mobile.js"></script>
+<script src="js/popup.js"></script>
 </body>
 </html>

@@ -1,3 +1,37 @@
+
+
+/*
+ * @todo 转发消息
+ *
+ */
+
+
+
+
+
+/**
+ *
+ *
+ */
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    console.log(request);
+
+
+    var code = request.code;
+    var k_url = 'http://192.168.3.20:3000/*';
+    if (request.event == 'tdx_view' && code) {
+        chrome.tabs.query({url: k_url}, function (tabs) {
+            var tab = tabs[0];
+            tab && chrome.tabs.sendMessage(tab.id, {
+                event:'tdx_view',
+                code: code
+            }, function (response) {
+            });
+        });
+    }
+});
+
 /**
  *
  * 同花顺个股页面自动切换时，用于关掉个股站点窗口
@@ -5,7 +39,20 @@
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
+    console.log(request);
+
+
     var url = request.close_url;
+
+    if(request.event == 'active_ftnn'){
+        chrome.tabs.query({url: 'http://192.168.3.20:3000/*'}, function (tabs) {
+            var tab = tabs[0];
+            tab && chrome.tabs.sendMessage(tab.id, {
+                event: 'active_ftnn'
+            }, function (response) {
+            });
+        });
+    }
 
     if (request.id == '10jqka' && url) {
 

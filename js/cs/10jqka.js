@@ -41,7 +41,7 @@ var goToNext = function (code) {
     if(code){
         location.href = location.href.replace(reg, '/' + code + '/');
     }else{
-        chrome.runtime.sendMessage({id: '10jqka', close_url: location.href.replace('company.html?self=1','')});
+        chrome.runtime.sendMessage({id: '10jqka', event: 'active_ftnn', close_url: location.href.replace('company.html?self=1','')});
     }
 };
 
@@ -113,7 +113,8 @@ function g(arr, callback) {
 
 //发送消息给background.js，通过background.js同步个股K线页面
 if (stocks.indexOf(current) > -1) {
-    //chrome.runtime.sendMessage({id: '10jqka', code: current});
+    console.log(current);
+    chrome.runtime.sendMessage({id: '10jqka', code: current});
 }
 
 // 匹配 http://basic.10jqka.com.cn/300677/company.html
@@ -131,20 +132,20 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             var interval = result.interval || 30;
 
-            titleTimer(interval, 5);
-
             var queue = [
-                {url: ths_new_url, duration: interval * 2},
-                //{url: ths_c_url, duration: interval * 2},
                 {url: ycj_url, duration: interval * 2},
-                //{url: site_url, duration: interval * 10}
+                {url: ths_new_url, duration: interval * 1},
+                {url: ths_c_url, duration: interval * 1},
+                //{url: site_url, duration: interval * 6}
             ];
+
+            titleTimer(interval, 4);
 
             setTimeout(function () {
                 g(queue, function(){
                     goToNext(next);
                 });
-            }, interval * 1 * 1000);
+            },  1000 * interval * 1);
 
         } else {
 

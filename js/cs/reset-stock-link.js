@@ -3,7 +3,7 @@
  * 修改淘股吧实盘比赛选手实盘纪录个股链接，方便复盘。
  */
 
-//alert('I am reset-stock-link.js.');
+console.log('I am reset-stock-link.js.');
 var w; //新窗口引用。
 
 //将淘股吧里的股票code添加股票名称，方便识别。
@@ -21,15 +21,19 @@ $('a').each(function(){
     }
 });
 
-$(document.body).on('click', 'a[href*=https://shuo.taoguba.com.cn/stockBarWeibo?stockCode=], a[href^=https://www.taoguba.com.cn/barRedirect?stockCode=], a[href^="/public/static/img/p/"]', function(e){
+$(document.body).on('click', 'a[href*=https://www.taoguba.com.cn//quotes/], a[href^="/public/static/img/p/"]', function(e){
     var that = e.target;
-    var code;
+    var  code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
+    console.log('tdx_view', code);
+    chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
+    return false;
     if(!that._href){
         if(location.host == "127.0.0.1:2018"){
             code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
             code = /^6\d{5}$/.test(code) ? 'sh' + code : 'sz' + code;
         }else{
-            code = that.href.match(/[^=]{8}$/)[0];
+            code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
+            chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
         }
 
         //富途股票页面

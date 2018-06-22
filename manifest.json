@@ -3,6 +3,7 @@
   "name": "contextMenuUtils",
   "description": "custom page",
   "version": "1.1",
+  "options_page": "options.html",
   "icons": {
     "16": "img/icon-bitty.png",
     "48": "img/icon-small.png",
@@ -61,10 +62,7 @@
     },
     {
       "matches": [
-        "https://www.taoguba.com.cn/*",
-        "http://chinadigitaltimes.net/*",
-        "https://www.amazon.cn/*",
-        "https://www.futunn.com/*"
+        "*://*/*"
       ],
       "exclude_matches": ["https://www.zhihu.com/*"],
       "js": [
@@ -91,23 +89,41 @@
     },
     {
       "matches": [
+        "http://192.168.3.20:3000/*"
+      ],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/jhandy.js"
+      ]
+    },
+    {
+      "matches": [
         "https://www.taoguba.com.cn/*"
       ],
       "js": [
         "js/data/stock-list.js",
         "js/libs/jquery.min.js",
+        "js/cs/back-top.js",
         "js/cs/reset-stock-link.js"
       ]
     },
     {
       "matches": [
         "https://gupiao.baidu.com/stock/*",
-        "http://finance.sina.com.cn/realstock/company/*",
-        "https://xueqiu.com/S/*"
+        "http://finance.sina.com.cn/realstock/company/*"
       ],
       "js": [
         "js/libs/jquery.min.js",
         "js/cs/fix-stock-k-line.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://xueqiu.com/S/*"
+      ],
+      "js": [
+        "js/libs/jquery.min.js",
+        "js/cs/xueqiu.js"
       ]
     },
     {

@@ -33,7 +33,7 @@ if(host.match('sina')){
 
 
 //雪球个股页面 https://xueqiu.com/S/SZ300686
-if(host.match('xueqiu')){
+/*if(host.match('xueqiu')){
 
     setTimeout(function(){
         //
@@ -84,7 +84,7 @@ if(host.match('xueqiu')){
         }, 500);
 
     }, 1500);
-}
+}*/
 
 
 //百度个股页面
