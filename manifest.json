@@ -4,6 +4,7 @@
   "description": "custom page",
   "version": "1.1",
   "options_page": "options.html",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "icons": {
     "16": "img/icon-bitty.png",
     "48": "img/icon-small.png",
@@ -11,7 +12,7 @@
   },
   "browser_action": {
     "default_icon": "img/icon-large.png",
-    "default_popup": "popup.html",
+    "default_popup": "options.html",
     "default_title": "自定义页面"
   },
   "permissions": [
@@ -25,6 +26,7 @@
   ],
   "background": {
     "scripts": [
+      "js/libs/chrome.js",
       "js/background.js"
     ]
   },
@@ -45,7 +47,7 @@
       "matches": ["https://www.cailianpress.com/*"],
       "css": ["css/cs/cailianpress.css"],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/cailianpress.js"
       ]
     },
@@ -56,7 +58,7 @@
     {
       "matches": ["http://taobao.cjcp.com.cn/*"],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/ng.js"
       ]
     },
@@ -71,10 +73,18 @@
     },
     {
       "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "js/libs/chrome.js"
+      ]
+    },
+    {
+      "matches": [
         "http://www.bbc.com/*"
       ],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/open-link-in-new-window.js"
       ]
     },
@@ -83,16 +93,16 @@
         "http://www.yuncaijing.com/quote/*"
       ],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/ycj.js"
       ]
     },
     {
       "matches": [
-        "http://192.168.3.20:3000/*"
+        "http://localhost:3000/*"
       ],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/jhandy.js"
       ]
     },
@@ -102,7 +112,7 @@
       ],
       "js": [
         "js/data/stock-list.js",
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/back-top.js",
         "js/cs/reset-stock-link.js"
       ]
@@ -113,7 +123,7 @@
         "http://finance.sina.com.cn/realstock/company/*"
       ],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/fix-stock-k-line.js"
       ]
     },
@@ -122,7 +132,7 @@
         "https://xueqiu.com/S/*"
       ],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/xueqiu.js"
       ]
     },
@@ -132,7 +142,7 @@
       ],
       "css": ["css/cs/iwencai.css"],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/cs/iwencai.js"
       ]
     },
@@ -142,7 +152,7 @@
       ],
       "css": ["css/cs/10jqka.css"],
       "js": [
-        "js/libs/jquery.min.js",
+        "js/vendor/jquery.min.js",
         "js/data/T.js",
         "js/cs/10jqka.js"
       ]

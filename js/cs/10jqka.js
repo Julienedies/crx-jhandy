@@ -41,7 +41,7 @@ var goToNext = function (code) {
     if(code){
         location.href = location.href.replace(reg, '/' + code + '/');
     }else{
-        chrome.runtime.sendMessage({id: '10jqka', event: 'active_ftnn', close_url: location.href.replace('company.html?self=1','')});
+        chrome.runtime.sendMessage({todo: 'close_tab,active_ftnn', event: 'active_ftnn', url: location.href.replace('company.html?self=1','')});
     }
 };
 
@@ -102,7 +102,7 @@ function g(arr, callback) {
             if (url.search(location.host) > -1) {
                 win.close();
             } else {
-                chrome.runtime.sendMessage({id: '10jqka', close_url: url});
+                chrome.runtime.sendMessage({todo: 'close_tab', url: url});
             }
             g(arr, callback);
         }, item.duration * 1000);
@@ -114,7 +114,7 @@ function g(arr, callback) {
 //发送消息给background.js，通过background.js同步个股K线页面
 if (stocks.indexOf(current) > -1) {
     console.log(current);
-    chrome.runtime.sendMessage({id: '10jqka', code: current});
+    chrome.runtime.sendMessage({todo: 'relay', event:'view_k', url:'https://xueqiu.com/S/*', code: current});
 }
 
 // 匹配 http://basic.10jqka.com.cn/300677/company.html
@@ -124,13 +124,13 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
     createNav();
 
-    chrome.storage.sync.get(['is_stock_auto', 'interval'], function (result) {
+    chrome_storage.get('stock', function (dob) {
 
-        console.log(result);
+        console.log(dob);
 
-        if (result.is_stock_auto) {
+        if (dob.switch) {
 
-            var interval = result.interval || 30;
+            var interval = dob.interval || 30;
 
             var queue = [
                 {url: ycj_url, duration: interval * 2},
@@ -165,7 +165,3 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
     //$body.append('<iframe src="*"></iframe>'.replace('*', url));
 
 }
-
-
-
-

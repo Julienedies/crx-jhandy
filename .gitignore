@@ -15,3 +15,5 @@ Thumbs.db
 js/libs/brick/
 
 js/data/T.js
+
+node_modules

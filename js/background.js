@@ -1,105 +1,51 @@
+/**
+ * Created by j on 15/6/23.
+ */
+
+/*
+ * events
+ */
+const EVENTS = {
+    relay: function (request) {
+        chrome_tabs.sendMessage(request.url, request);
+    },
+    tdx_view: function (request) {
+        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+    },
+    active_ftnn: function (request) {
+        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+    },
+    close_tab: function (request) {
+        let url = request.url;
+        url += '/*';
+        url = url.replace('//*', '/*').replace(/^https?/, '*');
+        chrome_tabs.remove(url);
+    },
+    // 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
+    view_k: function (request) {
+        let url = 'http://finance.sina.com.cn/realstock/company/*/nc.shtml';
+        url = 'https://xueqiu.com/S/*';
+        chrome_tabs.sendMessage(url, request);
+    }
+};
+
+/*
+ * 事件处理器
+ */
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+
+    console.log(request);
+
+    let events = (request.todo || request.event).split(',');
+
+    events.map((e) => EVENTS[e](request, sender, sendResponse));
+
+});
+
+
 
 
 /*
- * @todo 转发消息
- *
- */
-
-
-
-
-
-/**
- *
- *
- */
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
-    console.log(request);
-
-
-    var code = request.code;
-    var k_url = 'http://192.168.3.20:3000/*';
-    if (request.event == 'tdx_view' && code) {
-        chrome.tabs.query({url: k_url}, function (tabs) {
-            var tab = tabs[0];
-            tab && chrome.tabs.sendMessage(tab.id, {
-                event:'tdx_view',
-                code: code
-            }, function (response) {
-            });
-        });
-    }
-});
-
-/**
- *
- * 同花顺个股页面自动切换时，用于关掉个股站点窗口
- */
-
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-
-    console.log(request);
-
-
-    var url = request.close_url;
-
-    if(request.event == 'active_ftnn'){
-        chrome.tabs.query({url: 'http://192.168.3.20:3000/*'}, function (tabs) {
-            var tab = tabs[0];
-            tab && chrome.tabs.sendMessage(tab.id, {
-                event: 'active_ftnn'
-            }, function (response) {
-            });
-        });
-    }
-
-    if (request.id == '10jqka' && url) {
-
-        url += '/*';
-        url = url.replace('//*', '/*').replace(/^https?/, '*');
-        console.log(url);
-
-        chrome.tabs.query({url: url}, function (tabs) {
-            console.log(tabs);
-            var tab = tabs[0];
-            tabs = tabs.map(function(tab){
-                return tab.id;
-            });
-            tab && chrome.tabs.remove(tabs, function () {
-            });
-        });
-
-    }
-
-});
-
-
-/**
- *
- * 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
- */
-
-chrome.runtime.onMessage.addListener(function for_10jqka(request, sender, sendResponse) {
-    var code = request.code;
-    var k_url;
-    k_url = 'http://finance.sina.com.cn/realstock/company/*/nc.shtml';
-    k_url = 'https://xueqiu.com/S/*';
-    if (request.id == '10jqka' && code) {
-        chrome.tabs.query({url: k_url}, function (tabs) {
-            var tab = tabs[0];
-            tab && chrome.tabs.sendMessage(tab.id, {
-                code: code,
-                greeting: "Can you hear me?"
-            }, function (response) {
-            });
-        });
-    }
-});
-
-
-/**
- *
  * 动态注入js 或 css
  */
 function inject(files) {
@@ -255,3 +201,11 @@ var utils = [
  }*/
 
 
+chrome.contextMenus && chrome.contextMenus.create({
+    title: '使用google搜索：%s', // %s表示选中的文字
+    contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
+    onclick: function (params) {
+        // 注意不能使用location.href，因为location是属于background的window对象
+        chrome.tabs.create({url: 'https://www.google.com/search?q=' + encodeURI(params.selectionText)});
+    }
+});

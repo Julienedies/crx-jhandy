@@ -3,25 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>扩展选项页面</title>
+    <link rel="stylesheet" type="text/css" href="js/vendor/brick/0.7/brick.mobile.css" />
     <link rel="stylesheet" type="text/css" href="css/basic/basic.base.css" />
     <link rel="stylesheet" type="text/css" href="css/vendor/bulma/bulma.css" />
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
 </head>
-<body>
-    <div>
-        <section>
-            <h2>股票资料浏览</h2>
+<body ic-ctrl="mainCtrl">
+    <div class="container content">
 
+        <section ic-ctrl="stockCtrl">
+            <h3>股票资料浏览</h3>
+            <div ic-tpl="stock">
+
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            <input type="checkbox" name="stock.switch" ic-checked="model.switch" ic-click="on_checkbox_changed">
+                            开启个股页面自动切换
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <input class="input" type="text" name="interval" placeholder="设置自动切换间隔">
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" ic-click="set_interval">确定</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <p class="help">当前自动切换间隔为<i id="show_interval">{{model.interval}}</i></p>
+                </div>
+
+                <div class="field">
+                    <label class="label">要显示的页面队列</label>
+                </div>
+                <div class="field is-grouped" ic-for="i,v in model.page_queue" id="page_{{v.id}}">
+                    <div class="control is-expanded">
+                        <label class="checkbox">
+                            <input type="checkbox" name="stock.page_queue" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
+                           {{v.name}}
+                        </label>
+                    </div>
+                    <div class="control" ic-if="i != 0">
+                        <button class="button is-primary" ic-click="up">前移</button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">添加页面队列</label>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control is-expanded">
+                        <textarea class="textarea is-primary" type="text" name="page"></textarea>
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" ic-click="add_page_to_queue">确定</button>
+                    </div>
+                </div>
+
+
+            </div>
         </section>
 
-
-
-
-
-
-        <section>
-
+        <section ic-ctrl="clsCtrl">
+            <h3>财联社</h3>
+            <div ic-tpl="cls">
+                <label class="checkbox">
+                    <input type="checkbox" ic-checked="model.speak" name="cls.speak" ic-click="set_speak">
+                    新财经消息自动朗读
+                </label>
+            </div>
         </section>
+
     </div>
+
+    <script src="js/libs/chrome.js"></script>
+    <script src="js/vendor/underscore.js"></script>
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/brick/0.7/brick.mobile.js"></script>
+    <script src="js/options.js"></script>
 </body>
 </html>
