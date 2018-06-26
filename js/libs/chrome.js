@@ -38,20 +38,20 @@ chrome_storage = (function () {
         },
         on_changed: function (key, callback) {
             let that = this;
-            if(typeof key == 'function'){
+            if (typeof key == 'function') {
                 callback = key;
                 key = undefined;
             }
             chrome.storage.onChanged.addListener(function (changes, namespace) {
-                if(key){
+                if (key) {
                     let obj = that._get(key, changes);
                     obj && callback(obj);
-                }else{
+                } else {
                     callback(changes);
                 }
             });
         },
-        _get: function(key, dob){
+        _get: function (key, dob) {
             let obj = {};
             let count = 0;
             for (var i in dob) {
@@ -94,20 +94,41 @@ chrome_tabs = (function () {
                 });
             }
         },
-        remove: function(url){
-            this.query(url, function(tabs){
-                tabs = tabs.map(function(tab){
+        remove: function (url) {
+            this.query(url, function (tabs) {
+                tabs = tabs.map(function (tab) {
                     return tab.id;
                 });
                 chrome.tabs.remove(tabs);
             });
         },
-        sendMessage: function(url, request){
-            this.query(url, function(tabs){
-                tabs.map(function(tab){
+        sendMessage: function (url, request) {
+            this.query(url, function (tabs) {
+                tabs.map(function (tab) {
                     chrome.tabs.sendMessage(tab.id, request);
                 })
             });
+        },
+        /*
+         * 动态注入js 或 css
+         * @param files {Array} ['css/cs/10jqka.css', 'js/libs/jquery.min.js', 'js/data/T.js', 'js/cs/10jqka.js']
+         */
+        inject: function (files) {
+            files = typeof files == 'string' ? [files] : files;
+            (function f(files) {
+                var file = files.shift();
+                if (file) {
+                    if (/\S+\.css$/.test(file)) {
+                        chrome.tabs.insertCSS(null, {file: file}, function () {
+                            f(files);
+                        });
+                    } else {
+                        chrome.tabs.executeScript(null, {file: file}, function () {
+                            f(files);
+                        });
+                    }
+                }
+            })(files);
         }
     }
 

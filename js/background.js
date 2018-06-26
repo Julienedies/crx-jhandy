@@ -26,6 +26,23 @@ const EVENTS = {
         let url = 'http://finance.sina.com.cn/realstock/company/*/nc.shtml';
         url = 'https://xueqiu.com/S/*';
         chrome_tabs.sendMessage(url, request);
+    },
+    download: function(request){
+        let urls = Array.isArray(request.url) ? request.url: [request.url];
+        let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
+        urls.map((url) => {
+            let filename = url.match(/[^/]+\.(jpg|png)$/)[0];
+            filename = `${folder}/${filename}`;
+            let options = {
+                url: url,
+                filename: filename
+            };
+            console.log(options);
+            chrome.downloads.download(options, function(result) {
+                console.log(result);
+            });
+        });
+
     }
 };
 
@@ -43,36 +60,13 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 });
 
 
-
-
-/*
- * 动态注入js 或 css
- */
-function inject(files) {
-    files = typeof files == 'string' ? [files] : files;
-    (function f(files) {
-        var file = files.shift();
-        if (file) {
-            if (/\S+\.css$/.test(file)) {
-                chrome.tabs.insertCSS(null, {file: file}, function () {
-                    f(files);
-                });
-            } else {
-                chrome.tabs.executeScript(null, {file: file}, function () {
-                    f(files);
-                });
-            }
-        }
-    })(files);
-}
-
 /*chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 
  if (changeInfo.status === "complete") {
 
  if (/^http:\/\/basic\.10jqka\.com.cn\/\d{6}\/?$/img.test(tab.url)) {
 
- inject(['css/cs/10jqka.css', 'js/libs/jquery.min.js', 'js/data/T.js', 'js/cs/10jqka.js']);
+ chrome_tabs.inject(['css/cs/10jqka.css', 'js/libs/jquery.min.js', 'js/data/T.js', 'js/cs/10jqka.js']);
  //chrome.tabs.insertCSS(null, {file: 'css/cs/10jqka.css'});
  //chrome.tabs.executeScript(null, {file: 'js/libs/jquery.min.js'}, function(){
  //chrome.tabs.executeScript(null, {file: 'js/data/T.js'});

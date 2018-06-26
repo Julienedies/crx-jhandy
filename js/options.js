@@ -88,3 +88,18 @@ brick.controllers.reg('clsCtrl', function () {
 
 
 });
+
+
+
+brick.controllers.reg('downloadCtrl', function(){
+    let scope = this;
+
+
+    scope.download = function(){
+        chrome_tabs.inject([ 'js/vendor/jquery.min.js', 'js/cs/download-img.js' ]);
+        this.text('start');
+    }
+
+
+
+});
