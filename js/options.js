@@ -53,7 +53,7 @@ brick.controllers.reg('stockCtrl', function () {
     };
 
     scope.add_page_to_queue = function(){
-        var val = $elm.find('textarea[name=page]').val();
+        var val = $elm.find('input[name=page]').val();
         var arr = val.split(',');
         var id = arr[1];
         if(list.find(id).result().length){
@@ -94,12 +94,13 @@ brick.controllers.reg('clsCtrl', function () {
 brick.controllers.reg('downloadCtrl', function(){
     let scope = this;
 
-
     scope.download = function(){
         chrome_tabs.inject([ 'js/vendor/jquery.min.js', 'js/cs/download-img.js' ]);
-        this.text('start');
+        $(this).text('start');
+        setTimeout(()=>{
+            window.close();
+        },1000);
     }
-
 
 
 });
