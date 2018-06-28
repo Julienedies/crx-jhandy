@@ -8,12 +8,13 @@
 
 STOCKS = STOCKS || [];
 
-if(location.search.match(/\?self[=][1]/)){
+if (location.search.match(/\?self[=][1]/)) {
     STOCKS = [];
 }
 var stocks = STOCKS.map(function (x) {
         return x[0];
     }) || [];
+
 var reg = /\/(\d{6})\//;
 var current = location.href.match(reg)[1];
 var index = stocks.indexOf(current);
@@ -21,16 +22,19 @@ var prev = stocks[index - 1] || stocks[stocks.length - 1];
 var next = stocks[index + 1] || stocks[0];
 
 var prefix_code = (/^6/.test(current) ? 'sh' : 'sz') + current;
-var ycj_url = 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code);
-var xueqiu_url = 'https://xueqiu.com/S/*'.replace('*', prefix_code);
-var ths_new_url = 'http://basic.10jqka.com.cn/*/'.replace('*', current);
-var ths_c_url = 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current);
-var site_url;
+
+var url_map = {
+    ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code),
+    xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefix_code),
+    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current),
+    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current),
+    site: ''
+};
 
 var $body = $(document.body);
 
-function getNameByCode(code){
-    var item = STOCKS.filter(function(item){
+function getNameByCode(code) {
+    var item = STOCKS.filter(function (item) {
         return item && item[0] == code;
     });
     return item[0] && item[0][1];
@@ -38,10 +42,14 @@ function getNameByCode(code){
 
 var goToNext = function (code) {
     console.log('goto:', code);
-    if(code){
+    if (code) {
         location.href = location.href.replace(reg, '/' + code + '/');
-    }else{
-        chrome.runtime.sendMessage({todo: 'close_tab,active_ftnn', event: 'active_ftnn', url: location.href.replace('company.html?self=1','')});
+    } else {
+        chrome.runtime.sendMessage({
+            todo: 'close_tab,active_ftnn',
+            event: 'active_ftnn',
+            url: location.href.replace('company.html?self=1', '')
+        });
     }
 };
 
@@ -53,24 +61,24 @@ var callback = function (e) {
 
 var createNav = function () {
     var $c = $('<div style="position:fixed;bottom:0;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
-    var $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev) )).appendTo($c).on('click', function () {
+    var $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev))).appendTo($c).on('click', function () {
         goToNext(prev);
     });
-    var $next = $('<div>  *</div>'.replace('*', getNameByCode(next) )).appendTo($c).on('click', function () {
+    var $next = $('<div>  *</div>'.replace('*', getNameByCode(next))).appendTo($c).on('click', function () {
         goToNext(next);
     });
 };
 
 var createLinks = function () {
     var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a></span>'
-        .replace('#', xueqiu_url)
-        .replace('*', ycj_url);
+        .replace('#', url_map.xueqiu)
+        .replace('*', url_map.ycj);
     //$url = $('iframe').contents().find('#detail a').eq(0);
     var $url = $('#detail a').eq(0).after(html);
-    site_url = $url.attr('href');
+    url_map.site = $url.attr('href');
 };
 
-var createIframe = function(){
+var createIframe = function () {
     var href = location.href;
     var url = /company.html$/.test(href) ? href.replace('company.html', '') : href + 'company.html';
     $body.append('<iframe src="*"></iframe>'.replace('*', url));
@@ -114,7 +122,7 @@ function g(arr, callback) {
 //发送消息给background.js，通过background.js同步个股K线页面
 if (stocks.indexOf(current) > -1) {
     console.log(current);
-    chrome.runtime.sendMessage({todo: 'relay', event:'view_k', url:'https://xueqiu.com/S/*', code: current});
+    chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current});
 }
 
 // 匹配 http://basic.10jqka.com.cn/300677/company.html
@@ -130,22 +138,29 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
         if (dob.switch) {
 
+            var queue = [];
             var interval = dob.interval || 30;
 
-            var queue = [
-                {url: ycj_url, duration: interval * 2},
-                {url: ths_new_url, duration: interval * 1},
-                {url: ths_c_url, duration: interval * 1},
-                //{url: site_url, duration: interval * 6}
-            ];
+            if (dob.pages) {
+                dob.pages.filter((v) => {
+                    v.show && queue.push({url: url_map[v.id], duration: v.d * interval});
+                });
+            } else {
+                queue = [
+                    {url: url_map.ycj, duration: interval * 2},
+                    {url: url_map.ths_new, duration: interval * 1},
+                    {url: url_map.ths_c, duration: interval * 1},
+                    //{url: url_map.site, duration: interval * 6}
+                ];
+            }
 
             titleTimer(interval, 4);
 
             setTimeout(function () {
-                g(queue, function(){
-                    goToNext(next);
+                g(queue, function () {
+                    //goToNext(next);
                 });
-            },  1000 * interval * 1);
+            }, 1000 * interval * 1);
 
         } else {
 

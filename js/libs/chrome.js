@@ -54,7 +54,7 @@ chrome_storage = (function () {
         _get: function (key, dob) {
             let obj = {};
             let count = 0;
-            for (var i in dob) {
+            for (let i in dob) {
                 if (i == key) {
                     return dob[i];
                 } else if (i.indexOf(key + '.') > -1) {

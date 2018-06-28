@@ -40,9 +40,9 @@
                     <label class="label">要显示的页面队列</label>
                 </div>
                 <div class="field" id="stock_pages">
-                    <div class="control is-expanded" ic-for="i,v in model.page_queue" id="page_{{v.id}}">
+                    <div class="control is-expanded" ic-for="i,v in model.pages" id="page_{{v.id}}" style="margin:3px 0;">
                         <label class="checkbox" style="min-width:7em;">
-                            <input type="checkbox" name="stock.page_queue" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
+                            <input type="checkbox" name="stock.pages" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
                            {{v.name}}
                         </label>
                         <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
@@ -57,7 +57,7 @@
                         <input class="input is-primary" type="text" name="page" placeholder="云财经,ycj"/>
                     </div>
                     <div class="control">
-                        <button class="button is-primary" ic-click="add_page_to_queue">确定</button>
+                        <button class="button is-primary" ic-click="add_page">添加</button>
                     </div>
                 </div>
 

@@ -24,11 +24,10 @@ brick.controllers.reg('stockCtrl', function () {
     var $elm = scope.$elm;
 
     function f(dob) {
+        console.log(dob);
         scope.render('stock', dob);
-        dob.page_queue && list.init(dob.page_queue);
-        ll.find(' ths_c').set({id:'ths_c'});
-        ll.find(' ths_new').set({id:'ths_new'});
-        //console.table(list.get());
+        dob.pages && list.init(dob.pages);
+        console.table(list.get());
     }
 
     chrome_storage.get('stock', f);
@@ -43,10 +42,11 @@ brick.controllers.reg('stockCtrl', function () {
         var $th = $(this);
         var id = $th.val();
         var show = $th.prop('checked');
-        var arr = [$th.data('name'), id, $th.data('d'), show];
-        $elm.find('textarea[name=page]').val(arr.join(','));
         list.find(id).set({show:show});
-        chrome_storage.set('stock.page_queue', list.get());
+        chrome_storage.set('stock.pages', list.get());
+        // edit
+        var arr = [$th.data('name'), id, $th.data('d'), show];
+        $elm.find('input[name=page]').val(arr.join(','));
     };
 
     scope.up = function(){
@@ -57,19 +57,21 @@ brick.controllers.reg('stockCtrl', function () {
         $item.insertBefore($item.prev());
         let item = list.find(id).prev();
         //console.table(list.get());
-        chrome_storage.set('stock.page_queue', list.get());
+        chrome_storage.set('stock.pages', list.get());
     };
 
-    scope.add_page_to_queue = function(){
+    scope.add_page = function(){
         var val = $elm.find('input[name=page]').val();
         var arr = val.split(',');
         var id = $.trim(arr[1]);
+        var name = arr[0];
+        var d = arr[2] || 1;
         if(list.find(id).result().length){
-            list.set({name:arr[0], id: id, d: arr[2]||1});
+            list.set({name:name, id: id, d: d*1});
         }else{
-            list.add({name:arr[0], id: id, d: arr[2]||1});
+            list.add({name:name, id: id, d: d*1});
         }
-        chrome_storage.set('stock.page_queue', list.get());
+        chrome_storage.set('stock.pages', list.get());
         console.table(list.get());
     }
 
