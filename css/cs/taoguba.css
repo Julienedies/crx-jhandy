@@ -1,3 +1,10 @@
 #products,#headerAdContent,#left_dl_div{
     display: none;
 }
+
+#mybg{
+    position: fixed!important;
+    height: auto!important;
+    bottom: 0%!important;
+    right: 0%!important;
+}

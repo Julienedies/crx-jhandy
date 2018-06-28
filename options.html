@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>扩展选项页面</title>
-    <link rel="stylesheet" type="text/css" href="js/vendor/brick/0.7/brick.mobile.css" />
+    <link rel="stylesheet" type="text/css" href="js/vendor/brick/0.8/brick.mobile.css" />
     <link rel="stylesheet" type="text/css" href="css/basic/basic.base.css" />
     <link rel="stylesheet" type="text/css" href="css/vendor/bulma/bulma.css" />
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
@@ -39,15 +39,13 @@
                 <div class="field">
                     <label class="label">要显示的页面队列</label>
                 </div>
-                <div class="field is-grouped" ic-for="i,v in model.page_queue" id="page_{{v.id}}">
-                    <div class="control is-expanded">
-                        <label class="checkbox">
+                <div class="field" id="stock_pages">
+                    <div class="control is-expanded" ic-for="i,v in model.page_queue" id="page_{{v.id}}">
+                        <label class="checkbox" style="min-width:7em;">
                             <input type="checkbox" name="stock.page_queue" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
                            {{v.name}}
                         </label>
-                    </div>
-                    <div class="control" ic-if="i != 0">
-                        <button class="button is-primary" ic-click="up">前移</button>
+                        <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
                     </div>
                 </div>
 
@@ -56,7 +54,7 @@
                 </div>
                 <div class="field is-grouped">
                     <div class="control is-expanded">
-                        <input class="input is-primary" type="text" name="page" />
+                        <input class="input is-primary" type="text" name="page" placeholder="云财经,ycj"/>
                     </div>
                     <div class="control">
                         <button class="button is-primary" ic-click="add_page_to_queue">确定</button>
@@ -91,7 +89,7 @@
     <script src="js/libs/chrome.js"></script>
     <script src="js/vendor/underscore.js"></script>
     <script src="js/vendor/jquery.min.js"></script>
-    <script src="js/vendor/brick/0.7/brick.mobile.js"></script>
+    <script src="js/vendor/brick/0.8/brick.mobile.js"></script>
     <script src="js/options.js"></script>
 </body>
 </html>

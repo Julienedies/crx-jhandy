@@ -21,19 +21,19 @@ $('a').each(function(){
     }
 });
 
-$(document.body).on('click', 'a[href*=https://www.taoguba.com.cn//quotes/], a[href^="/public/static/img/p/"]', function(e){
+$(document.body).on('click', 'a[href*=https://www.taoguba.com.cn/quotes/], a[href^="/public/static/img/p/"]', function(e){
     var that = e.target;
     var  code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
-    console.log('tdx_view', code);
-    chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
-    return false;
+    //console.log('tdx_view', code);
+    //chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
+    //return false;
     if(!that._href){
         if(location.host == "127.0.0.1:2018"){
             code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
             code = /^6\d{5}$/.test(code) ? 'sh' + code : 'sz' + code;
         }else{
             code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
-            chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
+            //chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
         }
 
         //富途股票页面

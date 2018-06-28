@@ -18,7 +18,7 @@ brick.controllers.reg('mainCtrl', function () {
 brick.controllers.reg('stockCtrl', function () {
 
     var ListManager = brick.services.get('recordManager');
-    var list = new ListManager();
+    var list = window.ll = new ListManager();
 
     var scope = this;
     var $elm = scope.$elm;
@@ -26,7 +26,9 @@ brick.controllers.reg('stockCtrl', function () {
     function f(dob) {
         scope.render('stock', dob);
         dob.page_queue && list.init(dob.page_queue);
-        console.log(list.get());
+        ll.find(' ths_c').set({id:'ths_c'});
+        ll.find(' ths_new').set({id:'ths_new'});
+        //console.table(list.get());
     }
 
     chrome_storage.get('stock', f);
@@ -48,20 +50,27 @@ brick.controllers.reg('stockCtrl', function () {
     };
 
     scope.up = function(){
-
-
+        let $th = $(this);
+        let id = $th.data('id');
+        let s = `#page_${id}`;
+        let $item = $th.closest(s);
+        $item.insertBefore($item.prev());
+        let item = list.find(id).prev();
+        //console.table(list.get());
+        chrome_storage.set('stock.page_queue', list.get());
     };
 
     scope.add_page_to_queue = function(){
         var val = $elm.find('input[name=page]').val();
         var arr = val.split(',');
-        var id = arr[1];
+        var id = $.trim(arr[1]);
         if(list.find(id).result().length){
             list.set({name:arr[0], id: id, d: arr[2]||1});
         }else{
             list.add({name:arr[0], id: id, d: arr[2]||1});
         }
         chrome_storage.set('stock.page_queue', list.get());
+        console.table(list.get());
     }
 
 });

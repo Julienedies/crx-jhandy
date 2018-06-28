@@ -1,5 +1,12 @@
+html,body{
+	min-width:500px;
+}
 #wraper{
 	min-width:600px;
+}
+
+#stock_pages >div:first-child button{
+	display: none;
 }
 
 [ic-ctrl]{
