@@ -1,5 +1,7 @@
 /*
 ==============================================
+ * {{timestamp}}
+ * {{timestamp2}}
 */
 @charset "UTF-8";
 /* 转场动画 */
@@ -148,11 +150,11 @@ html, body {
     cursor: pointer;
 }
 
-[ic-role-tab] {
+[ic-tab] {
     cursor: pointer;
 }
 
-[ic-role-con] {
+[ic-tab-con] {
     display: none;
 }
 

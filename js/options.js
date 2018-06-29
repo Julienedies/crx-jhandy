@@ -27,7 +27,7 @@ brick.controllers.reg('stockCtrl', function () {
         console.log(dob);
         scope.render('stock', dob);
         dob.pages && list.init(dob.pages);
-        console.table(list.get());
+        //console.table(list.get());
     }
 
     chrome_storage.get('stock', f);
@@ -87,13 +87,10 @@ brick.controllers.reg('clsCtrl', function () {
 
     chrome_storage.get('cls', f);
 
-
     scope.set_speak = function () {
         var $th = $(this);
         chrome_storage.set($th.attr('name'), $th.prop('checked'), function () {
-            chrome_tabs.query('https://www.cailianpress.com/*', function (tabs) {
-                chrome_tabs.reload(tabs);
-            });
+            chrome_tabs.reload('https://www.cailianpress.com/*');
         });
     };
 

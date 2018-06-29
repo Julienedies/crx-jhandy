@@ -4,7 +4,7 @@
  * 2.同步新浪或雪球个股页面K线显示
  */
 
-//alert('I am 10jqka.js.');
+console.log('I am 10jqka.js.');
 
 STOCKS = STOCKS || [];
 
@@ -158,7 +158,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    //goToNext(next);
+                    goToNext(next);
                 });
             }, 1000 * interval * 1);
 

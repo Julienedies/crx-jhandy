@@ -13,7 +13,7 @@ chrome_storage = (function () {
             chrome.storage.sync.get(null, function (result) {
                 if (key) {
                     let obj = that._get(key, result);
-                    callback(obj || {});
+                    callback(obj);
                 } else {
                     callback(result);
                 }
@@ -87,12 +87,12 @@ chrome_tabs = (function () {
             });
 
         },
-        reload: function (id, callback) {
-            if (Array.isArray(id)) {
-                id.map(function (tab) {
+        reload: function (url, callback) {
+            this.query(url, function(tabs){
+                tabs.map(function (tab) {
                     chrome.tabs.reload(tab.id, callback);
                 });
-            }
+            });
         },
         remove: function (url) {
             this.query(url, function (tabs) {

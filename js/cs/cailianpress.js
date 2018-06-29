@@ -3,13 +3,21 @@
  * 财联社页面有新消息，朗读出来。
  */
 
+console.log('I am cailianpress.js');
+
 $(function () {
 
-    chrome.storage.sync.get('is_speak', function (result) {
-        if (result.is_speak) {
+    chrome_storage.get('cls.speak', function (result) {
 
-            var elm = document.querySelectorAll("div.contentLeft > div")[1];
+        console.log(result);
+
+        if (result) {
+
+            var speechSU = new window.SpeechSynthesisUtterance();
+
+            var elm = $("div.contentLeft > div")[1];
             var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
             var MutationObserverConfig = {
                 childList: true,
                 subtree: true,
@@ -17,10 +25,10 @@ $(function () {
             };
             var observer = new MutationObserver(function (mutations) {
                 //console.log(mutations);
-                var speechSU = new window.SpeechSynthesisUtterance();
                 speechSU.text = $(elm).find('>div:eq(1) p').text() || 'hello world!';
-                window.speechSynthesis.speak(speechSU);
+                speechSynthesis.speak(speechSU);
             });
+
             observer.observe(elm, MutationObserverConfig);
 
         }

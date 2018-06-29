@@ -1,8 +1,6 @@
 html,body{
 	min-width:500px;
-}
-#wraper{
-	min-width:600px;
+	padding:10px;
 }
 
 #stock_pages >div:first-child button{
@@ -11,5 +9,5 @@ html,body{
 
 [ic-ctrl]{
 	padding:5px;
-	margin:10px 0;
+	margin:10px auto;
 }
