@@ -1,9 +1,23 @@
-_site/*
-_theme_packages/*
-~*.xlsx
-.idea/
+#系统创建文件
 Thumbs.db
 .DS_Store
+
+#IDE创建
+.idea/
+.settings/
+.project
+
+#外部类库
+bower_components/
+node_modules/
+
+#私有配置文件
+js/data/T.js
+
+#临时使用测试
+test.js
+*/test.js
+
 
 !.gitkeep
 
@@ -12,12 +26,3 @@ Thumbs.db
 
 .tmp_*~
 
-*/test.js
-
-js/libs/brick/
-
-js/data/T.js
-
-node_modules
-
-test.js
