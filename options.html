@@ -56,18 +56,19 @@
                                 {{v.name}}
                             </label>
                             <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
+                            <button class="button is-primary is-small" ic-click="edit" data-id="{{v.id}}">修改</button>
                         </div>
                     </div>
 
                     <div class="field">
-                        <label class="label">添加页面队列</label>
+                        <label class="label">添加/修改页面队列</label>
                     </div>
                     <div class="field is-grouped">
                         <div class="control is-expanded">
                             <input class="input is-primary" type="text" name="page" placeholder="云财经,ycj"/>
                         </div>
                         <div class="control">
-                            <button class="button is-primary" ic-click="add_page">添加</button>
+                            <button class="button is-primary" ic-click="save">保存</button>
                         </div>
                     </div>
 

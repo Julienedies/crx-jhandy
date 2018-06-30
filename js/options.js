@@ -44,8 +44,14 @@ brick.controllers.reg('stockCtrl', function () {
         var show = $th.prop('checked');
         list.find(id).set({show:show});
         chrome_storage.set('stock.pages', list.get());
-        // edit
-        var arr = [$th.data('name'), id, $th.data('d'), show];
+    };
+
+    scope.edit = function(){
+        var $th = $(this);
+        var id = $th.data('id');
+        var p = list.get(id)[0];
+        console.log(p);
+        var arr = [p.name, p.id, p.d, p.show];
         $elm.find('input[name=page]').val(arr.join(','));
     };
 
@@ -60,7 +66,7 @@ brick.controllers.reg('stockCtrl', function () {
         chrome_storage.set('stock.pages', list.get());
     };
 
-    scope.add_page = function(){
+    scope.save = function(){
         var val = $elm.find('input[name=page]').val();
         var arr = val.split(',');
         var id = $.trim(arr[1]);
