@@ -28,6 +28,7 @@ var url_map = {
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefix_code),
     ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current),
     ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current),
+    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current),
     site: ''
 };
 
@@ -178,5 +179,13 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
     //$('.wrapper').addClass('J');
     //$body.append('<iframe src="*"></iframe>'.replace('*', url));
+
+}
+
+
+if(/news\.html$/.test(location.pathname)){
+    setTimeout(function(){
+        $('li a[name="news.html#mine"]')[0].click();
+    },100);
 
 }

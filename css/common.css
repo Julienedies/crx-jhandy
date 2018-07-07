@@ -3,7 +3,7 @@ html,body{
 	padding:10px;
 }
 
-#stock_pages >div:first-child button{
+#stock_pages >div:first-child button[ic-click="up"]{
 	display: none;
 }
 

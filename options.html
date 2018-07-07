@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>扩展选项页面</title>
-    <link rel="stylesheet" type="text/css" href="js/vendor/brick/0.8/brick.mobile.css" />
+    <link rel="stylesheet" type="text/css" href="js/vendor/brick/0.8/css/brick.mobile.css" />
     <link rel="stylesheet" type="text/css" href="css/basic/basic.base.css" />
     <link rel="stylesheet" type="text/css" href="css/vendor/bulma/bulma.css" />
     <link rel="stylesheet" type="text/css" href="css/common.css"/>
@@ -21,6 +21,7 @@
 
 
         <div class="content" ic-tabc="a">
+
             <section ic-ctrl="stockCtrl">
                 <h3>股票资料浏览</h3>
                 <div ic-tpl="stock">
@@ -49,14 +50,14 @@
                     <div class="field">
                         <label class="label">要显示的页面队列</label>
                     </div>
-                    <div class="field" id="stock_pages">
+                    <div class="field" id="stock_pages" ic-tpl="pages">
                         <div class="control is-expanded" ic-for="i,v in model.pages" id="page_{{v.id}}" style="margin:3px 0;">
                             <label class="checkbox" style="min-width:7em;">
                                 <input type="checkbox" name="stock.pages" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
                                 {{v.name}}
                             </label>
-                            <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
                             <button class="button is-primary is-small" ic-click="edit" data-id="{{v.id}}">修改</button>
+                            <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
                         </div>
                     </div>
 
@@ -71,7 +72,6 @@
                             <button class="button is-primary" ic-click="save">保存</button>
                         </div>
                     </div>
-
 
                 </div>
             </section>

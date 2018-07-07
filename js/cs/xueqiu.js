@@ -19,6 +19,15 @@ function on_message_callback(message, sender, sendResponse) {
 chrome.runtime.onMessage.addListener(on_message_callback);
 
 
+window.location_search = {};
+location.search.replace(/^[?&]?([^=]+)\=([^&]+)/img,function(input,k,v){
+    window.location_search = window.location_search || {};
+    console.log(k, v);
+    location_search[k] = v;
+});
+
+var delay = location_search.delay || 5;
+//console.log(delay);
 
 setTimeout(function(){
     //
@@ -32,7 +41,7 @@ setTimeout(function(){
         setTimeout(function(){
             $chart.find('#slice').click();  //实体K线
         },300);
-    }, 5 * 1000);
+    },  delay * 1000);
 
 
     //

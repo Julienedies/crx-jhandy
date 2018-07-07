@@ -77,7 +77,10 @@ brick.controllers.reg('stockCtrl', function () {
         }else{
             list.add({name:name, id: id, d: d*1});
         }
-        chrome_storage.set('stock.pages', list.get());
+        var pages = list.get();
+        scope.render('list', {pages:pages});
+
+        chrome_storage.set('stock.pages', pages);
         console.table(list.get());
     }
 
