@@ -29,8 +29,8 @@
                     <div class="field">
                         <div class="control">
                             <label class="checkbox">
-                                <input type="checkbox" name="stock.switch" ic-checked="model.switch" ic-click="on_checkbox_changed">
-                                开启个股页面自动切换
+                                <input type="checkbox" name="stock.queue" ic-checked="model.queue" ic-click="on_checkbox_changed">
+                                股票列表自动切换
                             </label>
                         </div>
                     </div>
@@ -48,7 +48,16 @@
                     </div>
 
                     <div class="field">
-                        <label class="label">要显示的页面队列</label>
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="stock.relation" ic-checked="model.relation" ic-click="on_checkbox_changed">
+                                个股相关页面自动切换
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">要显示的相关页面</label>
                     </div>
                     <div class="field" id="stock_pages" ic-tpl="pages">
                         <div class="control is-expanded" ic-for="i,v in model.pages" id="page_{{v.id}}" style="margin:3px 0;">

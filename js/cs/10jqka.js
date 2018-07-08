@@ -26,6 +26,7 @@ var prefix_code = (/^6/.test(current) ? 'sh' : 'sz') + current;
 var url_map = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code),
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefix_code),
+    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', current),
     ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current),
     ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current),
     ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current),
@@ -88,10 +89,13 @@ var createIframe = function () {
 var titleTimer = function (interval, amount) {
     var $title = $('title');
     var title = $title.text();
-    var timer = interval * amount;
-    setInterval(function () {
-        timer -= 1;
-        $title.text(timer + ' # ' + title);
+    var count = Math.floor(interval * amount);
+    var timer = setInterval(function () {
+        count -= 1;
+        if(count < -3){
+            return clearInterval(timer);
+        }
+        $title.text(count + ' # ' + title);
     }, 1000);
 };
 
@@ -137,14 +141,25 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
         console.log(dob);
 
-        if (dob.switch) {
+        if (dob.relation) {
 
+            var start_item = {d: 1};
             var queue = [];
             var interval = dob.interval || 30;
+            var total = 0;
 
             if (dob.pages) {
-                dob.pages.filter((v) => {
-                    v.show && queue.push({url: url_map[v.id], duration: v.d * interval});
+                dob.pages.forEach((v) => {
+                    var k = v.id;
+                    if (url_map[k] == location.href.replace(/[?#].*$/, '')) {
+                        start_item = v;
+                        total += v.d;
+                    } else {
+                        if (v.show) {
+                            total += v.d;
+                            queue.push({url: url_map[v.id], duration: v.d * interval});
+                        }
+                    }
                 });
             } else {
                 queue = [
@@ -155,13 +170,13 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
                 ];
             }
 
-            titleTimer(interval, 4);
+            titleTimer(interval, total);
 
             setTimeout(function () {
                 g(queue, function () {
-                    goToNext(next);
+                    dob.queue && goToNext(next);
                 });
-            }, 1000 * interval * 1);
+            }, 1000 * interval * start_item.d);
 
         } else {
 
@@ -183,9 +198,9 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 }
 
 
-if(/news\.html$/.test(location.pathname)){
-    setTimeout(function(){
+if (/news\.html$/.test(location.pathname)) {
+    setTimeout(function () {
         $('li a[name="news.html#mine"]')[0].click();
-    },100);
+    }, 100);
 
 }

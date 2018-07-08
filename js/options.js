@@ -72,6 +72,7 @@ brick.controllers.reg('stockCtrl', function () {
         var id = $.trim(arr[1]);
         var name = arr[0];
         var d = arr[2] || 1;
+        if(!id || !name) return alert('请填写id和name.');
         if(list.find(id).result().length){
             list.set({name:name, id: id, d: d*1});
         }else{
