@@ -92,9 +92,7 @@ var titleTimer = function (interval, amount) {
     var count = Math.floor(interval * amount);
     var timer = setInterval(function () {
         count -= 1;
-        if(count < -3){
-            return clearInterval(timer);
-        }
+        count < 1 && clearInterval(timer);
         $title.text(count + ' # ' + title);
     }, 1000);
 };
@@ -106,8 +104,8 @@ var titleTimer = function (interval, amount) {
  **/
 function g(arr, callback) {
     var win;
-    var item = arr.shift();
     var url;
+    var item = arr.shift();
     if (item) {
         url = item.url;
         win = window.open(url);
@@ -126,7 +124,6 @@ function g(arr, callback) {
 
 //发送消息给background.js，通过background.js同步个股K线页面
 if (stocks.indexOf(current) > -1) {
-    console.log(current);
     chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current});
 }
 
@@ -178,11 +175,12 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
                 });
             }, 1000 * interval * start_item.d);
 
-        } else {
-
-            $body.on('mousewheel', callback);
-
         }
+
+        if(!dob.queue){
+            $body.on('mousewheel', callback);
+        }
+
     });
 
 }
