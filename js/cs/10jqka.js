@@ -10,6 +10,7 @@ STOCKS = STOCKS || [];
 
 if (location.search.match(/\?self[=][1]/)) {
     STOCKS = [];
+    var only_self = true;
 }
 var stocks = STOCKS.map(function (x) {
         return x[0];
@@ -171,7 +172,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    dob.queue && goToNext(next);
+                    (dob.queue || only_self) && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
