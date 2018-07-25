@@ -43,16 +43,18 @@ function getNameByCode(code) {
     return item[0] && item[0][1];
 }
 
+function closeTab(){
+    chrome.runtime.sendMessage({
+        todo: 'close_tab,active_ftnn',
+        event: 'active_ftnn',
+        url: location.href.replace('company.html?self=1', '')
+    });
+}
+
 var goToNext = function (code) {
     console.log('goto:', code);
     if (code) {
         location.href = location.href.replace(reg, '/' + code + '/');
-    } else {
-        chrome.runtime.sendMessage({
-            todo: 'close_tab,active_ftnn',
-            event: 'active_ftnn',
-            url: location.href.replace('company.html?self=1', '')
-        });
     }
 };
 
@@ -139,6 +141,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
         console.log(dob);
 
+        // 自动显示页面列表
         if (dob.relation) {
 
             var start_item = {d: 1};
@@ -172,13 +175,14 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    (dob.queue || only_self) && goToNext(next);
+                    only_self ? closeTab() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
         }
 
-        if(!dob.queue){
+        // dob.queue => 自动切换股票列表,  如果为false, 手动切换股票列表
+        if(!dob.queue && stocks.length){
             $body.on('mousewheel', callback);
         }
 
