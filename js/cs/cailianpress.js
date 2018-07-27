@@ -13,23 +13,43 @@ $(function () {
 
         if (result) {
 
+            var timer;
             var speechSU = new window.SpeechSynthesisUtterance();
 
-            var elm = $("div.contentLeft > div")[1];
+            var $elm = $("div.contentLeft > div").css({border: 'solid 1px blue'});
+            var $child = $elm.find(' > div:eq(1)>div:eq(2) .tele-right-text').css({border: 'solid 1px red'});
+
             var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-            var MutationObserverConfig = {
-                childList: true,
-                subtree: true,
-                characterData: true
-            };
             var observer = new MutationObserver(function (mutations) {
-                //console.log(mutations);
-                speechSU.text = $(elm).find('>div:eq(1) p').text() || 'hello world!';
-                speechSynthesis.speak(speechSU);
+
+                let m = mutations[0];
+
+                if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略
+
+                console.log(+new Date, m, m.oldValue, m.wholeText);
+
+                let text = m.wholeText;
+
+                clearTimeout(timer);
+
+                timer = setTimeout(function () {
+                    let $child = $elm.find(' > div:eq(1) > div:eq(2) .tele-right-text');
+                    console.log(text);
+                    speechSU.text = text || $child.text();
+                    speechSynthesis.speak(speechSU);
+                }, 2000);
+
             });
 
-            observer.observe(elm, MutationObserverConfig);
+            var MutationObserverConfig = {
+                //childList: true,
+                subtree: true,
+                characterData: true,
+                characterDataOldValue: true
+            };
+
+            observer.observe($elm[0], MutationObserverConfig);
 
         }
     });
