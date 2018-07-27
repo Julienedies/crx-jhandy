@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "contextMenuUtils",
-  "description": "custom page",
+  "name": "jhandy",
+  "description": "自用工具集合",
   "version": "1.1",
   "options_page": "options.html",
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
