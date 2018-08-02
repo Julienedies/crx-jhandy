@@ -6,11 +6,6 @@
 
 var code = location.href.match(/\d{6}(?=\.html)/)[0];
 
-
-if(location.search.match(/\?ths[=][1]/)){
-
-}
-
 var url = 'http://basic.10jqka.com.cn/*/'.replace('*', code);
 
 $('#qingbao-page .stock-tab').append('<a href="*" target="_blank">同花顺</a>'.replace('*', url));

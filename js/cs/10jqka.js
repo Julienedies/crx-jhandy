@@ -118,7 +118,6 @@ var titleTimer = function (interval, amount) {
 };
 
 /**
- *
  * @param arr Array  => [{url:'', duration: 30}] 要访问的站点队列
  * @param callback Function
  **/
