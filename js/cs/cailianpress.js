@@ -27,16 +27,17 @@ $(function () {
 
                 if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略
 
-                console.log(+new Date, m, m.oldValue, m.wholeText);
+                //console.log(+new Date, m, m.oldValue, m.target.nodeValue);
 
-                let text = m.wholeText;
+                var text = m.target.nodeValue;
 
                 clearTimeout(timer);
 
                 timer = setTimeout(function () {
                     let $child = $elm.find(' > div:eq(1) > div:eq(2) .tele-right-text');
-                    console.log(text);
-                    speechSU.text = text || $child.text();
+                    text = text || $child.text();
+                    console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
+                    speechSU.text = text;
                     speechSynthesis.speak(speechSU);
                 }, 2000);
 

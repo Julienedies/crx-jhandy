@@ -3,11 +3,15 @@
  */
 
 /*
- * events
+ * 消息处理器
+ * 接收标签页面发来的消息, 处理
  */
 const EVENTS = {
     relay: function (request) {
         chrome_tabs.sendMessage(request.url, request);
+    },
+    only_self: function (request) {
+        chrome_tabs.sendMessage('http://basic.10jqka.com.cn/*', request);
     },
     tdx_view: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
@@ -17,9 +21,12 @@ const EVENTS = {
     },
     close_tab: function (request) {
         let url = request.url;
-        url += '/*';
-        url = url.replace('//*', '/*').replace(/^https?/, '*');
-        chrome_tabs.remove(url);
+        let arr = Array.isArray(url) ? url : [url];
+        arr.map(function (url) {
+            url += '/*';
+            url = url.replace('//*', '/*').replace(/^https?/, '*');
+            chrome_tabs.remove(url);
+        });
     },
     // 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
     view_k: function (request) {
@@ -27,8 +34,8 @@ const EVENTS = {
         url = 'https://xueqiu.com/S/*';
         chrome_tabs.sendMessage(url, request);
     },
-    download: function(request){
-        let urls = Array.isArray(request.url) ? request.url: [request.url];
+    download: function (request) {
+        let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
         urls.map((url) => {
             let filename = url.match(/[^/]+\.(jpg|png)$/)[0];
@@ -38,7 +45,7 @@ const EVENTS = {
                 filename: filename
             };
             console.log(options);
-            chrome.downloads.download(options, function(result) {
+            chrome.downloads.download(options, function (result) {
                 console.log(result);
             });
         });

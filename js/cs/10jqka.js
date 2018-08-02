@@ -8,29 +8,46 @@ console.log('I am 10jqka.js.');
 
 STOCKS = STOCKS || [];
 
-if (location.search.match(/\?self[=][1]/)) {
+var only_self;
+
+var reg = /\/(\d{6})\//;
+var current_code = location.href.match(reg)[1];
+
+// only_self 页面
+if (only_self = location.search.match(/\?self[=][1]/)) {  // 赋值and做条件判断
     STOCKS = [];
-    var only_self = true;
+    chrome.runtime.sendMessage({event: 'only_self', code: current_code, url: location.href});
 }
+
+chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
+    if(msg.event == 'only_self' && msg.code != current_code){
+        chrome.runtime.sendMessage({
+            event: 'close_tab',
+            code: current_code,
+            url: [location.href.replace('company.html?self=1', ''), url_map.ycj]
+        });
+    }
+});
+
+
 var stocks = STOCKS.map(function (x) {
         return x[0];
     }) || [];
 
-var reg = /\/(\d{6})\//;
-var current = location.href.match(reg)[1];
-var index = stocks.indexOf(current);
+
+var index = stocks.indexOf(current_code);
 var prev = stocks[index - 1] || stocks[stocks.length - 1];
 var next = stocks[index + 1] || stocks[0];
 
-var prefix_code = (/^6/.test(current) ? 'sh' : 'sz') + current;
+var prefix_code = (/^6/.test(current_code) ? 'sh' : 'sz') + current_code;
 
 var url_map = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code),
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefix_code),
-    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', current),
-    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current),
-    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current),
-    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current),
+    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', current_code),
+    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current_code),
+    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current_code),
+    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current_code),
     site: ''
 };
 
@@ -126,8 +143,8 @@ function g(arr, callback) {
 }
 
 //发送消息给background.js，通过background.js同步个股K线页面
-if (stocks.indexOf(current) > -1) {
-    chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current});
+if (stocks.indexOf(current_code) > -1) {
+    chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current_code});
 }
 
 // 匹配 http://basic.10jqka.com.cn/300677/company.html
