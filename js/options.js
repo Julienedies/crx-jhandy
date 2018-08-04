@@ -19,7 +19,6 @@ brick.controllers.reg('mainCtrl', function () {
     };
 });
 
-
 brick.controllers.reg('stockCtrl', function () {
 
     var ListManager = brick.services.get('recordManager');
@@ -92,7 +91,6 @@ brick.controllers.reg('stockCtrl', function () {
 
 });
 
-
 brick.controllers.reg('clsCtrl', function () {
     var scope = this;
 
@@ -112,7 +110,6 @@ brick.controllers.reg('clsCtrl', function () {
 
 });
 
-
 brick.controllers.reg('downloadCtrl', function(){
     let scope = this;
 
@@ -125,4 +122,8 @@ brick.controllers.reg('downloadCtrl', function(){
     }
 
 
+});
+
+brick.reg('otherCtrl', function(){
+    var scope = this;
 });

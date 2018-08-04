@@ -1,15 +1,79 @@
 /*!
  * https://github.com/julienedies/brick.git
  * https://github.com/Julienedies/brick/wiki
- * "7/7/2018, 3:03:50 PM"
+ * "8/4/2018, 10:16:42 AM"
+ * "V 0.8"
  */
 ;
 (function (root, undefined) {
 
-    // __inline是fis语法，用于嵌入代码片段，经过编译后会替换成对应的js文件内容；
+// __inline是fis语法，用于嵌入代码片段，经过编译后会替换成对应的js文件内容；
 
-    // core架构 必选
-    /**
+// core架构 必选
+/**
+ * Created by Juien on 2015/8/10.
+ * 工具函数集合
+ */
+var utils = (function () {
+
+    return {
+        /**
+         * @todo 恢复被转义的html
+         * @param text {string} <必须> html类型字符串
+         * @returns {*}
+         */
+        toHtml: function (text) {
+            var c = $('<div></div>');
+            c.html(text);
+            return c.text();
+        },
+        /**
+         * @todo 封装location.search为一个对象，如果不存在，返回undefined
+         * @param str {string}  [可选]  location.search 格式字符串,
+         * @returns {*}
+         * @example brick.utils.get_query('a=1&b=2');  // {a:1, b:2}
+         */
+        get_query: function (str) {
+            var result;
+            var k;
+            if (str && /^[-_\w]+$/i.test(str)) {
+                k = str;
+                str = '';
+            }
+            str = str && str.split('?').length > 1 ? str.split('?')[1] : str;
+            //var query = location.search.replace(/^\?/i, '').replace(/\&/img, ',').replace(/^\,+/img,'').replace(/([^=,\s]+)\=([^=,\s]*)/img, '"$1":"$2"');
+            var query = (str || location.search).replace(/^\?/i, '').replace(/\&/img, ',').replace(/^\,+/img, '');
+            query.replace(/([^=,\s]+)\=([^=,\s]*)/img, function ($, $1, $2) {
+                result = result || {};
+                var k;
+                var arr;
+                $2 = decodeURIComponent($2);
+                if (/\[\]$/i.test($1)) {
+                    k = $1.replace(/\[\]$/i, '');
+                    arr = result[k] = result[k] || [];
+                    arr.push($2);
+                } else {
+                    result[$1] = $2;
+                }
+            });
+            //    if(!query) return result;
+            //    try {
+            //        result = JSON.parse('{' + query + '}');
+            //    } catch (e) {
+            //        console.error(e);
+            //        return;
+            //    }
+
+            //    for(var i in result){
+            //        result[i] = decodeURIComponent(result[i]);
+            //    }
+
+            return k ? (result && result[k]) : result;
+        }
+    };
+
+})();
+/**
  * Created by julien.zhang on 2014/9/16.
  * 用于管理配置
  */
@@ -75,7 +139,7 @@ var config = (function () {
 
 
 })();
-    /**
+/**
  * Created by julien.zhang on 2014/9/15.
  * 事件管理器
  */
@@ -93,7 +157,7 @@ var eventManager = (function () {
          * @param f {Function} 回调函数
          * @param context {Object} 调用watch方法的scope
          */
-        bind: function (e, f, context) {
+        on: function (e, f, context) {
             e = e.split(/[,\s]+/g);
             for (var i in e) {
                 this._bind(e[i], f, context);
@@ -119,7 +183,7 @@ var eventManager = (function () {
          * @param e {String} 事件名
          * @param f {Function} 回调函数，可选，如果没有传递，则取消该事件下的所有监听
          */
-        unbind: function (e, f) {
+        off: function (e, f) {
             e = e.split(/[,\s]+/g);
             for (var i in e) {
                 this._unbind(e[i], f);
@@ -157,7 +221,7 @@ var eventManager = (function () {
          * @example
          * e = 'a.b.c';   会触发 ["a.b.c", "a.*.c", "a.*", "a.b.*"]
          */
-        fire: function (e, msg, that) {
+        emit: function (e, msg, that) {
 
             var namespace = e.split(/\.|\:/);
 
@@ -253,290 +317,187 @@ var eventManager = (function () {
     };
 
 })();
-    /**
+/**
  * Created by julien.zhang on 2014/9/15.
- *
  * 控制器管理器
  */
 
 
-var controllers = (function (){
+var controllers = (function () {
 
     // 存储控制器
     var _ctrls = {};
-    var _bind = {};
 
-    function extend(dist, o){
-        for(var i in o){
-            dist[i] = o[i];
+    function extend(dist, o) {
+        if(typeof o == 'object') {
+            for (var i in o) {
+                dist[i] = o[i];
+            }
         }
         return dist;
     }
 
     // scope原型对象
-    function _F(){}
+    function _F() {
+    }
 
     extend(_F.prototype, {
 
-        set: function(key, val){
+        set: function (key, val) {
             this[key] = val;
             this.render();
         },
 
-        get: function(key){
+        get: function (key) {
             return this[key];
         },
-
-        _bind: function(name){
-            if(typeof name === 'string'){
-                name = [name];
-            }
-
-            for(var arr, i = 0, l = name.length; i < l; i++){
-                arr = _bind[name[i]] = _bind[name[i]] || [];
-                arr.push(this._name);
-            }
-        },
-        _cancel: function(name){
-            if(!name) {
-                delete _bind[this._name];
-                return;
-            }
-            if(typeof name === 'string'){
-                name = [name];
-            }
-
-            var arr = _bind[this._name];
-
-            if(arr && arr.shift){
-
-                for(var v; v = name.shift(); ){
-                    for(var i = 0, l = arr.length; i < l; i++){
-                        if(arr[i] === v){
-                            arr.splice(i, 1);
-                        }
-                    }
-                }
-
-            }
-        },
-        _fire: function(e){
-            var selfName = this._name;
-            var arr = ( _bind[selfName] || [] ).slice();
-
-            for(var i; i = arr.shift(); ){
-
-                _ctrls[i].scope._watch( extend( {source:this}, e || {} ) );
-
-            }
-        },
-        _watch: function(e){
-
-        },
-
+        // 用于存储数据模型
+        _model : {},
         /**
          * 用于触发事件
          * @param e {String} 事件名
          * @param msg {*}    任意要传递的数据
          */
-        fire: function(e, msg){
+        emit: function (e, msg) {
             var that = this;
-            eventManager.fire(e, msg, that);
+            eventManager.emit(e, msg, that);
         },
-
         /**
          * 用于订阅事件
          * @param e  {String}   事件名
          * @param f  {Function} 回调函数，接受两个参数e(事件对象，由框架封装提供），msg(用户自定义数据)
          */
-        watch: function(e, f){
+        on: function (e, f) {
             var that = this;
-            eventManager.bind(e, f, that);
+            eventManager.on(e, f, that);
         },
-
         /**
          * 取消事件监听
          * @param e {String}   事件名
          * @param f {Function} 回调函数
          */
-        unbind: function(e, f){
-            eventManager.unbind(e, f);
+        off: function (e, f) {
+            eventManager.off(e, f);
         },
-
-        tmplFn: function(){
-
-        },
-        /**
-         * 比较htmlList，生成dom补丁对象，用于更新dom
-         */
-        diff: function(){
-
-        },
-
-        htmlList: null,
-
-        updateDom: function(patch){
-
-        },
-        render: function(tplName, model, call){
+        render: function (tplName, model, call) {
             var that = this;
-            setTimeout(function(){
-                var tple = that._render_(tplName, model);
-                call && tple && call.apply(tple, []);
-            },30);
-        },
-        _render_: function(tplName, model){
-            var $elm = this.$elm;
-            var tplf = brick.getTpl(tplName);  //模板函数
-            var tple; //dom元素
-            var html;
-            if($elm && tplf){
-                tple = $elm.filter('[ic-tpl=?]'.replace('?', tplName));
-                tple = tple.length ? tple : $elm.find('[ic-tpl=?]'.replace('?', tplName));
-                html = tplf(model ? {model:model} : this);
-                //console.log(html)
-                if(tple.length){
-                    tple.show();
-                    tple.removeAttr('ic-tpl');
-                    return tple.html(html);
+            if(tplName == undefined){
+                tplName = this._name;
+                model = this._model;
+            }
+            else
+            if (typeof tplName == 'function') {
+                call = tplName;
+                tplName = that._name;
+                model = that;
+            }
+            else
+            if (typeof tplName == 'object') {
+                call = model;
+                model = tplName;
+                tplName = that._name;
+            }
+            setTimeout(function () {
+                var $tpl_dom = that._render(tplName, model);
+                if($tpl_dom){
+                    brick.compile($tpl_dom);
+                    call && call.apply($tpl_dom, []);
                 }
-            }
+            }, 30);
         },
-
-        _render: function(){
-            var html = this.tmplFn({data: this});
-
-            if(this.htmlList){
-                var patch = this.diff(html);
-                if(!patch) return;
-                this.htmlList = html;
-                return this.updateDom(patch);
-            }
-
-            //this.htmlList = html;
-            this.domNode && this.domNode.html(html);
+        _render: function (tplName, model) {
+            console.log('render => ', tplName, model);
+            var $elm = this.$elm;
+            var tpl_fn = brick.getTpl(tplName);  //模板函数
+            var selector = '[ic-tpl=?],[ic-tpl-name=?]'.replace(/[?]/img, tplName);
+            var $tpl_dom; // 有ic-tpl属性的dom元素
+            var html;
+            // 如果数据模型不是对象类型,则对其包装
+            /*if(typeof model != 'object' || Array.isArray(model)){
+                model = {model : model};
+            }*/
+            $tpl_dom = $elm.filter(selector);  // <div ic-ctrl="a" ic-tpl="a"></div>
+            $tpl_dom = $tpl_dom.length ? $tpl_dom : $elm.find(selector);
+            html = tpl_fn({model : model});
+            $tpl_dom.show(); // 渲染模板后进行编译
+            $tpl_dom.removeAttr('ic-tpl');
+            return $tpl_dom.html(html);
         }
 
     });
 
-
-    function f(name, o){
-        function F(){ this._name = name;}
-        F.prototype = new _F();
-        extend(F.prototype, o || {});
-        return new F;
+    // scope对象
+    function F(name) {
+        this._name = name;
+    }
+    function f(name, o) {
+        F.prototype = new _F();  // 继承scope原型对象
+        extend(F.prototype, o);  // 继承parent scope
+        return new F(name);
     }
 
 
     return {
-
         /**
-         * 旧的事件接口，废弃
-         */
-        bind: _bind,
-
-        /**
-         * 获取一个控制器的对外接口对象
+         * 获取一个控制器的scope对象
          * @param name {String} 控制器ID
          */
-        get: function(name){
-            return _ctrls[name] && _ctrls[name].scope;
+        get: function (name) {
+            return name && _ctrls[name] && _ctrls[name].scope;
         },
-
         /**
          * 注册控制器
          * @param name {String}   控制器ID
          * @param ctrl {Function} 控制器的工厂函数
          * @param conf {Object}   可选，控制器config (可以定义依赖，是否注册为global变量，是否做为service)
          */
-        add: function(name, ctrl, conf){
-            conf = conf || {};
-            var parent = conf.parent;
-            var depend = conf.depend || [];
-            var scope;
-            scope = parent ? f(name, _ctrls[parent]) : f(name);
-            if(conf.global){
-                window[name] = scope;
-            }
-            _ctrls[name] = {fn:ctrl, scope:scope, depend:depend, service:conf.service, conf:conf};
-        },
-
-        /**
-         * 注册控制器
-         * @param name {String}   控制器ID
-         * @param ctrl {Function} 控制器的工厂函数
-         * @param conf {Object}   可选，控制器config (可以定义依赖，是否注册为global变量，是否做为service)
-         */
-        reg: function(name, ctrl, conf){
+        reg: function (name, ctrl, conf) {
             conf = conf || {};
             var depend = conf.depend || [];
-            _ctrls[name] = {fn:ctrl, conf: conf, depend:depend, service:conf.service, scope:[]};
+            _ctrls[name] = {fn: ctrl, depend: depend, service: conf.service, conf: conf};
         },
 
         /**
          * 运行控制器
          * @param name
+         * @param parent {scope} 父scope对象
+         * @param $elm  {jQuery} 绑定scope对象的dom
          */
-        exec: function(name, parent, $elm){
-            var ctrl = _ctrls[name];
+        exec: function (name, parent, $elm) {
 
-            if (!ctrl) return console.log('not find controller ' + name);
+            var ctrl = _ctrls[name];
+            if (!ctrl) return console.info('not find controller ' + name);
 
             var conf = ctrl.conf;
             var scope;
-            var depend = conf.depend || [];
+            var depend = ctrl.depend;
 
             scope = parent ? f(name, parent) : f(name);
             scope._parent = parent && parent._name;
             scope.$elm = $elm;
-            ctrl.scope = scope; //如果有多个控制器实例，则改名下控制器的作用域对象引用的会是最后一个实例化控制器的作用域对象
-            $elm.data('ic-ctrl-scope', scope);
+            ctrl.scope = scope; // 如果有多个控制器实例，则该名下控制器的作用域对象引用的会是最后一个实例化控制器的作用域对象
+            //$elm.data('ic-ctrl-scope', scope);
 
             depend = services.get(depend) || [];
             depend = depend.constructor !== Array ? [depend] : depend;
             depend.unshift(scope);
 
-            ctrl.fn.apply(scope, depend);
-            //ctrl.fn = function(){};
-            ctrl.exec = (ctrl.exec || 0) + 1;
+            console.log('exec controller factory: ', name );
+            ctrl.fn.apply(scope, depend);  // 注入scope和依赖,执行factory
+
+            //ctrl.exec = (ctrl.exec || 0) + 1;
 
             //if(conf.global) window[name] = scope;
             return scope;
         },
 
-        /**
-         * 初始化控制器
-         */
-        init: function(name){
-            var ctrls = _ctrls;
-            var ctrl;
-            var depend;
-            var service;
-            for(var i in ctrls){
-                ctrl = ctrls[i];
-                if(ctrl.exec) continue;
-                depend = services.get(ctrl.depend) || [];
-                if(depend.constructor !== Array){
-                    depend = [depend];
-                }
-                depend.unshift(ctrl.scope);
-                service = ctrl.fn.apply(ctrl.scope, depend);
-                ctrl.fn = function(){};
-
-                if(ctrl.service){
-                    services.fill(i, service);
-                }
-
-            }
-        },
-
-        _look: function(){
+        _look: function () {
             return _ctrls;
         }
     };
 
 })();
-    /**
+/**
  * Created by julien.zhang on 2014/9/15.
  *
  * 服务管理器 （任意类型的数据，模型对象，UI组件都可以做为服务存在；通常是单例对象）
@@ -621,7 +582,7 @@ var services = (function() {
     };
 
 })();
-    /**
+/**
  * Created by julien.zhang on 2014/9/17.
  */
 
@@ -680,15 +641,12 @@ var directives = {
 };
 
 
-    /**
+/**
  * Created by julien.zhang on 2014/9/12.
- *
- * 主要用于解析一个dom节点上绑定的操作
- *
+ * 主要用于解析一个dom节点上绑定的tpl指令
  */
 
 function parser(node) {
-
 
     if (node.nodeType == 1) {
 
@@ -701,16 +659,16 @@ function parser(node) {
             'skip': -100,
             'init': -10,
             'for': 0,
-            'for-start':1,
+            'for-start': 1,
             'for-init': 10,
             'if': 100,
-            'else-if':99,
+            'else-if': 99,
             'if-start': 100,
             'if-init': 110,
             'else': 100,
             'bind': 1000,
-            'if-end':10000,
-            'for-end':10000
+            'if-end': 10000,
+            'for-end': 10000
         };
 
 
@@ -729,8 +687,8 @@ function parser(node) {
         }
 
         //对指令按优先级排序
-        directives.sort(function(a, b){
-            return priority[a[0].replace(/^ic-/,'')] - priority[b[0].replace(/^ic-/,'')];
+        directives.sort(function (a, b) {
+            return priority[a[0].replace(/^ic-/, '')] - priority[b[0].replace(/^ic-/, '')];
         });
 
 
@@ -753,8 +711,8 @@ function parser(node) {
 
             if (/-for$/.test(name)) {
                 //elm.before('<% for( var ' + value + '){ %>\r\n');
-                elm.before(value.replace(/^\s*(?:(\w+?)\s*\,\s*)?(\w+?)\s*in\s*([\w.]+)/,function(m,$1,$2,$3,t){
-                    if ($1 && $2) return '<% for( var ' + $1 + ' in ' + $3 + '){ var ' + $2 + ' = ' + $3+'[' +$1 + ']; %>\r\n';
+                elm.before(value.replace(/^\s*(?:(\w+?)\s*\,\s*)?(\w+?)\s*in\s*((?:[\w.]+)|(?:\[[^\[\]]+\]))\s*$/, function (m, $1, $2, $3, t) {
+                    if ($1 && $2) return '<% for( var ' + $1 + ' in ' + $3 + '){ var ' + $2 + ' = ' + $3 + '[' + $1 + ']; %>\r\n';
                     return '<% for( var ' + m + '){ %>\r\n';
                 }));
                 elm.after('\r\n<% } %>');
@@ -763,8 +721,8 @@ function parser(node) {
             }
 
             if (/-for-start$/.test(name)) {
-                elm.before(value.replace(/^\s*(?:(\w+?)\s*\,\s*)?(\w+?)\s*in\s*([\w.]+)/,function(m,$1,$2,$3,t){
-                    if ($1 && $2) return '<% for( var ' + $1 + ' in ' + $3 + '){ var ' + $2 + ' = ' + $3+'[' +$1 + ']; %>\r\n';
+                elm.before(value.replace(/^\s*(?:(\w+?)\s*\,\s*)?(\w+?)\s*in\s*([\w.]+)/, function (m, $1, $2, $3, t) {
+                    if ($1 && $2) return '<% for( var ' + $1 + ' in ' + $3 + '){ var ' + $2 + ' = ' + $3 + '[' + $1 + ']; %>\r\n';
                     return '<% for( var ' + m + '){ %>\r\n';
                 }));
                 elm.removeAttr(name);
@@ -779,13 +737,13 @@ function parser(node) {
 
 
             if (/-else-if$/.test(name)) {
-                elm.before('<% } else if(' + (value===''?void(0):value) + '){ %>\r\n');
+                elm.before('<% } else if(' + (value === '' ? void(0) : value) + '){ %>\r\n');
                 elm.removeAttr(name);
                 continue;
             }
 
             if (/-if$/.test(name)) {
-                elm.before('<% if(' + (value===''?void(0):value) + '){ %>\r\n');
+                elm.before('<% if(' + (value === '' ? void(0) : value) + '){ %>\r\n');
                 elm.after('\r\n<% } %>');
                 elm.removeAttr(name);
                 continue;
@@ -793,7 +751,7 @@ function parser(node) {
 
 
             if (/-if-start$/.test(name)) {
-                elm.before('<% if(' + (value===''?void(0):value) + '){ %>\r\n');
+                elm.before('<% if(' + (value === '' ? void(0) : value) + '){ %>\r\n');
                 elm.removeAttr(name);
                 continue;
             }
@@ -806,12 +764,12 @@ function parser(node) {
             }
 
             if (/-bind$/.test(name)) {
-                elm.html('\r\n<%= ' + (value===''?'\"\"':value) + ' %>\r\n');
+                elm.html('\r\n<%= ' + (value === '' ? '\"\"' : value) + ' %>\r\n');
                 elm.removeAttr(name);
                 continue;
             }
 
-            if(/^ic-(?:href|src|style|class|data|value)$/.test(name)){
+            if (/^ic-(?:href|src|style|class|data|value)$/.test(name)) {
                 elm.removeAttr(name);
                 elm.attr(name, value.replace(/{{(.+?)}}/g, '<%= $1 %>'));
                 continue;
@@ -835,11 +793,9 @@ function parser(node) {
 
 
 }
-    /**
+/**
  * Created by julien.zhang on 2014/9/15.
- *
  * 遍历dom节点，根据指令生成一个编译过的模板渲染函数
- *
  */
 
 function createRender(root) {
@@ -864,28 +820,40 @@ function createRender(root) {
     var _tpl = $(root).html()
         .replace(/&lt;/g, '<')
         .replace(/&gt;/g, '>')
-        .replace(/\b(ic-)(?=href|src|style|class|data|value)/g,'')
+        .replace(/\b(ic-)(?=href|src|style|class|data|value)/g, '')
         //早期判断是否输出属性的实现，建议使用ic-has-[prop]指令取代
-        .replace(/\bic-(\w+-)?(checked|disabled|selected|enabled)\s*=\s*"\s*((?:[^"]|\\")+)["]/g,function(m, $1, $2, $3){
-            if($1 == 'has-') return m;
-            $1 = $1 ? 'ic-'+ $1 : '';
-            $3 = $3.replace(/^(?:"|')|(?:"|')$/g,'');
-            return ' <% if(?3){ %> ?2 <% } %> '.replace('?3',$3).replace('?2',$1 + $2);
+        .replace(/\bic-(\w+-)?(checked|disabled|selected|enabled)\s*=\s*"\s*((?:[^"]|\\")+)["]/g, function (m, $1, $2, $3) {
+            if ($1 == 'has-') return m;
+            $1 = $1 ? 'ic-' + $1 : '';  //处理自定义指令  ic-tab-checked
+            //$3 = $3.replace(/^(?:"|')|(?:"|')$/g,'');
+            return ' <% if(?3){ %> ?2 <% } %> '.replace('?3', $3).replace('?2', $1 + $2);
         })
-        //实现ic-has-[prop]指令
-        .replace(/\bic-has-+([-_\w]+)\s*=\s*(['"]?)((?:[^\2]|\\\2)+)\2/img, function(m, $1, $2, $3){
-            return ' <% if(?3){ %> ?2 <% } %> '.replace('?3',$3).replace('?2',$1 + '=' + ('"<%= ? %>"'.replace('?', $3)));
+        //实现ic-has-[prop]指令   处理两种情况=>  1: ic-has-checked  2: ic-has-tab-checked
+        .replace(/\bic-has-([-_\w]+)\s*=\s*(["])((?:[^"]|\\["])+)\2/img, function (m, $1, $2, $3) {
+            //$1 => 属性名   $3 => 表达式值
+            console.log($1);
+            console.log($3);
+            $1 = /^checked|disabled|selected|enabled$/.test($1) ? $1 : 'ic-'+$1; //处理两种情况=>  1: ic-has-checked  2: ic-has-tab-checked
+            return ' <% if(?3){ %> ?1 <% } %> '
+                .replace('?3', $3)
+                .replace('?1', $1);
+            //.replace('?1',$1 + '=' + ('"<%= ? %>"'.replace('?', $3)));
         })
-        .replace(/&amp;&amp;/g,'&&');
+        .replace(/&amp;&amp;/g, '&&');
 
-    brick.get('debug') && console.info(_tpl);
+    console.log(_tpl);
 
-    var tpl = _.template(_tpl);
-    tpl._tpl_ = _tpl;
-    return tpl;
+    try{
+        var tpl_fn = _.template(_tpl);
+    }catch(e){
+       return console.error(e, _tpl);
+    }
+
+    tpl_fn._tpl_ = _tpl;
+    return tpl_fn;
 
 }
-    /**
+/**
  * Created by julien.zhang on 2014/12/9.
  */
 
@@ -907,6 +875,7 @@ function compile(node){
 
 function __compile(node){
 
+    node = node[0] || node;  //jquery对象转为dom对象
     if(node.nodeType != 1) return console.info('compile exit', node);
 
     var $elm = $(node);
@@ -957,49 +926,101 @@ function __compile(node){
 }
 
 
-    /**
+/**
+ * Created by j on 18/6/19.
+ * @todo 控制console是否输出
+ * @example
+ * brick.cm('info','log');  // console.log and console.info 调用后不会有输出
+ * brick.cm(true, 'info', 'log');  console.log and console.info 调用继续输出
+ */
+
+var cc = (function () {
+
+    const _console = console;
+
+    const _bak = {};
+
+    const _methods = [];
+
+    for (var i in _console) {
+        if (typeof _console[i] == 'function') {
+            _methods.push(i);
+            _bak[i] = console[i];
+
+        }
+    }
+
+    /*
+     * @todo 管理console的行为,
+     * @param bool {Boolean} [可选] console方法调用后是否输出
+     * @param methods  {String}  [可选]  console方法名
+     */
+    function _export(bool, methods) {
+        var arr = [].slice.call(arguments);
+        bool = arr.shift();
+        methods = arr;
+        if (typeof bool == 'undefined') {
+            bool = false;
+            methods = _methods;
+        }
+        else if (typeof bool == 'boolean') {
+            methods = methods.length ? methods : _methods;
+        }
+        else if (typeof bool == 'string') {
+            methods.unshift(bool);
+            bool = false;
+        }
+        methods.forEach(function (method) {
+            console[method] = bool ? _bak[method] : function () {
+            };
+        });
+    }
+
+    return _export;
+
+})();
+
+/**
  * Created by julien.zhang on 2014/9/15.
  */
 
 //对外接口
 var brick = root.brick = {
+    utils: utils,
     config: config,
     controllers: controllers,
     services: services,
     directives: directives,
     compile: compile,
-    createRender:createRender,
+    createRender: createRender,
     eventManager: eventManager,
     __tpl: {},
-    set: function(k, v){
+    debug: cc,
+    set: function (k, v) {
         return this.config.set(k, v);
     },
-    get: function(k){
-      return this.config.get(k);
+    get: function (k) {
+        return this.config.get(k);
     },
     on: function (e, fn) {
-        this.eventManager.bind(e, fn);
+        this.eventManager.on(e, fn);
         return this;
     },
     off: function (e, fn) {
-        this.eventManager.unbind(e, fn);
+        this.eventManager.off(e, fn);
         return this;
     },
-    broadcast: function (e, msg) {
-        this.eventManager.fire(e, msg);
-        return this;
-    },
-    fire: function (e, msg) {
-        this.eventManager.fire(e, msg);
+    emit: function (e, msg) {
+        this.eventManager.emit(e, msg);
         return this;
     },
     getTpl: function (name) {
         return this.__tpl[name];
     },
-    reg: function(name, factory, conf){
-        if(/ctrl$/i.test(name)){
+    reg: function (name, factory, conf) {
+        if (/ctrl$/i.test(name)) {
             controllers.reg(name, factory, conf);
-        }else{
+        } else {
             services.reg(name, factory, conf);
         }
     },
@@ -1007,7 +1028,9 @@ var brick = root.brick = {
         console.info('brick start');
         this.directives.init();
         this.compile(node || document.body);
-        this.bootstrap = function(){console.info('only bootstrap once.')};
+        this.bootstrap = function () {
+            console.info('only bootstrap once.')
+        };
     }
 };
 
@@ -1020,28 +1043,28 @@ var brick = root.brick = {
 
 
 
-    // core指令 必选
-    /**
+// core指令 必选
+/**
  * Created by julien.zhang on 2014/12/9.
  */
 
-directives.add('ic-ctrl', function ($elm, attrs) {
+directives.reg('ic-ctrl', function ($elm, attrs) {
 
     var ctrlName = $elm.attr('ic-ctrl');
 
     if(ctrlName){
         var $parent = $elm.parent().closest('[ic-ctrl]');
-        //var parentName = $parent.size() ? $parent.attr('ic-ctrl') : '';
-        controllers.exec(ctrlName, $parent.data('ic-ctrl-scope'), $elm);
-        //controllers.exec(ctrlName, controllers.get(parentName), $elm);
+        var parentName = $parent.size() ? $parent.attr('ic-ctrl') : '';
+        controllers.exec(ctrlName, controllers.get(parentName), $elm);
+        //controllers.exec(ctrlName, $parent.data('ic-ctrl-scope'), $elm);
     }
 
 });
-    /**
+/**
  * Created by julien.zhang on 2014/10/11.
  */
 
-directives.add('ic-event', {
+directives.reg('ic-event', {
     selfExec: true,
     once: true,
     fn: function () {
@@ -1072,33 +1095,48 @@ directives.add('ic-event', {
             var type = e.type;
             var fn = th.attr('ic-' + type);
             fn = th.icParseProperty(fn);
-
             return fn.apply(this, [e]);
         }
 
     }
 });
 
-    /**
+/**
  * Created by julien.zhang on 2014/10/11.
  */
 
 directives.reg('ic-tpl', {
     selfExec: true,
-    once: true,
+    //once: true,  // 要考虑异步加载进来的模板, 所以不能只允许调用一次
     fn: function ($elm) {
 
-        ($elm || $('[ic-tpl]')).each(function (i) {
+        var __tpl = brick.__tpl = brick.__tpl || {};
 
-            var th = $(this);
+        ($elm || $('[ic-tpl]')).each(function () {
 
-            var name = th.attr('ic-tpl');
-            th.attr('ic-tpl-name', name);
+            var $th = $(this);
+            var name = $th.attr('ic-tpl');
+            var $parent;
 
-            var compiled = createRender(this);
+            // 只处理一次
+            if($th.attr('ic-tpl-name')) return;
 
-            var __tpl = brick.__tpl = brick.__tpl || {};
-            __tpl[name] = compiled;
+            if(!name){
+                $parent = $th.closest('[ic-ctrl]');
+                name = $parent.attr('ic-ctrl');
+            }
+
+            //自动初始化渲染数据对象
+            setTimeout(function(){
+                var dob = $th.icParseProperty2('ic-tpl-init');
+                //console.info(dob, name);
+                dob && $th.icRender(name, dob);
+            }, 300);
+
+            $th.attr('ic-tpl', name);
+            $th.attr('ic-tpl-name', name);
+
+            __tpl[name] = createRender(this);
 
         });
 
@@ -1107,8 +1145,8 @@ directives.reg('ic-tpl', {
 });
 
 
-    // jQuery扩展 必选
-    /**
+// jQuery扩展 必选
+/**
  * Created by julien.zhang on 2014/10/30.
  * 扩展 jquery
  */
@@ -1116,19 +1154,24 @@ directives.reg('ic-tpl', {
 ;
 (function ($) {
 
-    $.fn.icRender = function(tpl, model, callback){
-        if(typeof tpl == 'object'){
+    $.fn.icRender = function (tpl, model, callback) {
+        if (typeof tpl == 'object') {
             callback = model;
             model = tpl;
             tpl = this.attr('ic-tpl-name');
         }
         var tplFn = brick.getTpl(tpl);
-        if(!tplFn) return console.info('not find tpl: '+ tpl);
-        var html = tplFn(model);
-        return this.each(function(){
+        if (!tplFn) return console.info('not find tpl: ' + tpl);
+        // 如果数据模型不是对象类型,则对其包装
+        /*if(typeof model != 'object' || Array.isArray(model)){
+         model = {model : model};
+         }*/
+        var html = tplFn({model: model});
+        return this.each(function () {
             var $th = $(this);
-            $th.removeAttr('ic-tpl');
             $th.html(html);
+            $th.removeAttr('ic-tpl');
+            $th.icCompile();
             callback && callback.apply(this, [$th.children()]);
         });
     };
@@ -1142,36 +1185,73 @@ directives.reg('ic-tpl', {
         });
     };
 
-    $.fn.icParseProperty = function (name, debug) {
+    $.fn.icParseProperty = function (name, isLiteral) {
+        //console.info('icParseProperty => ', name);
+        var match;
+        // js直接量  <div ic-tpl-init="{}">  object {}
+        if (match = name.match(/^\s*(([{\[])([^{\[]*)[}\]])\s*$/)) {
+            try {
+                return match[3] ? JSON.stringify(match[1]) : match[2] == '{' ? {} : [];
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        else  // 字符串
+        if (match = name.match(/^\s*((['"])[^'"]*\2)\s*$/)) {
+            return match[1];
+        }
+        else  // 数字
+        if (match = name.match(/^\s(\d+)\s*$/)) {
+            return match[1];
+        }
 
-        if (name === void(0)) return void(0);
+        if(isLiteral) return name;  //按直接量解析
+
+        var params = name.split(':');
+        name = params.shift();
+
+        // 从控制器scope里获取或者全局window
         var $ctrl = this.closest('[ic-ctrl]');
         var ctrl = $ctrl.attr('ic-ctrl');
-        var namespace = ctrl ? $ctrl.data('ic-ctrl-scope') : window;
-        //var namespace = ctrl ? brick.controllers.get(ctrl) : window;
+        //var namespace = ctrl ? $ctrl.data('ic-ctrl-scope') : {};
+        var namespace = ctrl ? brick.controllers.get(ctrl) : {};
 
-        var chain = name.split('.');
-
-        return (function (root, chain) {
-
+        function f(root, chain) {
             var k = chain.shift();
             var v = root && root[k];
-
-            if (!v) return;
-
+            if (v === undefined) return;
             if (chain.length) {
                 return arguments.callee(v, chain);
             }
-
             return v;
+        }
 
-        })(namespace, chain);
+        var v = f(namespace, name.split('.'));
+
+        v = v || f(window, name.split('.'));
+
+        //console.info('icParseProperty => ' + name + ' => ', v);
+
+        if(typeof v == 'function' && params.length){
+            return function(){
+                var that = this;
+                var args = [].slice.call(arguments);
+                var p;
+                while(p = params.shift()){
+                    args.push(p);
+                }
+                return v.apply(that, args);   //window.confirm通过apply方式调用会出错,暂时不处理
+            };
+        }
+
+        return v;
 
     };
 
-    $.fn.icParseProperty2 = function (name) {
+    $.fn.icParseProperty2 = function (name, isLiteral) {
         name = this.attr(name);
-        return this.icParseProperty(name);
+        if (name === undefined || name == '') return name;
+        return this.icParseProperty(name, isLiteral);
     };
 
     $.fn.icTabs = function (options) {
@@ -1181,7 +1261,7 @@ directives.reg('ic-tpl', {
     };
 
     $.fn.icAjax = function (options) {
-        if (options === void(0)) return this.trigger('ic-ajax');
+        if (options === undefined) return this.trigger('ic-ajax');
         options.data && this.data('ic-submit-data', options.data);
 
         options.disabled !== void(0) && this.attr('ic-ajax-disabled', !!options.disabled);
@@ -1189,15 +1269,15 @@ directives.reg('ic-tpl', {
         return this;
     };
 
-    $.fn.icForm = function(call, options){
-        return this.trigger('ic-form.'+call, options);
+    $.fn.icForm = function (call, options) {
+        return this.trigger('ic-form.' + call, options);
     };
 
     $.fn.icDialog = function (options, callback) {
 
-        options = _.isObject(options) ? _.extend({desc:'', title:''}, options) : {desc:options, title:''};
+        options = _.isObject(options) ? _.extend({desc: '', title: ''}, options) : {desc: options, title: ''};
 
-        if (!(this[0] && this[0].hasAttribute('ic-dialog'))){
+        if (!(this[0] && this[0].hasAttribute('ic-dialog'))) {
             console.error('not is ic-dialog');
             return this;
         }
@@ -1207,7 +1287,7 @@ directives.reg('ic-tpl', {
 
         callback && this.one('ic-dialog.close', callback);
 
-        setTimeout(function(){
+        setTimeout(function () {
 
             if (options === void(0)) {
                 options = true;
@@ -1225,13 +1305,13 @@ directives.reg('ic-tpl', {
                 that.trigger('ic-dialog.show');
             });
 
-        },30);
+        }, 30);
 
         return this;
     };
 
-    $.icDialog = function(msg, callback){
-        var options = _.isObject(msg) ? _.extend({desc:'', title:''}, msg) : {desc:msg, title:''};
+    $.icDialog = function (msg, callback) {
+        var options = _.isObject(msg) ? _.extend({desc: '', title: ''}, msg) : {desc: msg, title: ''};
         $('[ic-dialog]:first').icDialog(options, callback);
     };
 
@@ -1247,7 +1327,7 @@ directives.reg('ic-tpl', {
 
         clearTimeout(that.data('ic-prompt-timer'));
 
-        setTimeout(function(){
+        setTimeout(function () {
 
             if (options === void(0)) {
                 options = true;
@@ -1264,7 +1344,7 @@ directives.reg('ic-tpl', {
             that.icAniIn(21, function () {
                 that.trigger('ic-prompt.show');
 
-                var timer = setTimeout(function(){
+                var timer = setTimeout(function () {
                     that.icAniOut();
                 }, 2400);
 
@@ -1272,30 +1352,33 @@ directives.reg('ic-tpl', {
 
             });
 
-        },30);
+        }, 30);
 
         return this;
     };
 
-    $.icPrompt = function(msg){
-        var options = _.isObject(msg) ? msg : {desc:msg};
+    $.icPrompt = function (msg) {
+        var options = _.isObject(msg) ? msg : {desc: msg};
         $('[ic-prompt]:first').icPrompt(options);
     };
 
-    $.fn.icDatePicker = function(call, options){
-        return this.trigger('ic-date-picker.'+call, options);
+    $.fn.icDatePicker = function (call, options) {
+        return this.trigger('ic-date-picker.' + call, options);
     };
-
 
     //监听enter键
     $.fn.icEnterPress = function (call) {
 
         return this.each(function (i) {
 
+            if (/^textarea$/img.test(this.tagName)) return this;
+
             call = $.proxy(call, this);
 
             var fn = function (e) {
+
                 if (e.which == 13) {
+                    //console.info('ic-enter-press emit.');
                     call(e);
                 }
             };
@@ -1311,10 +1394,84 @@ directives.reg('ic-tpl', {
 
     };
 
+    //定时器
+    $.fn.icTimer = function () {
+        var th = this;
+        var count = th.attr('ic-timer-count') * 1;
+
+        var timer = setInterval(function () {
+            if (count--) {
+                th.text(count);
+            } else {
+                clearInterval(timer);
+                th.trigger('ic-timer.' + 'end');
+            }
+        }, 1000);
+
+        return this;
+    };
+
+// 操作提示
+    var tipSize = 0;
+    $.fn.tips = function (parent) {
+        ++tipSize;
+        var $parent = $(parent || 'body');
+        var w = $parent.innerWidth() * 0.4 + 'px';
+        var h;
+        var top;
+        var left;
+        var wraper = $('<div class="tipsBox"></div>');
+
+        this.addClass('tips1').css({
+            'width': w
+        });
+        this.appendTo(wraper);
+        wraper.appendTo($parent);
+
+        w = this.width();
+        h = this.height();
+        top = '-' + h / 2 + 'px';
+        left = '-' + w / 2 + 'px';
+        this.css({
+            'top': 40 * tipSize,
+            'left': left
+        });
+
+        wraper.animate({
+            top: 0,
+            'opacity': '1'
+        }, 500, function () {
+            $(this).addClass('animated wobble');
+        });
+
+        setTimeout(function () {
+            wraper.animate({
+                'top': -300,
+                'opacity': '0'
+            }, 500, function () {
+                --tipSize;
+                wraper.remove();
+            });
+        }, 2000 * tipSize);
+
+        return this;
+    };
+
+    $.tips = function (massge) {
+        $('<div>' + massge + '</div>').tips();
+    };
+
     //设置loading
     (function ($) {
 
         var loading = '<span ic-loader role="_loading_"><svg width="16" height="16" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M 150,0 a 150,150 0 0,1 106.066,256.066 l -35.355,-35.355 a -100,-100 0 0,0 -70.711,-170.711 z" fill="#3d7fe6"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 150 150" to="360 150 150" begin="0s" dur="1s" fill="freeze" repeatCount="indefinite" /></path></svg></span>';
+
+        if (window.ActiveXObject) {
+
+            loading = 'data:image/gif;base64,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';
+            loading = '<span style="margin:0.2em; auto;display:inline-block;text-align:center;" role="_loading_"><img src="?"></span>'.replace('?', loading);
+
+        }
 
         $.fn.icSetLoading = $.fn.setLoading = function (option) {
 
@@ -1330,7 +1487,14 @@ directives.reg('ic-tpl', {
                 var offset = $th.offset();
                 var top = offset.top;
                 var left = offset.left;
-                var $loading = $(_loading || loading).css({width: w, height: h, position: 'absolute', top: top, left: left, 'z-index': 1999}).appendTo('body');
+                var $loading = $(_loading || loading).css({
+                    width: w,
+                    height: h,
+                    position: 'absolute',
+                    top: top,
+                    left: left,
+                    'z-index': 1999
+                }).appendTo('body');
 
                 //$loading.find('svg').css({'margin-top':($th.height()-16)/2});
 
@@ -1342,7 +1506,6 @@ directives.reg('ic-tpl', {
         };
 
     })($);
-
 
     //清除loading
     $.fn.icClearLoading = $.fn.clearLoading = function () {
@@ -1363,14 +1526,12 @@ directives.reg('ic-tpl', {
 
 
 
-    // 内置services 可选
-    /**
+// 内置services 可选
+/**
  * Created by Julien on 2014/8/13.
- *
- *
  * 记录管理器
- *
- * var serv = new recordManager(
+ * var recordManager = brick.services.get('recordManager');
+ * var serv = recordManager(
  *                              {
  *                                  scope:scope,
  *                                  broadcast:true, //是否广播事件
@@ -1379,13 +1540,11 @@ directives.reg('ic-tpl', {
  *                                  beforeSave:function(record,index){}
  *                              }
  *                              );
- *
- *
  */
 
 function recordManager() {
 
-    function fn(conf) {
+    function RecordManager(conf) {
 
         if (conf && conf.constructor === Object) {
 
@@ -1720,22 +1879,25 @@ function recordManager() {
 
     };
 
-
     for (var i in proto) {
 
-        fn.prototype[i] = proto[i];
+        RecordManager.prototype[i] = proto[i];
 
     }
 
 
-    return fn;
+    function f(conf){
+        return new RecordManager(conf);
+    }
+
+    return f;
 
 }
 
 
 //内置服务
 services.reg('recordManager', recordManager);
-    /**
+/**
  * Created by Julien on 2015/9/1.
  */
 
@@ -2241,48 +2403,7 @@ brick.getAniMap = function (animation) {
 
 })();
 
-    /**
- * Created by Julien on 2015/9/1.
- */
-
-
 /**
- *
- * @param hash
- * @param handler
- * @returns {Window.brick|*}
- */
-brick.addRoute = function (hash, handler) {
-
-    if(hash == '') {
-        hash = '/';
-    }
-
-    function f(hash, handler) {
-        return brick.on('ic-hashChange.' + hash, handler);
-    }
-
-    //开启hashchange事件监听
-    brick.config.set('ic-hashChange.enable', true);
-
-    f(hash, handler);
-
-    brick.addRoute = f;
-
-    return brick;
-
-};
-
-/**
- *
- * @param hash
- * @param handler
- * @returns {*}
- */
-brick.removeRoute = function (hash, handler) {
-    return brick.off('ic-hashChange.' + hash, handler);
-};
-    /**
  * Created by Julien on 2015/8/10.
  */
 
@@ -2386,82 +2507,102 @@ brick.removeRoute = function (hash, handler) {
 
 
 
-    // 内置directives 可选
-    /**
+// 内置directives 可选
+/**
  * Created by julien.zhang on 2014/10/31.
  */
 
 
-directives.reg('ic-ajax', function () {
-
-        var eventAction = brick.get('event.action');
-
-        var $doc = $(document.body);
-        $doc.on(eventAction, '[ic-ajax]', _call);
-        $doc.on('ic-ajax', '[ic-ajax]', _call);
-
-        function _call(e) {
-            var that = this;
-
-            if (this.hasAttribute('ic-ajax-disabled')) return;
-
-            var $elm = $(this);
-            var namespace = $elm.attr('ic-ajax');
-
-            var $loading = $('[ic-role-loading=?]'.replace('?', namespace || +(new Date)));
-
-            var defaultCall = function () {
-                //console.log(arguments)
-            };
-
-            var before = $elm.icParseProperty2('ic-submit-before') || defaultCall;
-            var failed = $elm.icParseProperty2('ic-submit-on-fail') || defaultCall;
-            var done = $elm.icParseProperty2('ic-submit-on-done') || defaultCall;
-            var always = $elm.icParseProperty2('ic-submit-on-always') || defaultCall;
-
-            if (before.apply(that) === false) return;
-
-            var domain = brick.get('ajax.domain') || '';
-            var url = domain + $elm.attr('ic-submit-action');
-            var dataType = $elm.attr('ic-submit-data-type') || 'json';
-            var method = $elm.attr('ic-submit-method') || 'post';
-
-            var data = $elm.data('ic-submit-data') || $elm.attr('ic-submit-data');
-
-            $loading.size() ? $loading.show() && $elm.hide() : $elm.setLoading();
-
-            $elm.attr('ic-ajax-disabled', true);
-
-            $.ajax({
-                url: url,
-                type: method,
-                dataType: dataType,
-                data: data
-            }).done(function (data) {
-                    $elm.clearLoading() && $loading.hide() && $elm.show();
-                    done.apply(that, [data]);
-                }
-            ).fail(function (msg) {
-                    $elm.clearLoading() && $loading.hide() && $elm.show();
-                    failed.apply(that, [msg]);
-                }
-            ).always(function () {
-                    $elm.clearLoading() && $loading.hide() && $elm.show();
-                    always.apply(that);
-                    $elm.removeData('ic-submit-data');
-                    $elm.removeAttr('ic-ajax-disabled');
-                });
-        }
-
-    },
+directives.reg('ic-ajax',
     {
         selfExec: true,
-        once: true
+        once: true,
+        fn: function () {
+
+            var eventAction = brick.get('event.action');
+
+            function call(e) {
+
+                var that = this;
+
+                if (this.hasAttribute('ic-ajax-disabled')) return;
+
+                var $elm = $(this);
+                var name = $elm.attr('ic-ajax');
+
+                var defaultCall = function () {
+                    //console.log(arguments)
+                };
+
+                var before = $elm.icParseProperty2('ic-submit-before') || defaultCall;
+
+                var data = $elm.data('ic-submit-data') || $elm.attr('ic-submit-data');
+                var _data = before.call(that, data);
+                if (_data === false) return;
+                data = _data || data;
+
+                var domain = brick.get('ajax.domain') || '';
+                var url = domain + $elm.attr('ic-submit-action');
+                var dataType = $elm.attr('ic-submit-data-type') || 'json';
+                var method = $elm.attr('ic-submit-method') || 'post';
+
+                var failed = $elm.icParseProperty2('ic-submit-on-fail') || defaultCall;
+                var done = $elm.icParseProperty2('ic-submit-on-done') || defaultCall;
+                var always = $elm.icParseProperty2('ic-submit-on-always') || defaultCall;
+
+                var $loading = $('[ic-role-loading=?]'.replace('?', name || +(new Date)));
+                $loading.size() ? $loading.show() && $elm.hide() : $elm.setLoading();
+
+                $elm.attr('ic-ajax-disabled', true);
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    dataType: dataType,
+                    data: data
+                }).done(function (data) {
+                        console.log('ic-ajax => ', done);
+                        $elm.clearLoading() && $loading.hide() && $elm.show();
+                        done.apply(that, [data]);
+                    }
+                ).fail(function (msg) {
+                        $elm.clearLoading() && $loading.hide() && $elm.show();
+                        failed.apply(that, [msg]);
+                    }
+                ).always(function () {
+                        $elm.clearLoading() && $loading.hide() && $elm.show();
+                        always.apply(that);
+                        $elm.removeData('ic-submit-data');
+                        $elm.removeAttr('ic-ajax-disabled');
+                    });
+            }
+
+            var $doc = $(document.body);
+            $doc.on(eventAction, '[ic-ajax]:not([ic-ajax-enter])', call);
+            $doc.on('ic-ajax', '[ic-ajax]', call);
+
+        }
     }
 );
 
+directives.reg('ic-ajax-auto',
+    {
+        fn: function ($elm){
+            $elm.icAjax();
+        }
+    }
+);
 
-    /**
+directives.reg('ic-ajax-enter',
+    {
+        fn: function ($elm){
+            $elm.icEnterPress(function(){
+                $elm.icAjax();
+            });
+        }
+    }
+);
+/**
  * Created by julien.zhang on 2014/10/11.
  */
 
@@ -2531,7 +2672,7 @@ directives.reg('ic-tabs', function ($elm, attrs) {
 });
 
 
-    /**
+/**
  * Created by julien.zhang on 2014/10/29.
  */
 
@@ -2552,7 +2693,7 @@ directives.reg('ic-form', function ($elm, attrs) {
 
     var presetRule = {
         id: /[\w_]{4,18}/,
-        required: /.+/,
+        required: /.+/img,
         phone: /^\d[\d-]{5,16}$/,
         email: /^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/,
         password: /(?:[\w]|[!@#$%^&*]){6,16}/,
@@ -2680,6 +2821,8 @@ directives.reg('ic-form', function ($elm, attrs) {
     var $submit = $elm.find('[ic-form-submit]').not($elm.find('[ic-form] [ic-form-submit]'));
     var $loading = $elm.find('[ic-role-loading]');
 
+    var err_cla = brick.get('cla.error') || 'error';
+
     // 对每个字段dom绑定事件监听
     $fields.each(function (i) {
 
@@ -2707,15 +2850,17 @@ directives.reg('ic-form', function ($elm, attrs) {
 
             if (tip = _verify(val, rules, errTips, $th)) {
                 //验证失败
-                $fieldBox.addClass('error');
-                $errTip.addClass('error').text(tip);
+                $th.addClass(err_cla);
+                $fieldBox.addClass(err_cla);
+                $errTip.addClass(err_cla).text(tip);
                 $th.removeAttr('ic-verification');
                 fields[name] = false;
                 $th.trigger('ic-form-field.error', tip);
             } else {
                 //验证通过
-                $fieldBox.removeClass('error');
-                $errTip.removeClass('error');
+                $th.removeClass(err_cla);
+                $fieldBox.removeClass(err_cla);
+                $errTip.removeClass(err_cla);
                 $th.attr('ic-verification', 1);
                 if ($th[0].hasAttribute('ic-field-placeholder')) {
 
@@ -2727,10 +2872,9 @@ directives.reg('ic-form', function ($elm, attrs) {
 
         });
 
-
         $th.on('focus', function () {
-            $fieldBox.removeClass('error');
-            $errTip.removeClass('error').text(foucsTip);
+            $fieldBox.removeClass(err_cla);
+            $errTip.removeClass(err_cla).text(foucsTip);
         });
 
     });
@@ -2761,17 +2905,20 @@ directives.reg('ic-form', function ($elm, attrs) {
                 }
 
             } else {
-                val = $th.attr('ic-val');
+                //val = $th.icParseProperty2('ic-val', true);
+                val = $th.data('ic-val') || $th.attr('ic-val');
             }
 
-            var prev = fields[submitName];
+            fields[submitName] = val;
+
+            /*var prev = fields[submitName];true
             if (prev) {
-                prev = _.isArray(prev) ? prev : [prev];
+                prev =  ? prev : [prev];
                 prev.push(val);
                 fields[submitName] = prev;
             } else {
                 fields[submitName] = val;
-            }
+            }*/
 
         });
 
@@ -2804,7 +2951,7 @@ directives.reg('ic-form', function ($elm, attrs) {
     // 提交触发
     $submit.on(eventAction, toSubmit);
     // 回车提交触发
-    $fields.icEnterPress(function () {
+    $fields.not('textarea').icEnterPress(function () {
         $submit.trigger(eventAction);
     });
 
@@ -2812,7 +2959,7 @@ directives.reg('ic-form', function ($elm, attrs) {
 
         if ($submit[0].hasAttribute('ic-submit-disabled')) return;
 
-        if (!$submit.icFormVerify()) return $elm.trigger('ic-form.error');
+        if (!$submit.icFormVerify()) return $elm.trigger('ic-form.error', fields);
 
         //函数调用
         if (submitType === 1) {
@@ -2877,7 +3024,57 @@ directives.reg('ic-form', function ($elm, attrs) {
 });
 
 
-    /**
+/**
+ * Created by j on 18/7/18.
+ * ic-select  实现checkbox or radio 类似的功能
+ * ic-select-cla  选中项的添加的样式类,默认 selected
+ * [ic-select][ic-select-item]  定义子项选择符 jQuery选择符
+ * [ic-select-item] 定义子项
+ * [ic-select-type] 定义select类型,多选or单选 checkbox : radio 默认 radio
+ */
+
+brick.directives.reg('ic-select', function($elm){
+
+var cla = $elm.attr('ic-select-cla') || brick.get('ic-select-cla') || 'selected';
+var name = $elm.attr('ic-select');
+var s_item = $elm.attr('ic-select-item') || '[ic-select-item]';
+var type = $elm.attr('ic-select-type') || 'radio';
+var $items =  $elm.find(s_item);
+
+if(!$items.size()){
+    $items = $elm.find('>*').each(function(){
+        $(this).attr('ic-select-item', +new Date);
+    });
+}
+
+var $selected = $items.filter('[selected]');
+
+var callback = type == 'checkbox' ?
+    function(){
+        $(this).toggleClass(cla);
+        var values = [];
+        $items.filter('.'+cla).each(function(){
+            values.push($(this).attr('ic-val'));
+        });
+        $elm.attr('ic-val', JSON.stringify(values));
+        $elm.data('ic-val', values);
+        $elm.trigger('ic-select.change', {name:name, value: values});
+    }
+    :
+    function(){
+        $items.removeClass(cla);
+        var $th = $(this).addClass(cla);
+        var val = $th.attr('ic-val');
+        $elm.attr('ic-val', val);
+        $elm.trigger('ic-select.change', {name:name, value: val});
+    };
+
+    $elm.on('click', s_item, callback);
+
+    $selected.click();
+
+});
+/**
  * Created by julien.zhang on 2015/3/23.
  * 回车键按下监听指令
  */
@@ -2908,7 +3105,141 @@ directives.reg({
 
     }
 });
-    /**
+/**
+ * Created by julien on 2015/11/30.
+ */
+
+brick.directives.reg('ic-scroll', function ($elm) {
+
+    var $th = $elm || $(this);
+
+    var onScroll = $elm.icParseProperty2('ic-scroll');
+
+    var prevScrollTop = 0;
+    var scrollDirection = 'down';
+
+    onScroll && $th.on('ic-scroll', onScroll);
+
+    $th.on('scroll', _.throttle(function (e) {
+        var scrollTop = $th.scrollTop();
+        var end;
+        scrollDirection = (scrollTop - prevScrollTop > 1) ? 'down' : 'up';
+        prevScrollTop = scrollTop;
+        if (scrollDirection == 'down' && $th[0].scrollHeight <= $th[0].clientHeight + scrollTop) {
+            console.log('trigger ic-scroll.end');
+            $th.trigger('ic-scroll-end');
+            end = true;
+        }
+        $th.trigger('ic-scroll', {direction: scrollDirection, end: end});
+    }, 300));
+
+});
+/**
+ * Created by julien.zhang on 2014/10/29.
+ */
+
+//ic-dialog
+directives.reg('ic-dialog', function ($elm, attrs) {
+
+    var eventAction = brick.get('event.action');
+
+    $(document.body).on(eventAction, '[ic-dialog-cancel], [ic-dialog-close], [ic-dialog-confirm]', function(e){
+
+        var $th = $(this);
+        var type = this.hasAttribute('ic-dialog-confirm');
+
+        var $dialog = $th.closest('[ic-dialog]');
+
+        $dialog.icAniOut(21, function(){
+            $dialog.trigger('ic-dialog.close', type);
+            $dialog.trigger('ic-dialog.hide', type);
+        });
+
+    }).on(eventAction, '[ic-dialog-href]', function (e) {
+        var target = $(this).attr('ic-dialog-href');
+        $('[ic-dialog=?]'.replace('?', target)).icDialog();
+        return false;
+    });
+
+}, {selfExec: true, once: true });
+
+
+//ic-prompt
+directives.reg('ic-prompt', function ($elm, attrs) {
+
+    var eventAction = brick.get('event.action');
+
+    $(document.body).on(eventAction, '[ic-prompt-cancel], [ic-prompt-close], [ic-prompt-confirm]', function(e){
+
+        var $th = $(this);
+        var type = this.hasAttribute('ic-prompt-confirm');
+
+        var $dialog = $th.closest('[ic-prompt]');
+
+        $dialog.icAniOut(21, function(){
+            $dialog.trigger('ic-prompt.hide', type);
+        });
+
+    });
+
+}, {selfExec: true, once: true });
+/**
+ * Created by julien.zhang on 2014/10/15.
+ */
+
+directives.add('ic-dropdown', function ($elm, attrs) {
+
+
+    var th = $elm;
+
+    th.css({position: 'relative'});
+
+    var h = th.height();
+
+    var menu = th.find('[ic-dropdown-menu]').css({position: 'absolute', top: h + 'px', display:'none!important'});
+
+    var timer;
+    if (menu.size()) {
+        th.hover(function (e) {
+            timer = setTimeout(function () {
+                menu.show(300);
+            }, 200);
+        }, function () {
+            clearTimeout(timer);
+            menu.slideUp(200);
+        });
+    }
+
+    var con = th.find('[ic-dropdown-con]').css({position: 'absolute', overflow: 'hidden'});
+
+    if (con.size()) {
+
+        var ch = con.height();
+
+        //th.css({overflow:'hidden',height:h+'px'});
+
+        var flag = 1;
+
+        th.find('[ic-dropdown-toggle]').click(function (e) {
+            if (flag) {
+                //con.slideDown();
+                con.css({height: 'auto'});
+                flag = 0;
+            } else {
+                con.css({height: ch + 'px'});
+                flag = 1;
+            }
+        });
+
+
+    }
+
+
+});
+
+
+//
+/**
  * Created by julien.zhang on 2014/10/11.
  */
 
@@ -3064,61 +3395,7 @@ directives.reg('ic-slider', function ($elm, attr) {
 
 });
 
-    /**
- * Created by julien.zhang on 2014/10/15.
- */
-
-directives.add('ic-dropdown', function ($elm, attrs) {
-
-
-    var th = $elm;
-
-    th.css({position: 'relative'});
-
-    var h = th.height();
-
-    var menu = th.find('[ic-role-dropdown-menu]').css({position: 'absolute', top: h + 'px'});
-
-    var timer;
-    if (menu.size()) {
-        th.hover(function (e) {
-            timer = setTimeout(function () {
-                menu.show(300);
-            }, 200);
-        }, function () {
-            clearTimeout(timer);
-            menu.slideUp(200);
-        });
-    }
-
-    var con = th.find('[ic-role-dropdown-con]').css({position: 'absolute', overflow: 'hidden'});
-
-    if (con.size()) {
-
-        var ch = con.height();
-
-        //th.css({overflow:'hidden',height:h+'px'});
-
-        var flag = 1;
-
-        th.find('[ic-role-dropdown-toggle]').click(function (e) {
-            if (flag) {
-                //con.slideDown();
-                con.css({height: 'auto'});
-                flag = 0;
-            } else {
-                con.css({height: ch + 'px'});
-                flag = 1;
-            }
-        });
-
-
-    }
-
-
-});
-
-    /**
+/**
  * Created by julien.zhang on 2014/10/20.
  */
 
@@ -3245,175 +3522,7 @@ directives.reg('ic-pagination', function ($elm, attrs) {
 
 
 });
-    /**
- * Created by julien.zhang on 2014/10/29.
- */
-
-
-directives.add('ic-dialog', function ($elm, attrs) {
-
-    var html = "<div class=\"t\" style=\"position:fixed; z-index: 100000; left:0; top:0; width:100%; height: 100%; overflow: auto; background: rgba(0,34,89,0.2);\"></div>";
-
-    //只执行一次绑定
-    if (!arguments.callee._run) {
-
-        arguments.callee._run = 1;
-
-        $(document).on('click', '[ic-dialog-href]', function (e) {
-            var target = $(this).attr('ic-dialog-href');
-            $('[ic-dialog=?]'.replace('?', target)).icDialog();
-            return false;
-        });
-
-    }
-
-
-    var $dialogContainer = $(html).appendTo('body').hide();
-
-    var id = $elm.attr('ic-dialog');
-
-    $elm.appendTo($dialogContainer);
-
-    //处理js调用
-    $elm.on('ic-dialog.call', function (e, param) {
-
-        if(param === void(0)) return onShow(e);
-        if (param === 'hide' || param == false) return onClose(e);
-        onShow(e);
-    });
-
-    $elm.on('click', '[ic-role-dialog-confirm]', function (e) {
-        onClose(e, 1);
-    });
-
-
-    $elm.on('click', '[ic-role-dialog-cancel], [ic-role-dialog-close]', function (e) {
-        onClose(e, 0);
-    });
-
-
-    function onShow(e) {
-        $dialogContainer.show();
-        var width = $elm.width();
-        $elm.css('margin-left', -width / 2);
-        $elm.show();
-        $elm.trigger('ic-dialog.show');
-    }
-
-    function onClose(e, type) {
-        $dialogContainer.hide();
-        $elm.hide();
-        $elm.trigger('ic-dialog.close', type);
-    }
-
-
-
-
-});
-
-
-    /**
- * Created by julien.zhang on 2014/11/5.
- */
-
-directives.add('ic-drag-view', function ($elm, attrs) {
-
-    var $document = $(document);
-
-    var startX = 0, startY = 0, x = 0, y = 0;
-    var vw, vh;
-    var w, h;
-
-    $document.on('click', '[ic-role-drag-key]', function (e) {
-
-        var th = $(this);
-        var drag = th.attr('ic-role-drag-key');
-        var d = th.attr('ic-drag-direction');
-        var m = 140;
-        $elm = $('[ic-role-drag-handle=?]'.replace('?', drag)).css({position: 'relative'});
-        w = $elm.width();
-        h = $elm.height();
-        vw = $elm.closest('[ic-drag-view]').css({position: 'relative'}).width();
-        vh = $elm.closest('[ic-drag-view]').width();
-        var position = $elm.position();
-        x = position.left;
-        y = position.top;
-
-        if (d === 'left') {
-            x -= m;
-            x = x < -(w - vw) ? -(w - vw) : x;
-            $elm.animate({left: x}, 500);
-        }
-
-        if (d === 'right') {
-            x += m;
-            x = x >= 0 ? 0 : x;
-            $elm.animate({left: x}, 500);
-        }
-
-    });
-
-
-    $document.on('mousedown', '[ic-role-drag-handle]', function (e) {
-
-        e.preventDefault();
-
-        startX = e.pageX;
-        startY = e.pageY;
-
-        $elm = $(this).css({position: 'relative'});
-
-        vw = $elm.closest('[ic-drag-view]').width();
-        vh = $elm.closest('[ic-drag-view]').height();
-
-        var position = $elm.position();
-        x = position.left;
-        y = position.top;
-
-        w = $elm.width();
-        h = $elm.height();
-
-        $document.on('mousemove', mousemove);
-        $document.on('mouseup', mouseup);
-
-        return false;
-
-    });
-
-
-    function mousemove(e) {
-
-        var moveX = e.pageX - startX;
-        var moveY = e.pageY - startY;
-
-        startX = e.pageX;
-        startY = e.pageY;
-
-        x += moveX;
-        y += moveY;
-
-        x = x < -(w - vw) ? -(w - vw) : x;
-        x = x >= 0 ? 0 : x;
-
-        y = y < -(h - vh) ? -(h - vh) : y;
-        y = y >= 0 ? 0 : y;
-
-        $elm.css({
-            top: y + 'px',
-            left: x + 'px'
-        });
-
-        return false;
-    }
-
-    function mouseup() {
-        $document.unbind('mousemove', mousemove);
-        $document.unbind('mouseup', mouseup);
-    }
-
-
-});
-    /**
+/**
  * Created by julien.zhang on 2014/11/13.
  * 定义输入提示指令
  */
@@ -3555,13 +3664,114 @@ directives.reg('ic-type-ahead', function ($elm, attrs) {
 
 
 });
+/**
+ * Created by julien.zhang on 2014/11/5.
+ */
 
-    // bootstrap
-    $(function () {
-        setTimeout(function () {
-            if(brick.get('bootstrap.auto') === false) return;
-            brick.bootstrap(document.body);
-        }, 30);
+directives.add('ic-drag-view', function ($elm, attrs) {
+
+    var $document = $(document);
+
+    var startX = 0, startY = 0, x = 0, y = 0;
+    var vw, vh;
+    var w, h;
+
+    $document.on('click', '[ic-role-drag-key]', function (e) {
+
+        var th = $(this);
+        var drag = th.attr('ic-role-drag-key');
+        var d = th.attr('ic-drag-direction');
+        var m = 140;
+        $elm = $('[ic-role-drag-handle=?]'.replace('?', drag)).css({position: 'relative'});
+        w = $elm.width();
+        h = $elm.height();
+        vw = $elm.closest('[ic-drag-view]').css({position: 'relative'}).width();
+        vh = $elm.closest('[ic-drag-view]').width();
+        var position = $elm.position();
+        x = position.left;
+        y = position.top;
+
+        if (d === 'left') {
+            x -= m;
+            x = x < -(w - vw) ? -(w - vw) : x;
+            $elm.animate({left: x}, 500);
+        }
+
+        if (d === 'right') {
+            x += m;
+            x = x >= 0 ? 0 : x;
+            $elm.animate({left: x}, 500);
+        }
+
     });
+
+
+    $document.on('mousedown', '[ic-role-drag-handle]', function (e) {
+
+        e.preventDefault();
+
+        startX = e.pageX;
+        startY = e.pageY;
+
+        $elm = $(this).css({position: 'relative'});
+
+        vw = $elm.closest('[ic-drag-view]').width();
+        vh = $elm.closest('[ic-drag-view]').height();
+
+        var position = $elm.position();
+        x = position.left;
+        y = position.top;
+
+        w = $elm.width();
+        h = $elm.height();
+
+        $document.on('mousemove', mousemove);
+        $document.on('mouseup', mouseup);
+
+        return false;
+
+    });
+
+
+    function mousemove(e) {
+
+        var moveX = e.pageX - startX;
+        var moveY = e.pageY - startY;
+
+        startX = e.pageX;
+        startY = e.pageY;
+
+        x += moveX;
+        y += moveY;
+
+        x = x < -(w - vw) ? -(w - vw) : x;
+        x = x >= 0 ? 0 : x;
+
+        y = y < -(h - vh) ? -(h - vh) : y;
+        y = y >= 0 ? 0 : y;
+
+        $elm.css({
+            top: y + 'px',
+            left: x + 'px'
+        });
+
+        return false;
+    }
+
+    function mouseup() {
+        $document.unbind('mousemove', mousemove);
+        $document.unbind('mouseup', mouseup);
+    }
+
+
+});
+
+// bootstrap
+$(function () {
+    setTimeout(function () {
+        if(brick.get('bootstrap.auto') === false) return;
+        brick.bootstrap(document.body);
+    }, 30);
+});
 
 })(window);

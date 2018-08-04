@@ -2,22 +2,22 @@
  * Created by j on 18/5/13.
  */
 
-
 $(function(){
+    //
+    setTimeout(function(){
+        $('a.num.current').removeClass('current')[0].click();
+    }, 3000);
 
-    $('<div style="position: fixed; top:0;left:0;background: green;color:#ffffff;padding:5px 10px;z-index: 10000;">全部展开</div>').appendTo(document.body).on('click', function(){
-        $('a.moreText').click();
-        console.log(1);
+    //
+    $('<div style="position: fixed; top:0;right:0;background: black;color:#ffffff;padding:5px 10px;z-index: 10000;">全部展开</div>').appendTo(document.body).on('click', function(){
         $('a.moreText').each(function(){
-            var $th = $(this);
-            if($th.text().match('展开')){
-                $th.click();
-            }
+            this.click();
         });
-
     });
 
+    //
 
+});
 
 /*
     var callback = function(){
@@ -62,7 +62,6 @@ $(function(){
 
 
 
-});
 
 
 

@@ -20,6 +20,8 @@
     "contextMenus",
     "downloads",
     "storage",
+    "webRequest",
+    "webRequestBlocking",
     "\u003Call_urls\u003E",
     "http://*/*",
     "https://*/"
@@ -27,6 +29,8 @@
   "background": {
     "scripts": [
       "js/libs/chrome.js",
+      "js/bg/contextMenus.js",
+      "js/bg/webRequest.js",
       "js/background.js"
     ]
   },
