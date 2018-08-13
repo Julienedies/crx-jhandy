@@ -17,6 +17,7 @@
   },
   "permissions": [
     "tabs",
+    "notifications",
     "contextMenus",
     "downloads",
     "storage",

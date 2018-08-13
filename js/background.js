@@ -34,6 +34,20 @@ const EVENTS = {
         url = 'https://xueqiu.com/S/*';
         chrome_tabs.sendMessage(url, request);
     },
+    notify: function(request){
+        console.info(request);
+        var opt = {
+            type: 'basic',
+            title: request.title || '',
+            message: request.msg || 'hello world.',
+            iconUrl: 'img/icon-bitty.png'
+        };
+        chrome.notifications.create('', opt, function(id){
+            setTimeout(function(){
+                chrome.notifications.clear(id, function(){});
+            }, 7000);
+        });
+    },
     download: function (request) {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");

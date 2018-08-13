@@ -100,7 +100,7 @@ brick.controllers.reg('clsCtrl', function () {
 
     chrome_storage.get('cls', f);
 
-    scope.set_speak = function () {
+    scope.set_cls = function () {
         var $th = $(this);
         chrome_storage.set($th.attr('name'), $th.prop('checked'), function () {
             chrome_tabs.reload('https://www.cailianpress.com/*');

@@ -5,16 +5,53 @@
 
 console.log('I am cailianpress.js');
 
+function notify_2(body, d) {
+    var title = "";
+    var options = {
+        body: body || 'crx-jhandy test.',
+        icon: ""
+    };
+
+    if (Notification.permission === "granted") {
+        var notification = new Notification(title, options);
+        notification.onshow = function() {
+            setTimeout(function() {
+                notification.close();
+            }, d || 7000);
+        };
+    }
+    else
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+
+        });
+    }
+
+}
+
+function notify(msg){
+    chrome.runtime.sendMessage({todo: 'notify', title: 'cls', msg: msg});
+}
+
+notify();
+
+
 $(function () {
 
-    chrome_storage.get('cls.speak', function (result) {
+    chrome_storage.get('cls', function (result) {
 
         console.log(result);
 
-        if (result) {
+        var timer;
+        var speechSU = new window.SpeechSynthesisUtterance();
 
-            var timer;
-            var speechSU = new window.SpeechSynthesisUtterance();
+        var f1 = result.speak && function(text) {
+                speechSU.text = text;
+                speechSynthesis.speak(speechSU);
+        };
+        var f2 = result.notify && notify;
+
+        if (f1 || f2) {
 
             var $elm = $("div.contentLeft > div").css({border: 'solid 1px blue'});
             var $child = $elm.find(' > div:eq(1)>div:eq(2) .tele-right-text').css({border: 'solid 1px red'});
@@ -37,8 +74,8 @@ $(function () {
                     let $child = $elm.find(' > div:eq(1) > div:eq(2) .tele-right-text');
                     text = text || $child.text();
                     console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
-                    speechSU.text = text;
-                    speechSynthesis.speak(speechSU);
+                    f1 && f1(text);
+                    f2 && f2(text);
                 }, 2000);
 
             });
