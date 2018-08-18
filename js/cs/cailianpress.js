@@ -33,8 +33,6 @@ function notify(msg){
     chrome.runtime.sendMessage({todo: 'notify', title: 'cls', msg: msg});
 }
 
-notify();
-
 
 $(function () {
 
