@@ -107,7 +107,6 @@ brick.controllers.reg('clsCtrl', function () {
         });
     };
 
-
 });
 
 brick.controllers.reg('downloadCtrl', function(){
