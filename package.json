@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "personal use; chrome-extension.",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -14,6 +12,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Julienedies/crx-jhandy/issues"
-  },
-  "homepage": "https://github.com/Julienedies/crx-jhandy#readme"
+  }
 }
