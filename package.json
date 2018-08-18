@@ -1,55 +1,19 @@
 {
-  "name": "jhandy",
+  "name": "crx-jhandy",
   "version": "1.0.0",
-  "description": "self use",
-  "main": "main.js",
+  "description": "personal use; chrome-extension.",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Julienedies/jHandy.git"
+    "url": "git+https://github.com/Julienedies/crx-jhandy.git"
   },
   "author": "julienedies",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Julienedies/jHandy/issues"
+    "url": "https://github.com/Julienedies/crx-jhandy/issues"
   },
-  "homepage": "https://github.com/Julienedies/jHandy#readme",
-  "devDependencies": {
-    "debug-menu": "^0.6.1",
-    "electron": "^2.0.1",
-    "electron-debug": "^2.0.0",
-    "iohook": "^0.1.16",
-    "keypress": "^0.2.1",
-    "messenger": "0.0.9",
-    "node-schedule": "^1.3.0",
-    "robotjs": "^0.5.1"
-  },
-  "dependencies": {
-    "applescript": "^1.0.0",
-    "artyom.js": "^1.0.6",
-    "events": "^3.0.0",
-    "express": "^4.16.3",
-    "iconv-lite": "^0.4.23",
-    "iohook": "^0.1.16",
-    "request": "^2.87.0",
-    "socket.io": "^2.1.1",
-    "underscore": "^1.9.1"
-  },
-  "iohook": {
-    "targets": [
-      "node-59",
-      "electron-54"
-    ],
-    "platforms": [
-      "win32",
-      "darwin"
-    ],
-    "arches": [
-      "x64",
-      "ia32"
-    ]
-  }
+  "homepage": "https://github.com/Julienedies/crx-jhandy#readme"
 }
