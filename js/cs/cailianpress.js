@@ -72,6 +72,9 @@ $(function () {
                     let $child = $elm.find(' > div:eq(1) > div:eq(2) .tele-right-text');
                     text = text || $child.text();
                     console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
+                    var arr = text.match(/^[【]([^】]+)[】]/);
+                    console.info(arr);
+                    text = arr ? arr[1]  : text;
                     f1 && f1(text);
                     f2 && f2(text);
                 }, 2000);

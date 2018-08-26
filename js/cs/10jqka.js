@@ -68,6 +68,13 @@ function closeTab(){
     });
 }
 
+function active_ftnn(){
+    chrome.runtime.sendMessage({
+        todo: 'active_ftnn',
+        event: 'active_ftnn'
+    });
+}
+
 var goToNext = function (code) {
     console.log('goto:', code);
     if (code) {
@@ -191,7 +198,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    only_self ? closeTab() : dob.queue && goToNext(next);
+                    only_self ? active_ftnn() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
