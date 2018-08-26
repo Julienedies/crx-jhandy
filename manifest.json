@@ -49,7 +49,7 @@
       "css": ["css/cs/taoguba.css"]
     },
     {
-      "matches": ["https://www.cailianpress.com/*"],
+      "matches": ["https://www.cailianpress.com/*", "http://www.yuncaijing.com/insider/simple.html"],
       "css": ["css/cs/cailianpress.css"],
       "js": [
         "js/vendor/jquery.min.js",

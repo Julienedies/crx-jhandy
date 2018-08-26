@@ -5,36 +5,58 @@
 
 console.log('I am cailianpress.js');
 
-function notify_2(body, d) {
-    var title = "";
-    var options = {
-        body: body || 'crx-jhandy test.',
-        icon: ""
-    };
+// 当滚动到页面底部
+function on_scroll_end(callback){
 
-    if (Notification.permission === "granted") {
-        var notification = new Notification(title, options);
-        notification.onshow = function() {
-            setTimeout(function() {
-                notification.close();
-            }, d || 7000);
+    var clientHeight = $(window).height();
+    var $doc = $(document);
+
+    $doc.on('scroll', function (e) {
+        var scrollTop = $doc.scrollTop();
+        console.log(clientHeight , scrollTop, $doc.height());
+        if (clientHeight + scrollTop + 70 >= $doc.height()) {
+            console.log('滚动到了页面底部');
+            callback();
+        }
+    });
+}
+
+function cailianpress() {
+
+    var $more = $("div.contentLeft > div >div:last-child").css({border: 'solid 1px green'});
+
+    on_scroll_end(function(){
+        $more[0].click();
+    });
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function notify_2(body, d) {
+        var title = "";
+        var options = {
+            body: body || 'crx-jhandy test.',
+            icon: ""
         };
+
+        if (Notification.permission === "granted") {
+            var notification = new Notification(title, options);
+            notification.onshow = function () {
+                setTimeout(function () {
+                    notification.close();
+                }, d || 7000);
+            };
+        }
+        else if (Notification.permission !== 'denied') {
+            Notification.requestPermission(function (permission) {
+
+            });
+        }
+
     }
-    else
-    if (Notification.permission !== 'denied') {
-        Notification.requestPermission(function (permission) {
 
-        });
+    function notify(msg) {
+        chrome.runtime.sendMessage({todo: 'notify', title: 'cls', msg: msg});
     }
-
-}
-
-function notify(msg){
-    chrome.runtime.sendMessage({todo: 'notify', title: 'cls', msg: msg});
-}
-
-
-$(function () {
 
     chrome_storage.get('cls', function (result) {
 
@@ -43,10 +65,10 @@ $(function () {
         var timer;
         var speechSU = new window.SpeechSynthesisUtterance();
 
-        var f1 = result.speak && function(text) {
+        var f1 = result.speak && function (text) {
                 speechSU.text = text;
                 speechSynthesis.speak(speechSU);
-        };
+            };
         var f2 = result.notify && notify;
 
         if (f1 || f2) {
@@ -74,7 +96,7 @@ $(function () {
                     console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
                     var arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
-                    text = arr ? arr[1]  : text;
+                    text = arr ? arr[1] : text;
                     f1 && f1(text);
                     f2 && f2(text);
                 }, 2000);
@@ -93,4 +115,27 @@ $(function () {
         }
     });
 
-});
+}
+
+function yuncaijing(){
+
+    var $more = $("#newslist >li.loading-list a").css({border: 'solid 1px green'});
+
+    on_scroll_end(function(){
+        $more[0].click();
+    });
+
+}
+
+// 财联社
+if(location.hostname == 'www.cailianpress.com'){
+    $(cailianpress);
+}
+else
+// 云财经
+if(location.hostname == 'www.yuncaijing.com'){
+    $(yuncaijing);
+}
+
+
+
