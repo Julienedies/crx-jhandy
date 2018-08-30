@@ -97,6 +97,7 @@ function cailianpress() {
                     var arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
                     text = arr ? arr[1] : text;
+                    if(text == '点击加载更多') return;
                     f1 && f1(text);
                     f2 && f2(text);
                 }, 2000);

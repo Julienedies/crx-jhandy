@@ -14,7 +14,7 @@
     }
 });*/
 
-//
+// 运行于 background 环境
 chrome.contextMenus.create({
     title: '同花顺问财：%s', // %s表示选中的文字
     contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
@@ -23,3 +23,12 @@ chrome.contextMenus.create({
         chrome.tabs.create({url: `https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=${encodeURI(params.selectionText)}&querytype=stock&dataSource=send_click`});
     }
 });
+
+chrome.contextMenus.create({
+    title: '通达信查看：%s', // %s表示选中的文字
+    contexts: ['selection'], // 只有当选中文字时才会出现此右键菜单
+    onclick: function (params) {
+        chrome_tabs.sendMessage('http://localhost:3000/*', {event: 'view_in_tdx', code: params.selectionText});
+    }
+});
+

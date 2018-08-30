@@ -216,6 +216,13 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 // 匹配 http://basic.10jqka.com.cn/300677/
 if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
+    //document.documentElement.scrollTop = 38;
+
+    setTimeout(function () {
+        var $elm = $('.header .subnav li:nth-child(2) a');
+        $elm[0].click();
+    }, 4000);
+
     $('#profile table td a.alltext').attr('target', '_blank');
 
     //$('.wrapper').addClass('J');

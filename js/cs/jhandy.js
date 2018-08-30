@@ -11,8 +11,15 @@ chrome.runtime.onMessage.addListener(function (msg) {
     var e = msg.event;
 
     if (e == 'active_ftnn') {
-        $('#active_ftnn').click();
-    } else if (e == 'tdx_view') {
+
+        let d = new Date();
+        let h = d.getHours();
+
+        if(h > 8 && h < 15) {
+            $('#active_ftnn').click();
+        }
+
+    } else if (e == 'view_in_tdx') {
         $('#tdx_view').attr('code', msg.code).click();
     }
 
