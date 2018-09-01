@@ -85,6 +85,14 @@
       ]
     },
     {
+      "matches": ["*://www.baidu.com/*"],
+      "css": ["css/cs/baidu.css"],
+      "js": [
+        "js/vendor/jquery.js",
+        "js/cs/baidu.js"
+      ]
+    },
+    {
       "matches": [
         "http://www.bbc.com/*"
       ],
