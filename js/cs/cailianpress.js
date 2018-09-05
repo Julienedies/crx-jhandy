@@ -55,7 +55,7 @@ function cailianpress() {
     }
 
     function notify(msg) {
-        chrome.runtime.sendMessage({todo: 'notify', title: 'cls', msg: msg});
+        chrome.runtime.sendMessage({event:'cls_news', todo: 'relay', url:'http://localhost:3000/*', title: '财经资讯', msg: msg});
     }
 
     chrome_storage.get('cls', function (result) {
