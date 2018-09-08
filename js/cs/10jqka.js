@@ -8,19 +8,18 @@ console.log('I am 10jqka.js.');
 
 STOCKS = STOCKS || [];
 
-var only_self;
+var open_by_jhandy = location.search.match(/\?self[=][1]/);
 
 var reg = /\/(\d{6})\//;
 var current_code = location.href.match(reg)[1];
 
-// only_self 页面
-if (only_self = location.search.match(/\?self[=][1]/)) {  // 赋值and做条件判断
+// 同一时刻只保持一个被jhandy打开的页面
+if (open_by_jhandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({event: 'only_self', code: current_code, url: location.href});
+    chrome.runtime.sendMessage({event: 'open_by_jhandy', code: current_code, url: location.href});
 }
-
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
-    if(msg.event == 'only_self' && msg.code != current_code){
+    if(msg.event == 'open_by_jhandy' && msg.code != current_code){
         chrome.runtime.sendMessage({
             event: 'close_tab',
             code: current_code,
@@ -33,7 +32,6 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
 var stocks = STOCKS.map(function (x) {
         return x[0];
     }) || [];
-
 
 var index = stocks.indexOf(current_code);
 var prev = stocks[index - 1] || stocks[stocks.length - 1];
@@ -153,6 +151,8 @@ if (stocks.indexOf(current_code) > -1) {
     chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current_code});
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 匹配 http://basic.10jqka.com.cn/300677/company.html
 if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
@@ -198,7 +198,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    only_self ? active_ftnn() : dob.queue && goToNext(next);
+                    open_by_jhandy ? active_ftnn() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
@@ -213,6 +213,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 匹配 http://basic.10jqka.com.cn/300677/
 if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
@@ -230,10 +231,20 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if (/\/news\.html$/.test(location.pathname)) {
 
-if (/news\.html$/.test(location.pathname)) {
     setTimeout(function () {
         $('li a[name="news.html#mine"]')[0].click();
     }, 100);
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+if (/\/concept\.html$/.test(location.pathname)) {
+
+    setTimeout(function () {
+        document.documentElement.scrollTop = 280;
+    }, 7000);
 
 }
