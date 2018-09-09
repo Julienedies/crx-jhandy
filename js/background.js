@@ -10,9 +10,6 @@ const EVENTS = {
     relay: function (request) {
         chrome_tabs.sendMessage(request.url, request);
     },
-    only_self: function (request) {
-        chrome_tabs.sendMessage('http://basic.10jqka.com.cn/*', request);
-    },
     tdx_view: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
     },

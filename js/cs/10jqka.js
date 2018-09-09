@@ -16,7 +16,7 @@ var current_code = location.href.match(reg)[1];
 // 同一时刻只保持一个被jhandy打开的页面
 if (open_by_jhandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({event: 'open_by_jhandy', code: current_code, url: location.href});
+    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: current_code, url: 'http://basic.10jqka.com.cn/*'});
 }
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
     if(msg.event == 'open_by_jhandy' && msg.code != current_code){
@@ -101,8 +101,10 @@ var createLinks = function () {
         .replace('#', url_map.xueqiu)
         .replace('*', url_map.ycj);
     //$url = $('iframe').contents().find('#detail a').eq(0);
-    var $url = $('#detail a').eq(0).after(html);
-    url_map.site = $url.attr('href');
+    var $td = $('#detail table:first td:last');
+    url_map.site = $td.find('a:first').attr('href');
+    $td.append(html);
+
 };
 
 var createIframe = function () {
@@ -130,7 +132,7 @@ function g(arr, callback) {
     var win;
     var url;
     var item = arr.shift();
-    if (item) {
+    if (item && item.url) {
         url = item.url;
         win = window.open(url);
         setTimeout(function () {
@@ -245,6 +247,6 @@ if (/\/concept\.html$/.test(location.pathname)) {
 
     setTimeout(function () {
         document.documentElement.scrollTop = 280;
-    }, 7000);
+    }, 10000);
 
 }
