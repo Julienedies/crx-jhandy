@@ -102,7 +102,7 @@ var createLinks = function () {
         .replace('*', url_map.ycj);
     //$url = $('iframe').contents().find('#detail a').eq(0);
     var $td = $('#detail table:first td:last');
-    url_map.site = $td.find('a:first').attr('href');
+    url_map.site = $td.find('a:first').attr('href') + '?close=400';
     $td.append(html);
 
 };

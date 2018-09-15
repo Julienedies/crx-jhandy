@@ -19,11 +19,15 @@ const EVENTS = {
     close_tab: function (request) {
         let url = request.url;
         let arr = Array.isArray(url) ? url : [url];
-        arr.map(function (url) {
-            url += '/*';
-            url = url.replace('//*', '/*').replace(/^https?/, '*');
-            chrome_tabs.remove(url);
-        });
+        let delay = request.delay || 0;
+        setTimeout(function(){
+            arr.map(function (url) {
+                url = url.replace(/\?.*/i,'');
+                url += '/*';
+                url = url.replace('//*', '/*').replace(/^https?/, '*');
+                chrome_tabs.remove(url);
+            });
+        }, delay*1000 || 10);
     },
     // 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
     view_k: function (request) {

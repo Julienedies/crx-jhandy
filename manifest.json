@@ -81,7 +81,8 @@
         "*://*/*"
       ],
       "js": [
-        "js/libs/chrome.js"
+        "js/libs/chrome.js",
+        "js/cs/all.js"
       ]
     },
     {
