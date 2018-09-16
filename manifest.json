@@ -81,6 +81,7 @@
         "*://*/*"
       ],
       "js": [
+        "js/vendor/jquery.js",
         "js/libs/chrome.js",
         "js/cs/all.js"
       ]

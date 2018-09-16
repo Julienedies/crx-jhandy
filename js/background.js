@@ -10,7 +10,7 @@ const EVENTS = {
     relay: function (request) {
         chrome_tabs.sendMessage(request.url, request);
     },
-    tdx_view: function (request) {
+    view_in_tdx: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
     },
     active_ftnn: function (request) {
