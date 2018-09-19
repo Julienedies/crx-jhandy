@@ -9,6 +9,7 @@
         query: '',
         $elm: null,
         create_$elm: function () {
+
             let that = this;
             let html = __inline('on-select.html');
             let $elm = this.$elm = $(html).appendTo(document.body);
@@ -31,13 +32,12 @@
             });
         },
         show: function (query, x, y) {
-            //$(document).off('mouseup', this.on_select);
             this.is_show = true;
             this.query = query;
             this.$elm.css({'left': x + 15, 'top': y + 15}).show();
             setTimeout(function () {
                 cm.hide();
-            }, 100000 * 1000);
+            }, 10 * 1000);
         },
         hide: function () {
             this.$elm.hide();
