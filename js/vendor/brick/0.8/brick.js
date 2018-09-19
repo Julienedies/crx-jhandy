@@ -1,15 +1,75 @@
 /*!
  * https://github.com/julienedies/brick.git
  * https://github.com/Julienedies/brick/wiki
- * "8/29/2018, 9:14:55 PM"
+ * "9/19/2018, 6:21:31 PM"
  * "V 0.8"
  */
 ;
-(function (root, undefined) {
+(function (window, undefined) {
 
 // __inline是fis语法，用于嵌入代码片段，经过编译后会替换成对应的js文件内容；
 
 // core架构 必选
+/**
+ * Created by j on 18/6/19.
+ * @todo 在brick闭包内重写console,对原生console进行包装, 控制debug输出.
+ */
+
+var native_console = window.console;
+var _console = native_console;
+
+var console = {};
+
+var _console_bak = {};
+var _console_methods = [];
+
+;
+(function () {
+    for (var i in _console) {
+        var f = _console[i];
+        if (typeof f == 'function') {
+            _console_methods.push(i);
+            (function (f) {
+                _console_bak[i] = console[i] = function () {
+                    var arr = [].slice.call(arguments, 0);
+                    f.apply(_console, arr);
+                };
+            })(f);
+        }
+    }
+})();
+
+
+/*
+ * @todo 管理console的行为,
+ * @param bool {Boolean} [可选] console方法调用后是否输出
+ * @param methods  {String}  [可选]  console方法名
+ * @example
+ * cc('info','log') or cc(false, 'info', 'log');  // console.log and console.info 调用后不会有输出
+ * cc(true, 'info', 'log');  console.log and console.info 调用继续输出
+ */
+function cc(bool, methods) {
+    var arr = [].slice.call(arguments);
+    bool = arr.shift();
+    methods = arr;
+    if (typeof bool == 'undefined') {
+        bool = false;
+        methods = _console_methods;
+    }
+    else if (typeof bool == 'boolean') {
+        methods = methods.length ? methods : _console_methods;
+    }
+    else if (typeof bool == 'string') {
+        methods.unshift(bool);
+        bool = false;
+    }
+    methods.forEach(function (method) {
+        console[method] = bool ? _console_bak[method] : function () {
+        };
+    });
+}
+
+
 /**
  * Created by Juien on 2015/8/10.
  * 工具函数集合
@@ -400,7 +460,7 @@ var controllers = (function () {
             setTimeout(function () {
                 var $tpl_dom = that._render(tplName, model);
                 if($tpl_dom){
-                    brick.compile($tpl_dom);
+                    brick.compile($tpl_dom, true);
                     call && call.apply($tpl_dom, []);
                 }
             }, 30);
@@ -854,15 +914,20 @@ function createRender(root) {
     return tpl_fn;
 
 }
-/**
+/*!
  * Created by julien.zhang on 2014/12/9.
  */
 
-function compile(node){
+/**
+ *
+ * @param node  dom or jquery object
+ * @param is_start_form_children  bool 可选,  true 表示直接从子元素开始编译
+ */
+function compile(node, is_start_form_children){
 
     var $elm = $(node);
 
-    __compile(node);
+    !is_start_form_children && __compile(node);
 
     var children = $elm.children();
     var child;
@@ -876,7 +941,7 @@ function compile(node){
 
 function __compile(node){
 
-    node = node[0] || node;  //jquery对象转为dom对象
+    node = node[0] || node;  // jquery对象转为dom对象
     if(node.nodeType != 1) return console.info('compile exit', node);
 
     var $elm = $(node);
@@ -928,65 +993,11 @@ function __compile(node){
 
 
 /**
- * Created by j on 18/6/19.
- * @todo 控制console是否输出
- * @example
- * brick.cm('info','log');  // console.log and console.info 调用后不会有输出
- * brick.cm(true, 'info', 'log');  console.log and console.info 调用继续输出
- */
-
-var cc = (function () {
-
-    const _console = console;
-
-    const _bak = {};
-
-    const _methods = [];
-
-    for (var i in _console) {
-        if (typeof _console[i] == 'function') {
-            _methods.push(i);
-            _bak[i] = console[i];
-
-        }
-    }
-
-    /*
-     * @todo 管理console的行为,
-     * @param bool {Boolean} [可选] console方法调用后是否输出
-     * @param methods  {String}  [可选]  console方法名
-     */
-    function _export(bool, methods) {
-        var arr = [].slice.call(arguments);
-        bool = arr.shift();
-        methods = arr;
-        if (typeof bool == 'undefined') {
-            bool = false;
-            methods = _methods;
-        }
-        else if (typeof bool == 'boolean') {
-            methods = methods.length ? methods : _methods;
-        }
-        else if (typeof bool == 'string') {
-            methods.unshift(bool);
-            bool = false;
-        }
-        methods.forEach(function (method) {
-            console[method] = bool ? _bak[method] : function () {
-            };
-        });
-    }
-
-    return _export;
-
-})();
-
-/**
  * Created by julien.zhang on 2014/9/15.
  */
 
 //对外接口
-var brick = root.brick = {
+var brick = window.brick = {
     utils: utils,
     config: config,
     controllers: controllers,
@@ -1180,9 +1191,6 @@ directives.reg('ic-tpl', {
     };
 
     $.fn.icCompile = function () {
-
-        if (!this.length) return this;
-
         return this.each(function (i) {
             brick.compile(this);
         });
@@ -3919,6 +3927,7 @@ brick.directives.reg('ic-dom-remove', {
 // bootstrap
 $(function () {
     setTimeout(function () {
+        if(!brick.get('debug')) cc(false, 'log');
         if(brick.get('bootstrap.auto') === false) return;
         brick.bootstrap(document.body);
     }, 30);

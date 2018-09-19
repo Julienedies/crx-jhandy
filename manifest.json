@@ -80,10 +80,12 @@
       "matches": [
         "*://*/*"
       ],
+      "css":["css/cs/all.css"],
       "js": [
         "js/vendor/jquery.js",
         "js/libs/chrome.js",
-        "js/cs/all.js"
+        "js/cs/all.js",
+        "js/cs/on-select.js"
       ]
     },
     {
