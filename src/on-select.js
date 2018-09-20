@@ -8,8 +8,8 @@
         is_show: false,
         query: '',
         $elm: null,
-        width:0,
-        height:0,
+        width: 0,
+        height: 0,
         create_$elm: function () {
 
             let that = this;
@@ -20,9 +20,21 @@
                 chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
             });
 
+            $elm.on('click', '[todo=mark_news]', function (e) {
+                $.ajax({
+                    url: 'http://localhost:2018/stock/news',
+                    type: 'post',
+                    data: {text: that.query, date: (new Date).toLocaleDateString()}
+                }).fail(function (err) {
+                        console.error(err);
+                        alert('财经资讯标记出错.');
+                    }
+                );
+            });
+
             $elm.on('click', '[data-url]', function (e) {
                 let url = this.dataset.url;
-                url = url.replace('TESTSEARCH', encodeURIComponent(that.query));
+                url = url.replace('*', encodeURIComponent(that.query));
                 window.open(url);
             });
 
@@ -33,7 +45,7 @@
                 }, 100);
             });
         },
-        set_position: function(x, y){
+        set_position: function (x, y) {
             var offset = 15;
             var $win = $(window);
             var $elm = this.$elm;
@@ -41,10 +53,10 @@
             var h = $elm.height();
             var vw = $win.width();
             var vh = $win.height();
-            if(x + w - vw > 0){
+            if (x + w - vw > 0) {
                 x = x - w - offset;
             }
-            if(y + h - vh > 0){
+            if (y + h - vh > 0) {
                 y = y - h - offset;
             }
             this.$elm.css({'left': x + 15, 'top': y + 15}).show();
