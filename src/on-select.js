@@ -8,6 +8,8 @@
         is_show: false,
         query: '',
         $elm: null,
+        width:0,
+        height:0,
         create_$elm: function () {
 
             let that = this;
@@ -31,10 +33,26 @@
                 }, 100);
             });
         },
+        set_position: function(x, y){
+            var offset = 15;
+            var $win = $(window);
+            var $elm = this.$elm;
+            var w = $elm.width();
+            var h = $elm.height();
+            var vw = $win.width();
+            var vh = $win.height();
+            if(x + w - vw > 0){
+                x = x - w - offset;
+            }
+            if(y + h - vh > 0){
+                y = y - h - offset;
+            }
+            this.$elm.css({'left': x + 15, 'top': y + 15}).show();
+        },
         show: function (query, x, y) {
             this.is_show = true;
             this.query = query;
-            this.$elm.css({'left': x + 15, 'top': y + 15}).show();
+            this.set_position(x, y);
             setTimeout(function () {
                 cm.hide();
             }, 10 * 1000);
@@ -46,6 +64,8 @@
         },
         init: function () {
             this.create_$elm();
+            this.width = this.$elm.width();
+            this.height = this.$elm.height();
             $(document).on('mouseup', function (e) {
                 var query = window.getSelection().toString();
                 console.log(query, e);

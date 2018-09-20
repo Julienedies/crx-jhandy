@@ -1,6 +1,6 @@
 #crx_jhandy_on_select {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 10001;
   top: 200px;
   left: 300px;
@@ -12,10 +12,10 @@
 #crx_jhandy_on_select button {
   display: inline-block;
   margin: 5px 5px;
-  padding: 2px 3px;
+  padding: 0px 5px;
   cursor: pointer;
   border: none;
   color: #040404;
   background: white;
-  font: 14px/1.4 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+  font: 12px/20px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
 }
