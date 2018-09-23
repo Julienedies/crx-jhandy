@@ -97,9 +97,10 @@ var createNav = function () {
 };
 
 var createLinks = function () {
-    var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a></span>'
+    var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a><a href="http://localhost:2018/public/static/html/stock/c/index.html?code=@&edit=1", target="_blank">自定义数据</a></span>'
         .replace('#', url_map.xueqiu)
-        .replace('*', url_map.ycj);
+        .replace('*', url_map.ycj)
+        .replace('@', current_code);
     //$url = $('iframe').contents().find('#detail a').eq(0);
     var $td = $('#detail table:first td:last');
     var site_url = $td.find('a:first').attr('href');
