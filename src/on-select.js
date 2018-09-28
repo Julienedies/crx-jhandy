@@ -83,6 +83,7 @@
                 console.log(query, e);
                 if (!query) return cm.hide();
                 if (query == cm.query && cm.is_show) return;
+                document.execCommand('copy');
                 cm.show(query, e.clientX, e.clientY);
             });
         }
