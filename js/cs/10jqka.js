@@ -208,7 +208,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
         }
 
         // dob.queue => 自动切换股票列表,  如果为false, 手动切换股票列表
-        if(!dob.queue && dob.relation && stocks.length){
+        if(dob.manual && !dob.queue && dob.relation && stocks.length){
             $body.on('mousewheel', callback);
         }
 

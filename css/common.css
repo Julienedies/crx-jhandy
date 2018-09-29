@@ -1,6 +1,5 @@
 html,body{
 	min-width:500px;
-	padding:10px;
 }
 
 #stock_pages >div:first-child button[ic-click="up"]{
@@ -8,6 +7,6 @@ html,body{
 }
 
 [ic-ctrl]{
-	padding:5px;
-	margin:10px auto;
+	padding:5px 10px;
+	margin:0 auto 10px auto;
 }

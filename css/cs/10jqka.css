@@ -73,6 +73,6 @@ iframe:hover{
 }
 
 /* 同花顺概念题材页面 隐藏内容 全部展开 */
-.comPoint.none{
+.comPoint.none, .check_else.performance_trailer{
     display:block!important;
 }

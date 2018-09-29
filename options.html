@@ -22,7 +22,6 @@
 
         <div class="content" ic-tabc="a">
             <section ic-ctrl="stockCtrl">
-                <h3>股票资料浏览</h3>
                 <div ic-tpl="stock">
 
                     <div class="field">
@@ -30,6 +29,15 @@
                             <label class="checkbox">
                                 <input type="checkbox" name="stock.queue" ic-checked="model.queue" ic-click="on_checkbox_changed">
                                 股票列表自动切换
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="stock.manual" ic-checked="model.manual" ic-click="on_checkbox_changed">
+                                股票列表手动切换
                             </label>
                         </div>
                     </div>

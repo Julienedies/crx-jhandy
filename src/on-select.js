@@ -15,11 +15,11 @@
             let that = this;
             let html = __inline('on-select.html');
             let $elm = this.$elm = $(html).appendTo(document.body);
-
+            //
             $elm.on('click', '[todo=view_in_tdx]', function (e) {
                 chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
             });
-
+            //
             $elm.on('click', '[todo=mark_news]', function (e) {
                 $.ajax({
                     url: 'http://localhost:2018/stock/news',
@@ -31,18 +31,22 @@
                     }
                 );
             });
-
+            //
             $elm.on('click', '[data-url]', function (e) {
                 let url = this.dataset.url;
                 url = url.replace('*', encodeURIComponent(that.query));
                 window.open(url);
             });
-
+            //
+            $elm.on('click', '[todo=back_top]', function (e) {
+                $('body,html').scrollTop(0); //animate({scrollTop:0},100);
+            });
+            //
             $elm.on('click', (e) => {
-                console.log(e);
                 setTimeout(()=> {
                     cm.hide();
                 }, 100);
+                return false;
             });
         },
         set_position: function (x, y) {

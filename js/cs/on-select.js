@@ -13,13 +13,13 @@
         create_$elm: function () {
 
             let that = this;
-            let html = "<div id=\"crx_jhandy_on_select\">\n    <section>\n        <button todo=\"search\" data-url=\"https://www.google.com/search?q=*\">google</button>\n        <button todo=\"search\" data-url=\"https://www.baidu.com/s?ie=UTF-8&wd=*\">百度</button>\n        <button todo=\"search\" data-url=\"http://www.bing.com/search?q=*\">Bing</button>\n        <button todo=\"search\" data-url=\"https://www.sogou.com/web?query=*\">搜狗</button>\n    </section>\n\n    <section>\n        <button todo=\"view_in_tdx\">通达信查看</button>\n        <button todo=\"mark_news\">资讯标记</button>\n        <button data-url=\"https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click\">同花顺问财</button>\n        <button todo=\"search\" data-url=\"http://basic.10jqka.com.cn/*/company.html\">同花顺</button>\n    </section>\n\n    <section>\n        <button todo=\"search\" data-url=\"https://www.douban.com/search?q=*\">豆瓣</button>\n        <button todo=\"search\" data-url=\"http://www.xiami.com/search?key=*&pos=1\">虾米</button>\n        <button todo=\"search\" data-url=\"https://www.zhihu.com/search?type=content&q=*\">知乎</button>\n    </section>\n\n    <section>\n        <button todo=\"fy\" data-url=\"http://fanyi.baidu.com/#en/zh/*\">翻译</button>\n        <button todo=\"search\" data-url=\"http://dict.youdao.com/w/eng/*\">有道</button>\n        <button todo=\"search\" data-url=\"https://www.btrabbit.la/search/*.html\">BT</button>\n        <button todo=\"search\" data-url=\"https://zh.wikipedia.org/wiki/*\">维基</button>\n    </section>\n\n</div>";
+            let html = "<div id=\"crx_jhandy_on_select\">\n    <section>\n        <button todo=\"search\" data-url=\"https://www.google.com/search?q=*\">google</button>\n        <button todo=\"search\" data-url=\"https://www.baidu.com/s?ie=UTF-8&wd=*\">百度</button>\n        <button todo=\"search\" data-url=\"http://www.bing.com/search?q=*\">Bing</button>\n        <button todo=\"search\" data-url=\"https://www.sogou.com/web?query=*\">搜狗</button>\n    </section>\n\n    <section>\n        <button todo=\"view_in_tdx\">通达信查看</button>\n        <button todo=\"mark_news\">资讯标记</button>\n        <button data-url=\"https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click\">同花顺问财</button>\n        <button todo=\"search\" data-url=\"http://basic.10jqka.com.cn/*/company.html\">同花顺</button>\n    </section>\n\n    <section>\n        <button todo=\"search\" data-url=\"https://www.douban.com/search?q=*\">豆瓣</button>\n        <button todo=\"search\" data-url=\"http://www.xiami.com/search?key=*&pos=1\">虾米</button>\n        <button todo=\"search\" data-url=\"https://www.zhihu.com/search?type=content&q=*\">知乎</button>\n    </section>\n\n    <section>\n        <button todo=\"fy\" data-url=\"http://fanyi.baidu.com/#en/zh/*\">翻译</button>\n        <button todo=\"search\" data-url=\"http://dict.youdao.com/w/eng/*\">有道</button>\n        <button todo=\"search\" data-url=\"https://www.btrabbit.la/search/*.html\">BT</button>\n        <button todo=\"search\" data-url=\"https://zh.wikipedia.org/wiki/*\">维基</button>\n    </section>\n\n    <section>\n        <button todo=\"back_top\">back top</button>\n    </section>\n\n</div>";
             let $elm = this.$elm = $(html).appendTo(document.body);
-
+            //
             $elm.on('click', '[todo=view_in_tdx]', function (e) {
                 chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
             });
-
+            //
             $elm.on('click', '[todo=mark_news]', function (e) {
                 $.ajax({
                     url: 'http://localhost:2018/stock/news',
@@ -31,18 +31,22 @@
                     }
                 );
             });
-
+            //
             $elm.on('click', '[data-url]', function (e) {
                 let url = this.dataset.url;
                 url = url.replace('*', encodeURIComponent(that.query));
                 window.open(url);
             });
-
+            //
+            $elm.on('click', '[todo=back_top]', function (e) {
+                $('body,html').scrollTop(0); //animate({scrollTop:0},100);
+            });
+            //
             $elm.on('click', (e) => {
-                console.log(e);
                 setTimeout(()=> {
                     cm.hide();
                 }, 100);
+                return false;
             });
         },
         set_position: function (x, y) {
