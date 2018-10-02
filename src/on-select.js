@@ -29,7 +29,9 @@
                         console.error(err);
                         alert('财经资讯标记出错.');
                     }
-                );
+                ).done(function(msg){
+                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '资讯标记OK!'});
+                    });
             });
             //
             $elm.on('click', '[data-url]', function (e) {

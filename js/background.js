@@ -7,15 +7,19 @@
  * 接收标签页面发来的消息, 处理
  */
 const EVENTS = {
+
     relay: function (request) {
         chrome_tabs.sendMessage(request.url, request);
     },
+
     view_in_tdx: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
     },
+
     active_ftnn: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
     },
+
     close_tab: function (request) {
         let url = request.url;
         let arr = Array.isArray(url) ? url : [url];
@@ -29,12 +33,14 @@ const EVENTS = {
             });
         }, delay*1000 || 10);
     },
+
     // 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
     view_k: function (request) {
         let url = 'http://finance.sina.com.cn/realstock/company/*/nc.shtml';
         url = 'https://xueqiu.com/S/*';
         chrome_tabs.sendMessage(url, request);
     },
+
     notify: function(request){
         console.info(request);
         var opt = {
@@ -46,9 +52,10 @@ const EVENTS = {
         chrome.notifications.create('', opt, function(id){
             setTimeout(function(){
                 chrome.notifications.clear(id, function(){});
-            }, 7000);
+            }, (request.duration || 7) * 1000);
         });
     },
+
     download: function (request) {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
