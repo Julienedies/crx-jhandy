@@ -10,11 +10,33 @@
         $elm: null,
         width: 0,
         height: 0,
+        oncontextmenu_view: "<div>\n\n    <section>\n        <button todo=\"mark_stock_link\">个股链接标记</button>\n    </section>\n\n</div>",
+        on_select_view: "<div>\n\n    <section>\n        <button todo=\"search\" data-url=\"https://www.google.com/search?q=*\">google</button>\n        <button todo=\"search\" data-url=\"https://www.baidu.com/s?ie=UTF-8&wd=*\">百度</button>\n        <button todo=\"search\" data-url=\"http://www.bing.com/search?q=*\">Bing</button>\n        <button todo=\"search\" data-url=\"https://www.sogou.com/web?query=*\">搜狗</button>\n    </section>\n\n    <section>\n        <button todo=\"view_in_tdx\">通达信查看</button>\n        <button todo=\"mark_news\">资讯标记</button>\n        <button todo=\"mark_stock_link\">个股链接标记</button>\n        <button data-url=\"https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click\">同花顺问财</button>\n        <button todo=\"search\" data-url=\"http://basic.10jqka.com.cn/*/company.html\">同花顺</button>\n    </section>\n\n    <section>\n        <button todo=\"search\" data-url=\"https://www.douban.com/search?q=*\">豆瓣</button>\n        <button todo=\"search\" data-url=\"http://www.xiami.com/search?key=*&pos=1\">虾米</button>\n        <button todo=\"search\" data-url=\"https://www.zhihu.com/search?type=content&q=*\">知乎</button>\n    </section>\n\n    <section>\n        <button todo=\"fy\" data-url=\"http://fanyi.baidu.com/#en/zh/*\">翻译</button>\n        <button todo=\"search\" data-url=\"http://dict.youdao.com/w/eng/*\">有道</button>\n        <button todo=\"search\" data-url=\"https://www.btrabbit.la/search/*.html\">BT</button>\n        <button todo=\"search\" data-url=\"https://zh.wikipedia.org/wiki/*\">维基</button>\n    </section>\n\n    <section>\n        <button todo=\"back_top\">back top</button>\n    </section>\n\n</div>",
+        render:function(view_name){
+            this.$elm.html(this[view_name]);
+        },
         create_$elm: function () {
-
             let that = this;
-            let html = "<div id=\"crx_jhandy_on_select\">\n    <section>\n        <button todo=\"search\" data-url=\"https://www.google.com/search?q=*\">google</button>\n        <button todo=\"search\" data-url=\"https://www.baidu.com/s?ie=UTF-8&wd=*\">百度</button>\n        <button todo=\"search\" data-url=\"http://www.bing.com/search?q=*\">Bing</button>\n        <button todo=\"search\" data-url=\"https://www.sogou.com/web?query=*\">搜狗</button>\n    </section>\n\n    <section>\n        <button todo=\"view_in_tdx\">通达信查看</button>\n        <button todo=\"mark_news\">资讯标记</button>\n        <button data-url=\"https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click\">同花顺问财</button>\n        <button todo=\"search\" data-url=\"http://basic.10jqka.com.cn/*/company.html\">同花顺</button>\n    </section>\n\n    <section>\n        <button todo=\"search\" data-url=\"https://www.douban.com/search?q=*\">豆瓣</button>\n        <button todo=\"search\" data-url=\"http://www.xiami.com/search?key=*&pos=1\">虾米</button>\n        <button todo=\"search\" data-url=\"https://www.zhihu.com/search?type=content&q=*\">知乎</button>\n    </section>\n\n    <section>\n        <button todo=\"fy\" data-url=\"http://fanyi.baidu.com/#en/zh/*\">翻译</button>\n        <button todo=\"search\" data-url=\"http://dict.youdao.com/w/eng/*\">有道</button>\n        <button todo=\"search\" data-url=\"https://www.btrabbit.la/search/*.html\">BT</button>\n        <button todo=\"search\" data-url=\"https://zh.wikipedia.org/wiki/*\">维基</button>\n    </section>\n\n    <section>\n        <button todo=\"back_top\">back top</button>\n    </section>\n\n</div>";
-            let $elm = this.$elm = $(html).appendTo(document.body);
+            let $elm = this.$elm = $('<div id="crx_jhandy_oncontextmenu"></div>').appendTo(document.body);
+
+            //
+            $elm.on('click', '[todo=mark_stock_link]', function (e) {
+                chrome.runtime.sendMessage({todo: 'get_global'}, function(response){
+                    let code = response.code;
+                    $.ajax({
+                        url:`http://localhost:2018/stock/c/${code}`,
+                        type:'post',
+                        data:{
+                            "链接":location.href
+                        }
+                    }).done(function(msg){
+                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '个股链接标记 OK!'});
+                    }).fail(function(err){
+                        console.error(err);
+                        alert('个股链接标记出错.');
+                    });
+                });
+            });
             //
             $elm.on('click', '[todo=view_in_tdx]', function (e) {
                 chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
@@ -30,7 +52,7 @@
                         alert('财经资讯标记出错.');
                     }
                 ).done(function(msg){
-                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '资讯标记OK!'});
+                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '资讯标记 OK!'});
                     });
             });
             //
@@ -51,8 +73,8 @@
                 return false;
             });
         },
-        set_position: function (x, y) {
-            var offset = 15;
+        set_position: function (x, y, offset) {
+            offset = offset || 15;
             var $win = $(window);
             var $elm = this.$elm;
             var w = $elm.width();
@@ -65,12 +87,12 @@
             if (y + h - vh > 0) {
                 y = y - h - offset;
             }
-            this.$elm.css({'left': x + 15, 'top': y + 15}).show();
+            this.$elm.css({'left': x + offset, 'top': y + offset}).show();
         },
-        show: function (query, x, y) {
+        show: function (query, x, y, offset) {
             this.is_show = true;
             this.query = query;
-            this.set_position(x, y);
+            this.set_position(x, y,  offset);
             setTimeout(function () {
                 cm.hide();
             }, 10 * 1000);
@@ -90,7 +112,11 @@
                 if (!query) return cm.hide();
                 if (query == cm.query && cm.is_show) return;
                 document.execCommand('copy');
+                cm.render('on_select_view');
                 cm.show(query, e.clientX, e.clientY);
+            }).on('contextmenu', function(e){
+                //cm.render('oncontextmenu_view');
+                //cm.show('', e.clientX, e.clientY, -150);
             });
         }
     };

@@ -2,14 +2,24 @@
  * Created by j on 15/6/23.
  */
 
+const _global = {
+    code:''
+};
 /*
  * 消息处理器
  * 接收标签页面发来的消息, 处理
  */
 const EVENTS = {
 
-    relay: function (request) {
-        chrome_tabs.sendMessage(request.url, request);
+    relay: function (req) {
+        chrome_tabs.sendMessage(req.url, req);
+        if(req.event == 'open_by_jhandy' && req.code){
+            _global.code = req.code;
+        }
+    },
+
+    socket: function(req){
+        chrome_tabs.sendMessage('http://localhost:3000/*', req);
     },
 
     view_in_tdx: function (request) {
@@ -56,6 +66,10 @@ const EVENTS = {
         });
     },
 
+    get_global: function(request, sender, sendResponse){
+        sendResponse(_global);
+    },
+
     download: function (request) {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
@@ -85,6 +99,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     let events = (request.todo || request.event).split(',');
 
     events.map((e) => EVENTS[e](request, sender, sendResponse));
+
+
 
 });
 

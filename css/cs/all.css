@@ -1,4 +1,4 @@
-#crx_jhandy_on_select {
+#crx_jhandy_oncontextmenu {
   display: none;
   position: fixed;
   z-index: 10001;
@@ -9,7 +9,7 @@
   background: rgba(0, 0, 0, 0.6);
 }
 
-#crx_jhandy_on_select button {
+#crx_jhandy_oncontextmenu button {
   display: inline-block;
   margin: 5px 5px;
   padding: 0px 5px;
