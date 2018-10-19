@@ -73,17 +73,21 @@ const EVENTS = {
     download: function (request) {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
-        urls.map((url) => {
-            let filename = url.match(/[^/]+\.(jpg|png)$/)[0];
-            filename = `${folder}/${filename}`;
-            let options = {
-                url: url,
-                filename: filename
-            };
-            console.log(options);
-            chrome.downloads.download(options, function (result) {
-                console.log(result);
-            });
+        urls.map((url, index) => {
+
+            setTimeout(function(){
+                let filename = url.match(/[^/]+\.\w+$/)[0];
+                filename = `${folder}/${filename}`;
+                let options = {
+                    url: url,
+                    filename: filename
+                };
+                console.log(options);
+                chrome.downloads.download(options, function (result) {
+                    console.log(result);
+                });
+            }, index * 1000);
+
         });
 
     }
