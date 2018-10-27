@@ -15,6 +15,7 @@ const EVENTS = {
         chrome_tabs.sendMessage(req.url, req);
         if(req.event == 'open_by_jhandy' && req.code){
             _global.code = req.code;
+            console.log(_global);
         }
     },
 

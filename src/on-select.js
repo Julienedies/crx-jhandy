@@ -23,6 +23,10 @@
             $elm.on('click', '[todo=mark_stock_link]', function (e) {
                 chrome.runtime.sendMessage({todo: 'get_global'}, function(response){
                     let code = response.code;
+                    if(!code){
+                        console.error(response);
+                        return alert('没有code.');
+                    }
                     $.ajax({
                         url:`http://localhost:2018/stock/c/${code}`,
                         type:'post',
@@ -30,10 +34,11 @@
                             "链接":location.href
                         }
                     }).done(function(msg){
-                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '个股链接标记 OK!'});
+                        let name = msg['名称'];
+                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: `${name} 链接标记 OK!`});
                     }).fail(function(err){
                         console.error(err);
-                        alert('个股链接标记出错.');
+                        alert('个股链接标记出错.详情查看控制台.');
                     });
                 });
             });
