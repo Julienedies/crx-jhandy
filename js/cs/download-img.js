@@ -14,7 +14,7 @@ var $c = $('<div style="position: fixed; top:0; left:0; bottom:0;right:0; backgr
 var $close_btn = $('<div style="position: absolute;padding:5px 15px;border:solid 1px #000000;top:0;right:0;font-size:3em;color:white;cursor: pointer;">X</div>').click(()=>$c.hide()).appendTo($c);
 
 var $donwload_btn = $('<div style="position: absolute;padding: 7px;border:solid 1px #000000;top:120px;right:0;font-size:2.4em;color:white;cursor: pointer;">下载</div>').appendTo($c).click(function(){
-    $(this).text('开始');
+    $(this).text('下载中');
     var urls = [];
     $box.find('img').each(function(){
         urls.push(this.src);

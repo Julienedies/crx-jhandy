@@ -76,7 +76,7 @@ const EVENTS = {
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
         urls.map((url, index) => {
 
-            setTimeout(function(){
+           // setTimeout(function(){
                 let filename = url.match(/[^/]+\.\w+$/)[0];
                 filename = `${folder}/${filename}`;
                 let options = {
@@ -87,7 +87,7 @@ const EVENTS = {
                 chrome.downloads.download(options, function (result) {
                     console.log(result);
                 });
-            }, index * 1000);
+           // }, index * 1000);
 
         });
 
