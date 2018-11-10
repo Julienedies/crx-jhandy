@@ -1,21 +1,22 @@
 #crx_jhandy_oncontextmenu {
   display: none;
-  position: fixed;
+  position: fixed!important;
   z-index: 10001;
   top: 200px;
   left: 300px;
   padding: 2px 3px;
   color: #fff;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6)!important;
+  text-align: left!important;
 }
 
 #crx_jhandy_oncontextmenu button {
-  display: inline-block;
+  display: inline-block!important;
   margin: 5px 5px;
   padding: 0px 5px;
   cursor: pointer;
   border: none;
   color: #040404;
-  background: white;
+  background: white!important;
   font: 12px/20px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
 }

@@ -20,6 +20,36 @@
             let $elm = this.$elm = $('<div id="crx_jhandy_oncontextmenu"></div>').appendTo(document.body);
 
             //
+            $elm.on('click', '[todo=mark_stock_logic]', function (e) {
+                $.ajax({
+                    url: 'http://localhost:2018/stock/logic',
+                    type: 'post',
+                    data: {text: that.query, type:'市场'}
+                }).done(function (msg) {
+                    chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
+                }).fail(function (err) {
+                        console.error(err);
+                        alert('交易逻辑标记出错.');
+                    }
+                );
+            });
+
+            //
+            $elm.on('click', '[todo=mark_note]', function (e) {
+                $.ajax({
+                    url: 'http://localhost:2018/note',
+                    type: 'post',
+                    data: {text: that.query}
+                }).done(function (msg) {
+                    chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!'});
+                }).fail(function (err) {
+                        console.error(err);
+                        alert('笔记标记出错.');
+                    }
+                );
+            });
+
+            //
             $elm.on('click', '[todo=mark_stock_link]', function (e) {
                 chrome.runtime.sendMessage({todo: 'get_global'}, function(response){
                     let code = response.code;
@@ -52,13 +82,13 @@
                     url: 'http://localhost:2018/stock/news',
                     type: 'post',
                     data: {text: that.query, date: (new Date).toLocaleDateString()}
+                }).done(function (msg) {
+                    chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '资讯标记 OK!'});
                 }).fail(function (err) {
                         console.error(err);
                         alert('财经资讯标记出错.');
                     }
-                ).done(function(msg){
-                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: '资讯标记 OK!'});
-                    });
+                );
             });
             //
             $elm.on('click', '[data-url]', function (e) {
