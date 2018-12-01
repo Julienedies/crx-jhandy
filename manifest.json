@@ -25,7 +25,8 @@
     "webRequestBlocking",
     "\u003Call_urls\u003E",
     "http://*/*",
-    "https://*/"
+    "https://*/*",
+    "file:///*/*"
   ],
   "background": {
     "scripts": [

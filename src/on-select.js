@@ -19,12 +19,12 @@
             let that = this;
             let $elm = this.$elm = $('<div id="crx_jhandy_oncontextmenu"></div>').appendTo(document.body);
 
-            //
+            // 交易逻辑记录
             $elm.on('click', '[todo=mark_stock_logic]', function (e) {
                 $.ajax({
                     url: 'http://localhost:2018/stock/logic',
                     type: 'post',
-                    data: {text: that.query, type:'市场'}
+                    data: {text: that.query, type:''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
                 }).fail(function (err) {
@@ -34,12 +34,12 @@
                 );
             });
 
-            //
+            // 笔记标记
             $elm.on('click', '[todo=mark_note]', function (e) {
                 $.ajax({
                     url: 'http://localhost:2018/note',
                     type: 'post',
-                    data: {text: that.query}
+                    data: {text: that.query, type:''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!'});
                 }).fail(function (err) {
@@ -49,7 +49,7 @@
                 );
             });
 
-            //
+            // 添加股票资料链接
             $elm.on('click', '[todo=mark_stock_link]', function (e) {
                 chrome.runtime.sendMessage({todo: 'get_global'}, function(response){
                     let code = response.code;
@@ -72,11 +72,13 @@
                     });
                 });
             });
-            //
+
+            // 在通达信中查看该股
             $elm.on('click', '[todo=view_in_tdx]', function (e) {
                 chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
             });
-            //
+
+            // 财经资讯标记
             $elm.on('click', '[todo=mark_news]', function (e) {
                 $.ajax({
                     url: 'http://localhost:2018/stock/news',
@@ -90,16 +92,19 @@
                     }
                 );
             });
-            //
+
+            // 以选择的文本转到特定url
             $elm.on('click', '[data-url]', function (e) {
                 let url = this.dataset.url;
                 url = url.replace('*', encodeURIComponent(that.query));
                 window.open(url);
             });
-            //
+
+            // 滚动到页面顶部
             $elm.on('click', '[todo=back_top]', function (e) {
                 $('body,html').scrollTop(0); //animate({scrollTop:0},100);
             });
+
             //
             $elm.on('click', (e) => {
                 setTimeout(()=> {
