@@ -74,6 +74,7 @@ const EVENTS = {
     download: function (request) {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!\^]/g, "_");
+        folder = folder.replace(/\s+/img, '');
         urls.map((url, index) => {
 
            // setTimeout(function(){
