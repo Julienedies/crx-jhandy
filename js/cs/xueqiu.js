@@ -71,16 +71,16 @@ setTimeout(function(){
             if(title.match('行业：')){
                 $th.insertAfter($widget_1);
             }else if(title.match('大家还关注')){
-                $th.css({
+                /*$th.css({
                     position: 'absolute',
-                    left: '50px',
+                    left: '10px',
                     top: '80px',
                     width: '240px',
                     padding: '20px 10px',
                     background: 'white'
                 }).find('.quote-current').css({
                     'padding-right' : '15px'
-                });
+                });*/
             }
         });
     }, 500);
