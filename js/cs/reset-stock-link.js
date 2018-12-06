@@ -24,9 +24,10 @@ $('a').each(function(){
 $(document.body).on('click', 'a[href*=https://www.taoguba.com.cn/quotes/], a[href^="/public/static/img/p/"]', function(e){
     var that = e.target;
     var  code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
-    //console.log('tdx_view', code);
-    //chrome.runtime.sendMessage({event: 'view_in_tdx', code: code.replace(/[szh]*/img,'')});
-    //return false;
+    chrome.runtime.sendMessage({event: 'view_in_tdx', code: code.replace(/[szh]/img,'')});
+    chrome.runtime.sendMessage({event: 'view_in_tdx', code: that.query});
+    return false;
+
     if(!that._href){
         if(location.host == "127.0.0.1:2018"){
             code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
