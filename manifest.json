@@ -132,7 +132,7 @@
         "js/data/stock-list.js",
         "js/vendor/jquery.min.js",
         "js/cs/back-top.js",
-        "js/cs/reset-stock-link.js"
+        "js/cs/taoguba.js"
       ]
     },
     {

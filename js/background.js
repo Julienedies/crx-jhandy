@@ -12,7 +12,7 @@ const _global = {
 const EVENTS = {
 
     relay: function (req) {
-        chrome_tabs.sendMessage(req.url, req);
+        chrome_tabs.sendMessage(req.url || 'http://localhost:3000/*', req);
         if(req.event == 'open_by_jhandy' && req.code){
             _global.code = req.code;
             console.log(_global);
@@ -24,6 +24,9 @@ const EVENTS = {
     },
 
     view_in_tdx: function (request) {
+        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+    },
+    view_in_ftnn: function (request) {
         chrome_tabs.sendMessage('http://localhost:3000/*', request);
     },
 

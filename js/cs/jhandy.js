@@ -27,9 +27,9 @@ chrome.runtime.onMessage.addListener(function (msg) {
         is_on_the_exchange() && $active_ftnn.click();
 
     }
-    else if (e == 'view_in_tdx') {
+    else if (e == 'view_in_tdx' || e == 'view_in_ftnn') {
 
-        $tdx_view.attr('code', msg.code).click();
+        $tdx_view.attr('code', msg.code).attr('event', e).click();
 
     }
     else if(e == 'cls_news'){
