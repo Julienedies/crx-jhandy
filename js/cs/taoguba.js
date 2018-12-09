@@ -7,11 +7,11 @@ console.log('I am reset-stock-link.js.');
 var w; //新窗口引用。
 
 function view_in_tdx(code) {
-    chrome.runtime.sendMessage({todo: 'relay', event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
+    chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
 }
 
 function view_in_ftnn(code) {
-    chrome.runtime.sendMessage({todo: 'relay', event: 'view_in_ftnn', code: code.replace(/[szh]/img, '')});
+    chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_ftnn', code: code.replace(/[szh]/img, '')});
 }
 
 function fix_links() {
@@ -50,6 +50,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     on('click', 'a[href*=https://www.taoguba.com.cn/quotes/], a[href^="/public/static/img/p/"]', function (e) {
         var that = e.target;
         var code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
+        console.log(code);
         chrome.runtime.sendMessage({event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
         return false;
 
