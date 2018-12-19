@@ -129,7 +129,7 @@ function yuncaijing(){
 }
 
 // 财联社
-if(location.hostname == 'www.cailianpress.com'){
+if(location.hostname == 'www.cls.cn'){
     $(cailianpress);
 }
 else
