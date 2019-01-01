@@ -127,7 +127,7 @@
             if (y + h - vh > 0) {
                 y = y - h - offset;
             }
-            this.$elm.css({'left': x + offset, 'top': y + offset}).show();
+            this.$elm.css({'left': x + offset, 'top': y - h - offset}).show();
         },
         show: function (query, x, y, offset) {
             this.is_show = true;
@@ -147,7 +147,7 @@
             this.width = this.$elm.width();
             this.height = this.$elm.height();
             $(document).on('mouseup', function (e) {
-                var query = window.getSelection().toString();
+                let query = window.getSelection().toString();
                 console.log(query, e);
                 if (!query) return cm.hide();
                 if (query == cm.query && cm.is_show) return;

@@ -4,7 +4,10 @@
  */
 
 console.log('I am reset-stock-link.js.');
+
 var w; //新窗口引用。
+
+const isReadInfo = location.pathname == '/readInfo';  // 比赛实盘页面
 
 function view_in_tdx(code) {
     chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
@@ -14,18 +17,20 @@ function view_in_ftnn(code) {
     chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_ftnn', code: code.replace(/[szh]/img, '')});
 }
 
+
+
 function fix_links() {
-    var $th = $(this);
-    var str = $th.text();
+    let $th = $(this);
+    let str = $th.text();
     console.log(str);
-    var arr = str.match(/[036]\d{5}/img) || []; // $th.text().replace(/(^\s+)|(\s+$)/img, '');
-    var code = arr[0];
+    let arr = str.match(/[036]\d{5}/img) || []; // $th.text().replace(/(^\s+)|(\s+$)/img, '');
+    let code = arr[0];
     if (code) {
-        for (var i in STOCK_LIST) {
+        for (let i in STOCK_LIST) {
             if (STOCK_LIST[i][0] == code) {
                 console.log(code);
                 $th.text(code + '(*)'.replace('*', STOCK_LIST[i][1]));
-                $th.after(`<a href="view_in_ftnn/${code}">ftnn</a> `);
+                isReadInfo && $th.after(`<a href="view_in_ftnn/${code}">ftnn</a> `);
                 return;
             }
         }

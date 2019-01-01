@@ -7,14 +7,12 @@
   padding: 2px 3px;
   color: #fff;
   background: rgba(0, 0, 0, 0.6);
-  text-align:left!important;
-  font: 12px/20px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
 }
 
 #crx_jhandy_oncontextmenu button {
-  display: inline-block!important;
+  display: inline-block;
   margin: 5px 5px;
-  padding: 0 5px;
+  padding: 0px 5px;
   cursor: pointer;
   border: none;
   color: #040404;
