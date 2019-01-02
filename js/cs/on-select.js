@@ -127,7 +127,7 @@
             if (y + h - vh > 0) {
                 y = y - h - offset;
             }
-            this.$elm.css({'left': x + offset, 'top': y - h - offset}).show();
+            this.$elm.css({'left': x + offset, 'top': y - h - 10 - offset}).show();
         },
         show: function (query, x, y, offset) {
             this.is_show = true;
