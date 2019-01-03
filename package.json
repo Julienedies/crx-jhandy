@@ -2,8 +2,7 @@
   "name": "crx-jhandy",
   "version": "1.0.0",
   "description": "personal use; chrome-extension.",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Julienedies/crx-jhandy.git"
@@ -12,5 +11,8 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Julienedies/crx-jhandy/issues"
+  },
+  "devDependencies": {
+    "node-sass": "^4.11.0"
   }
 }

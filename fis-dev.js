@@ -7,10 +7,10 @@
 //fis.config.set('project.include', /^\/(?:html|js|css|img)\/.*$/img);
 
 //处理sass
-fis.config.set('modules.parser.scss', 'node-sass');
+/*fis.config.set('modules.parser.scss', 'node-sass');
 fis.config.set('modules.parser.sass', 'node-sass');
 fis.config.set('roadmap.ext.scss', 'css');
-fis.config.set('roadmap.ext.sass', 'css');
+fis.config.set('roadmap.ext.sass', 'css');*/
 
 
 //静态资源文件域名设置
