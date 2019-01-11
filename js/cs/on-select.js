@@ -4,7 +4,8 @@
 
 ;
 (function () {
-    var cm = {
+
+    const contextMenu = {
         is_show: false,
         query: '',
         $elm: null,
@@ -108,7 +109,7 @@
             //
             $elm.on('click', (e) => {
                 setTimeout(()=> {
-                    cm.hide();
+                    contextMenu.hide();
                 }, 100);
                 return false;
             });
@@ -127,20 +128,20 @@
             if (y + h - vh > 0) {
                 y = y - h - offset;
             }
-            this.$elm.css({'left': x + offset, 'top': y - h - 10 - offset}).show();
+            this.$elm.css({'left': x + offset, 'top': y + offset}).show();
         },
         show: function (query, x, y, offset) {
             this.is_show = true;
             this.query = query;
             this.set_position(x, y,  offset);
             setTimeout(function () {
-                cm.hide();
+                contextMenu.hide();
             }, 10 * 1000);
         },
         hide: function () {
             this.$elm.hide();
             this.query = '';
-            cm.is_show = false;
+            contextMenu.is_show = false;
         },
         init: function () {
             this.create_$elm();
@@ -148,12 +149,11 @@
             this.height = this.$elm.height();
             $(document).on('mouseup', function (e) {
                 let query = window.getSelection().toString();
-                console.log(query, e);
-                if (!query) return cm.hide();
-                if (query == cm.query && cm.is_show) return;
+                if (!query) return contextMenu.hide();
+                if (query == contextMenu.query && contextMenu.is_show) return;
                 document.execCommand('copy');
-                cm.render('on_select_view');
-                cm.show(query, e.clientX, e.clientY);
+                contextMenu.render('on_select_view');
+                contextMenu.show(query, e.clientX, e.clientY);
             }).on('contextmenu', function(e){
                 //cm.render('oncontextmenu_view');
                 //cm.show('', e.clientX, e.clientY, -150);
@@ -161,6 +161,6 @@
         }
     };
 
-    cm.init();
+    contextMenu.init();
 
 })();
