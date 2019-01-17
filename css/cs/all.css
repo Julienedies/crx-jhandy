@@ -2,23 +2,26 @@
   display: none;
   position: fixed;
   z-index: 10001;
-  top: 200px;
-  left: 300px;
+  top:200px;
+  left:300px;
   padding: 2px 3px;
-  color: #fff;
+  text-align: left!important;
   background: rgba(0, 0, 0, 0.6);
 }
 
 #crx_jhandy_oncontextmenu button {
   display: inline-block;
   margin: 5px 5px;
-  padding: 0px 5px;
+  padding:0px 5px;
   cursor: pointer;
-  border: none;
-  color: #040404;
-  background: white;
-  font: 12px/20px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
+  border:none;
+  color:#040404;
+  background:white;
+  font: 12px/20px "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif!important;
 }
+
+
+
 
 .gitbook-plugin-modal{
   display: none!important;

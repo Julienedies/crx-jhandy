@@ -3,9 +3,10 @@
  * chrome content script
  */
 
-var arr = location.href.match(/\?close=(\d+)$/i) || [];
-var q = arr[0];
-var d = arr[1];
+// 定时关闭当前窗口
+let arr = location.href.match(/\?close=(\d+)$/i) || [];
+let q = arr[0];
+let d = arr[1];
 
 if (d) {
     chrome.runtime.sendMessage({

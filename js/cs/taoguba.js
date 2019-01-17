@@ -7,7 +7,7 @@ console.log('I am reset-stock-link.js.');
 
 var w; //新窗口引用。
 
-const isReadInfo = location.pathname == '/readInfo';  // 比赛实盘页面
+const isReadInfo = location.pathname === '/readInfo';  // 比赛实盘页面
 
 function view_in_tdx(code) {
     chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});

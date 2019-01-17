@@ -5,7 +5,7 @@
   top:200px;
   left:300px;
   padding: 2px 3px;
-  color: #fff;
+  text-align: left!important;
   background: rgba(0, 0, 0, 0.6);
 }
 
@@ -19,6 +19,9 @@
   background:white;
   font: 12px/20px "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif!important;
 }
+
+
+
 
 .gitbook-plugin-modal{
   display: none!important;

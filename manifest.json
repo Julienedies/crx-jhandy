@@ -72,7 +72,7 @@
       "matches": [
         "*://*/*"
       ],
-      "exclude_matches": ["https://www.zhihu.com/*", "http://127.0.0.1/*", "http://localhost/*"],
+      "exclude_matches": ["https://www.zhihu.com/*"],
       "js": [
         "js/cs/back-top.js"
       ]
@@ -81,7 +81,7 @@
       "matches": [
         "*://*/*"
       ],
-      "exclude_matches": ["http://127.0.0.1/*", "http://localhost/*"],
+      "exclude_matches": [],
       "css":["css/cs/all.css"],
       "js": [
         "js/vendor/jquery.js",
