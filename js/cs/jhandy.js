@@ -12,27 +12,27 @@ function is_on_the_exchange(){
     return z > 0 && z < 6 && h > 8 && h < 15;
 }
 
-var $notify_news = $('#notify_news');
-var $tdx_view = $('#tdx_view');
-var $active_ftnn = $('#active_ftnn');
+let $notify_news = $('#notify_news');
+let $tdx_view = $('#tdx_view');
+let $active_ftnn = $('#active_ftnn');
 
 chrome.runtime.onMessage.addListener(function (msg) {
 
     console.log(msg);
 
-    var e = msg.event;
+    let e = msg.event;
 
-    if (e == 'active_ftnn') {
+    if (e === 'active_ftnn') {
 
         is_on_the_exchange() && $active_ftnn.click();
 
     }
-    else if (e == 'view_in_tdx' || e == 'view_in_ftnn') {
+    else if (e === 'view_in_tdx' || e === 'view_in_ftnn') {
 
         $tdx_view.attr('code', msg.code).attr('event', e).click();
 
     }
-    else if(e == 'cls_news'){
+    else if(e === 'cls_news'){
 
         $notify_news.data('news', msg);
         $notify_news.text(msg.msg);

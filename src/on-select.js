@@ -150,7 +150,7 @@
             $(document).on('mouseup', function (e) {
                 let query = window.getSelection().toString();
                 if (!query) return contextMenu.hide();
-                if (query == contextMenu.query && contextMenu.is_show) return;
+                if (query === contextMenu.query && contextMenu.is_show) return;
                 document.execCommand('copy');
                 contextMenu.render('on_select_view');
                 contextMenu.show(query, e.clientX, e.clientY);
