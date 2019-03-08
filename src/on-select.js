@@ -5,6 +5,8 @@
 ;
 (function () {
 
+    const shandyHost = 'http://localhost:3300'
+
     const contextMenu = {
         is_show: false,
         query: '',
@@ -13,7 +15,7 @@
         height: 0,
         oncontextmenu_view: __inline('oncontextmenu.html'),
         on_select_view: __inline('on-select.html'),
-        render:function(view_name){
+        render: function (view_name) {
             this.$elm.html(this[view_name]);
         },
         create_$elm: function () {
@@ -23,9 +25,9 @@
             // 交易逻辑记录
             $elm.on('click', '[todo=mark_stock_logic]', function (e) {
                 $.ajax({
-                    url: 'http://localhost:2018/stock/logic',
+                    url: `${ shandyHost }/stock/logic`,
                     type: 'post',
-                    data: {text: that.query, type:''}
+                    data: {text: that.query, type: ''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
                 }).fail(function (err) {
@@ -38,9 +40,9 @@
             // 笔记标记
             $elm.on('click', '[todo=mark_note]', function (e) {
                 $.ajax({
-                    url: 'http://localhost:2018/note',
+                    url: `${ shandyHost }/note`,
                     type: 'post',
-                    data: {text: that.query, type:''}
+                    data: {text: that.query, type: ''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!'});
                 }).fail(function (err) {
@@ -52,22 +54,22 @@
 
             // 添加股票资料链接
             $elm.on('click', '[todo=mark_stock_link]', function (e) {
-                chrome.runtime.sendMessage({todo: 'get_global'}, function(response){
+                chrome.runtime.sendMessage({todo: 'get_global'}, function (response) {
                     let code = response.code;
-                    if(!code){
+                    if (!code) {
                         console.error(response);
                         return alert('没有code.');
                     }
                     $.ajax({
-                        url:`http://localhost:2018/stock/c/${code}`,
-                        type:'post',
-                        data:{
-                            "链接":location.href
+                        url: `${ shandyHost }/stock/c/${ code }`,
+                        type: 'post',
+                        data: {
+                            "链接": location.href
                         }
-                    }).done(function(msg){
+                    }).done(function (msg) {
                         let name = msg['名称'];
-                        chrome.runtime.sendMessage({todo: 'notify',duration: 4, title: '', msg: `${name} 链接标记 OK!`});
-                    }).fail(function(err){
+                        chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: `${ name } 链接标记 OK!`});
+                    }).fail(function (err) {
                         console.error(err);
                         alert('个股链接标记出错.详情查看控制台.');
                     });
@@ -82,7 +84,7 @@
             // 财经资讯标记
             $elm.on('click', '[todo=mark_news]', function (e) {
                 $.ajax({
-                    url: 'http://localhost:2018/stock/news',
+                    url: `${ shandyHost }/stock/news`,
                     type: 'post',
                     data: {text: that.query, date: (new Date).toLocaleDateString()}
                 }).done(function (msg) {
@@ -108,7 +110,7 @@
 
             //
             $elm.on('click', (e) => {
-                setTimeout(()=> {
+                setTimeout(() => {
                     contextMenu.hide();
                 }, 100);
                 return false;
@@ -116,12 +118,12 @@
         },
         set_position: function (x, y, offset) {
             offset = offset || 15;
-            var $win = $(window);
-            var $elm = this.$elm;
-            var w = $elm.width();
-            var h = $elm.height();
-            var vw = $win.width();
-            var vh = $win.height();
+            let $win = $(window);
+            let $elm = this.$elm;
+            let w = $elm.width();
+            let h = $elm.height();
+            let vw = $win.width();
+            let vh = $win.height();
             if (x + w - vw > 0) {
                 x = x - w - offset;
             }
@@ -133,7 +135,7 @@
         show: function (query, x, y, offset) {
             this.is_show = true;
             this.query = query;
-            this.set_position(x, y,  offset);
+            this.set_position(x, y, offset);
             setTimeout(function () {
                 contextMenu.hide();
             }, 10 * 1000);
@@ -154,7 +156,7 @@
                 document.execCommand('copy');
                 contextMenu.render('on_select_view');
                 contextMenu.show(query, e.clientX, e.clientY);
-            }).on('contextmenu', function(e){
+            }).on('contextmenu', function (e) {
                 //cm.render('oncontextmenu_view');
                 //cm.show('', e.clientX, e.clientY, -150);
             });

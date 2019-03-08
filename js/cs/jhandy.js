@@ -6,9 +6,9 @@ console.log('I am jhandy.js');
 
 // 是否股市开盘时间
 function is_on_the_exchange(){
-    var d = new Date();
-    var z = d.getDay();
-    var h = d.getHours();
+    let d = new Date();
+    let z = d.getDay();
+    let h = d.getHours();
     return z > 0 && z < 6 && h > 8 && h < 15;
 }
 

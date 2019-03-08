@@ -2,8 +2,10 @@
  * Created by j on 15/6/23.
  */
 
+const shandyHost = 'http://localhost:3300';
+
 const _global = {
-    code:''
+    code: ''
 };
 /*
  * 消息处理器
@@ -12,40 +14,40 @@ const _global = {
 const EVENTS = {
 
     relay: function (req) {
-        chrome_tabs.sendMessage(req.url || 'http://localhost:3000/*', req);
-        if(req.event == 'open_by_jhandy' && req.code){
+        chrome_tabs.sendMessage(req.url || `${ shandyHost }/*`, req);
+        if (req.event === 'open_by_jhandy' && req.code) {
             _global.code = req.code;
             console.log(_global);
         }
     },
 
-    socket: function(req){
-        chrome_tabs.sendMessage('http://localhost:3000/*', req);
+    socket: function (req) {
+        chrome_tabs.sendMessage(`${ shandyHost }/*`, req);
     },
 
     view_in_tdx: function (request) {
-        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+        chrome_tabs.sendMessage(`${ shandyHost }/*`, request);
     },
     view_in_ftnn: function (request) {
-        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+        chrome_tabs.sendMessage(`${ shandyHost }/*`, request);
     },
 
     active_ftnn: function (request) {
-        chrome_tabs.sendMessage('http://localhost:3000/*', request);
+        chrome_tabs.sendMessage(`${ shandyHost }/*`, request);
     },
 
     close_tab: function (request) {
         let url = request.url;
         let arr = Array.isArray(url) ? url : [url];
         let delay = request.delay || 0;
-        setTimeout(function(){
+        setTimeout(function () {
             arr.map(function (url) {
-                url = url.replace(/\?.*/i,'');
+                url = url.replace(/\?.*/i, '');
                 url += '/*';
                 url = url.replace('//*', '/*').replace(/^https?/, '*');
                 chrome_tabs.remove(url);
             });
-        }, delay*1000 || 10);
+        }, delay * 1000 || 10);
     },
 
     // 接收10jqka页面 content script发过来的消息，同步新浪财经或雪球K线页面
@@ -55,7 +57,7 @@ const EVENTS = {
         chrome_tabs.sendMessage(url, request);
     },
 
-    notify: function(request){
+    notify: function (request) {
         console.info(request);
         var opt = {
             type: 'basic',
@@ -63,14 +65,15 @@ const EVENTS = {
             message: request.msg || 'hello world.',
             iconUrl: 'img/icon-bitty.png'
         };
-        chrome.notifications.create('', opt, function(id){
-            setTimeout(function(){
-                chrome.notifications.clear(id, function(){});
+        chrome.notifications.create('', opt, function (id) {
+            setTimeout(function () {
+                chrome.notifications.clear(id, function () {
+                });
             }, (request.duration || 7) * 1000);
         });
     },
 
-    get_global: function(request, sender, sendResponse){
+    get_global: function (request, sender, sendResponse) {
         sendResponse(_global);
     },
 
@@ -80,18 +83,18 @@ const EVENTS = {
         folder = folder.replace(/\s+/img, '');
         urls.map((url, index) => {
 
-           // setTimeout(function(){
-                let filename = url.match(/[^/]+\.\w+$/)[0];
-                filename = `${folder}/${filename}`;
-                let options = {
-                    url: url,
-                    filename: filename
-                };
-                console.log(options);
-                chrome.downloads.download(options, function (result) {
-                    console.log(result);
-                });
-           // }, index * 1000);
+            // setTimeout(function(){
+            let filename = url.match(/[^/]+\.\w+$/)[0];
+            filename = `${ folder }/${ filename }`;
+            let options = {
+                url: url,
+                filename: filename
+            };
+            console.log(options);
+            chrome.downloads.download(options, function (result) {
+                console.log(result);
+            });
+            // }, index * 1000);
 
         });
 
@@ -110,10 +113,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     events.map((e) => EVENTS[e](request, sender, sendResponse));
 
 
-
 });
-
-
 
 
 /*chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {

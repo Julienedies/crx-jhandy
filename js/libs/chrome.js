@@ -55,7 +55,7 @@ chrome_storage = (function () {
             let obj = {};
             let count = 0;
             for (let i in dob) {
-                if (i == key) {
+                if (i === key) {
                     return dob[i];
                 } else if (i.indexOf(key + '.') > -1) {
                     count += 1;
@@ -88,7 +88,7 @@ chrome_tabs = (function () {
 
         },
         reload: function (url, callback) {
-            this.query(url, function(tabs){
+            this.query(url, function (tabs) {
                 tabs.map(function (tab) {
                     chrome.tabs.reload(tab.id, callback);
                 });
@@ -115,7 +115,7 @@ chrome_tabs = (function () {
          */
         inject: function (files) {
             files = typeof files == 'string' ? [files] : files;
-            (function f(files) {
+            (function f (files) {
                 var file = files.shift();
                 if (file) {
                     if (/\S+\.css$/.test(file)) {

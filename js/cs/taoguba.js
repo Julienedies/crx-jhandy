@@ -40,7 +40,7 @@ function fix_links() {
 //将淘股吧里的股票code添加股票名称，方便识别。
 setTimeout(function () {
     $('a').each(fix_links);
-}, 3000);
+}, 2800);
 
 $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     let that = e.target;
@@ -60,7 +60,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
         return false;
 
         if (!that._href) {
-            if (location.host == "127.0.0.1:2018") {
+            if (location.host == "127.0.0.1:3300") {
                 code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
                 code = /^6\d{5}$/.test(code) ? 'sh' + code : 'sz' + code;
             } else {

@@ -118,7 +118,7 @@
     },
     {
       "matches": [
-        "http://localhost:3000/*"
+        "http://localhost:3300/*"
       ],
       "js": [
         "js/vendor/jquery.min.js",
