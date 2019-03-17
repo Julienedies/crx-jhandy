@@ -6,6 +6,12 @@
 (function () {
 
     const shandyHost = 'http://localhost:3300'
+    const $doc = $(document)
+    function cancelContextmenu  (e){
+        console.log('on click and scroll to hide contextMenu')
+        contextMenu.is_show && contextMenu.hide();
+        $doc.off('', cancelContextmenu)
+    }
 
     const contextMenu = {
         is_show: false,
@@ -138,7 +144,7 @@
             this.set_position(x, y, offset);
             setTimeout(function () {
                 contextMenu.hide();
-            }, 10 * 1000);
+            }, 13 * 1000);
         },
         hide: function () {
             this.$elm.hide();
@@ -150,12 +156,21 @@
             this.width = this.$elm.width();
             this.height = this.$elm.height();
             $(document).on('mouseup', function (e) {
-                let query = window.getSelection().toString();
-                if (!query) return contextMenu.hide();
+                $doc.off('click scroll contextmenu', cancelContextmenu)
+                let selection = window.getSelection();
+                if(selection.isCollapsed) return contextMenu.hide();
+                let query = window.getSelection().toString().trim();
+                query = $.trim(query);
+                query = query.replace(/^\s+$/img, '')
+                console.log('selection is:', query, query.length, window.getSelection())
+                if (!query.length) return contextMenu.hide();
                 if (query === contextMenu.query && contextMenu.is_show) return;
                 document.execCommand('copy');
                 contextMenu.render('on_select_view');
                 contextMenu.show(query, e.clientX, e.clientY);
+                setTimeout(() => {
+                    $doc.on('click scroll contextmenu', cancelContextmenu)
+                }, 1000)
             }).on('contextmenu', function (e) {
                 //cm.render('oncontextmenu_view');
                 //cm.show('', e.clientX, e.clientY, -150);
