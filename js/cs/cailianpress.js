@@ -55,7 +55,7 @@ function cailianpress() {
     }
 
     function notify(msg) {
-        chrome.runtime.sendMessage({event:'cls_news', todo: 'relay', url:'http://localhost:3000/*', title: '财经资讯', msg: msg});
+        chrome.runtime.sendMessage({event:'cls_news', todo: 'relay', url:'http://localhost:3300/*', title: '财经资讯', msg: msg});
     }
 
     chrome_storage.get('cls', function (result) {
@@ -84,7 +84,7 @@ function cailianpress() {
 
                 if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略
 
-                //console.log(+new Date, m, m.oldValue, m.target.nodeValue);
+                console.info(+new Date, m, m.oldValue, m.target.nodeValue);
 
                 var text = m.target.nodeValue;
 
@@ -96,7 +96,7 @@ function cailianpress() {
                     console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
                     var arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
-                    text = arr ? arr[1] : text;
+                    //text = arr ? arr[1] : text;
                     if(text === '点击加载更多') return;
                     f1 && f1(text);
                     f2 && f2(text);
