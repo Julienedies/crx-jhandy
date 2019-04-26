@@ -8,3 +8,7 @@
     bottom: 0%!important;
     right: 0%!important;
 }
+
+.grid li.active img{
+    height:auto!important;
+}

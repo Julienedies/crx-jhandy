@@ -46,6 +46,7 @@ var url_map = {
     ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current_code),
     ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current_code),
     ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current_code),
+    wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', current_code),
     site: ''
 };
 
@@ -87,7 +88,7 @@ var callback = function (e) {
 };
 
 var createNav = function () {
-    var $c = $('<div style="position:fixed;bottom:0;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
+    var $c = $('<div style="position:fixed;bottom:40%;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
     var $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev))).appendTo($c).on('click', function () {
         goToNext(prev);
     });
