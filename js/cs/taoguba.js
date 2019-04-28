@@ -5,7 +5,7 @@
 
 console.log('I am reset-stock-link.js.');
 
-var w; //新窗口引用。
+let w; //新窗口引用。
 
 const isReadInfo = location.pathname === '/readInfo';  // 比赛实盘页面
 
@@ -16,8 +16,6 @@ function view_in_tdx(code) {
 function view_in_ftnn(code) {
     chrome.runtime.sendMessage({todo: 'socket', event: 'view_in_ftnn', code: code.replace(/[szh]/img, '')});
 }
-
-
 
 function fix_links() {
     let $th = $(this);
@@ -50,7 +48,6 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     console.log(that.href, arr, code, event);
     chrome.runtime.sendMessage({event: event, code: code});
     return false;
-
 }).
     on('click', 'a[href*=https://www.taoguba.com.cn/quotes/], a[href^="/public/static/img/p/"]', function (e) {
         var that = e.target;
@@ -60,7 +57,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
         return false;
 
         if (!that._href) {
-            if (location.host == "127.0.0.1:3300") {
+            if (location.host === "127.0.0.1:3300") {
                 code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
                 code = /^6\d{5}$/.test(code) ? 'sh' + code : 'sz' + code;
             } else {
@@ -87,3 +84,32 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
 
         return false;
     });
+
+
+// ------------------------------------------------------------------------- 滚动到页面底部自动加载更多 start
+
+if(location.href === 'https://www.taoguba.com.cn/getMoreListAction') {
+
+    let $loadMore = $('#clickLoadmore');
+    let cb = () => {
+        $loadMore.click();
+    };
+
+    function onScrollEnd(callback){
+
+        let clientHeight = $(window).height();
+        let $doc = $(document);
+
+        $doc.on('scroll', function (e) {
+            // 如果窗口高 + 向上滚动高度 = 文档高度, 则表示滚动到了页面底部;
+            if (clientHeight + $doc.scrollTop() + 170 >= $doc.height()) {
+                console.log('滚动到了页面底部');
+                callback();
+            }
+        });
+    }
+
+    onScrollEnd(cb);
+}
+
+// ------------------------------------------------------------------------- 滚动到页面底部自动加载更多 end

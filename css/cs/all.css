@@ -9,6 +9,8 @@
   background: rgba(0, 0, 0, 0.6);
   border-radius: 5px;
   font: 10px/16px "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif!important;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #crx_jhandy_oncontextmenu button {
