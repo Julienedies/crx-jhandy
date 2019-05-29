@@ -47,6 +47,7 @@ var url_map = {
     ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current_code),
     ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current_code),
     wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', current_code),
+    taoguba: `https://www.taoguba.com.cn/quotes/${prefix_code}`,
     site: ''
 };
 
