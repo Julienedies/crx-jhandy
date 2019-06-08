@@ -8,53 +8,53 @@ console.log('I am 10jqka.js.');
 
 STOCKS = STOCKS || [];
 
-var open_by_jhandy = location.search.match(/\?self[=][1]/);
+let open_by_jhandy = location.search.match(/\?self[=][1]/);
 
-var reg = /\/(\d{6})\//;
-var current_code = location.href.match(reg)[1];
+let reg = /\/(\d{6})\//;
+let currentCode = location.href.match(reg)[1];
 
 // 同一时刻只保持一个被jhandy打开的页面
 if (open_by_jhandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: current_code, url: 'http://basic.10jqka.com.cn/*'});
+    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
 }
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
-    if(msg.event == 'open_by_jhandy' && msg.code != current_code){
+    if(msg.event == 'open_by_jhandy' && msg.code != currentCode){
         chrome.runtime.sendMessage({
             event: 'close_tab',
-            code: current_code,
-            url: [location.href.replace('company.html?self=1', ''), url_map.ycj]
+            code: currentCode,
+            url: [location.href.replace('company.html?self=1', ''), urlMap.ycj]
         });
     }
 });
 
 
-var stocks = STOCKS.map(function (x) {
+let stocks = STOCKS.map(function (x) {
         return x[0];
     }) || [];
 
-var index = stocks.indexOf(current_code);
-var prev = stocks[index - 1] || stocks[stocks.length - 1];
-var next = stocks[index + 1] || stocks[0];
+let index = stocks.indexOf(currentCode);
+let prev = stocks[index - 1] || stocks[stocks.length - 1];
+let next = stocks[index + 1] || stocks[0];
 
-var prefix_code = (/^6/.test(current_code) ? 'sh' : 'sz') + current_code;
+let prefixCode = (/^6/.test(currentCode) ? 'sh' : 'sz') + currentCode;
 
-var url_map = {
-    ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefix_code),
-    xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefix_code),
-    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', current_code),
-    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', current_code),
-    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', current_code),
-    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', current_code),
-    wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', current_code),
-    taoguba: `https://www.taoguba.com.cn/quotes/${prefix_code}`,
+let urlMap = {
+    ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefixCode),
+    xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefixCode),
+    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', currentCode),
+    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', currentCode),
+    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
+    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
+    wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', currentCode),
+    taoguba: `https://www.taoguba.com.cn/quotes/${prefixCode}`,
     site: ''
 };
 
-var $body = $(document.body);
+let $body = $(document.body);
 
 function getNameByCode(code) {
-    var item = STOCKS.filter(function (item) {
+    let item = STOCKS.filter(function (item) {
         return item && item[0] == code;
     });
     return item[0] && item[0][1];
@@ -68,59 +68,60 @@ function closeTab(){
     });
 }
 
-function active_ftnn(){
+function activeFtnn(){
     chrome.runtime.sendMessage({
         todo: 'active_ftnn',
         event: 'active_ftnn'
     });
 }
 
-var goToNext = function (code) {
+let goToNext = function (code) {
     console.log('goto:', code);
     if (code) {
         location.href = location.href.replace(reg, '/' + code + '/');
     }
 };
 
-var callback = function (e) {
+let callback = function (e) {
     //正负值表示滚动方向
-    var isUp = e && e.originalEvent.deltaY < 0;
+    let isUp = e && e.originalEvent.deltaY < 0;
     goToNext(isUp ? prev : next);
 };
 
-var createNav = function () {
-    var $c = $('<div style="position:fixed;bottom:40%;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
-    var $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev))).appendTo($c).on('click', function () {
+let createNav = function () {
+    let $c = $('<div style="position:fixed;bottom:40%;right:0;background: rgba(0,0,0,0.6);color:white;z-index:10000;line-height: 2.8;width:5em;text-align: center;cursor: pointer; font-size: 1.3em;"></div>').appendTo($body);
+    let $prev = $('<div>  *</div>'.replace('*', getNameByCode(prev))).appendTo($c).on('click', function () {
         goToNext(prev);
     });
-    var $next = $('<div>  *</div>'.replace('*', getNameByCode(next))).appendTo($c).on('click', function () {
+    let $next = $('<div>  *</div>'.replace('*', getNameByCode(next))).appendTo($c).on('click', function () {
         goToNext(next);
     });
 };
 
-var createLinks = function () {
-    var html = '<span> &nbsp; <a href="#" target="_blank">雪球</a>&nbsp; <a href="*" target="_blank">云财经</a><a href="http://localhost:2018/public/static/html/stock/c/index.html?code=@&edit=1", target="_blank">自定义数据</a></span>'
-        .replace('#', url_map.xueqiu)
-        .replace('*', url_map.ycj)
-        .replace('@', current_code);
+let createLinks = function () {
+    let html = `
+            <span> &nbsp; <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
+            <a href="${urlMap.ycj}" target="_blank">云财经</a>
+            <a href="${urlMap.taoguba}" target="_blank">淘股吧</a>
+            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义数据</a></span>`;
     //$url = $('iframe').contents().find('#detail a').eq(0);
-    var $td = $('#detail table:first td:last');
-    var site_url = $td.find('a:first').attr('href');
-    url_map.site =  site_url && site_url + '?close=400';
+    let $td = $('#detail table:first td:last');
+    let site_url = $td.find('a:first').attr('href');
+    urlMap.site =  site_url && site_url + '?close=400';
     $td.append(html);
 };
 
-var createIframe = function () {
-    var href = location.href;
-    var url = /company.html$/.test(href) ? href.replace('company.html', '') : href + 'company.html';
+let createIframe = function () {
+    let href = location.href;
+    let url = /company.html$/.test(href) ? href.replace('company.html', '') : href + 'company.html';
     $body.append('<iframe src="*"></iframe>'.replace('*', url));
 };
 
-var titleTimer = function (interval, amount) {
-    var $title = $('title');
-    var title = $title.text();
-    var count = Math.floor(interval * amount);
-    var timer = setInterval(function () {
+let titleTimer = function (interval, amount) {
+    let $title = $('title');
+    let title = $title.text();
+    let count = Math.floor(interval * amount);
+    let timer = setInterval(function () {
         count -= 1;
         count < 1 && clearInterval(timer);
         $title.text(count + ' # ' + title);
@@ -132,9 +133,9 @@ var titleTimer = function (interval, amount) {
  * @param callback Function
  **/
 function g(arr, callback) {
-    var win;
-    var url;
-    var item = arr.shift();
+    let win;
+    let url;
+    let item = arr.shift();
     if (item && item.url) {
         url = item.url;
         win = window.open(url);
@@ -152,8 +153,8 @@ function g(arr, callback) {
 }
 
 //发送消息给background.js，通过background.js同步个股K线页面
-if (stocks.indexOf(current_code) > -1) {
-    chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: current_code});
+if (stocks.indexOf(currentCode) > -1) {
+    chrome.runtime.sendMessage({todo: 'relay', event: 'view_k', url: 'https://xueqiu.com/S/*', code: currentCode});
 }
 
 
@@ -172,29 +173,29 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
         // 自动显示页面列表
         if (dob.relation) {
 
-            var start_item = {d: 1};
-            var queue = [];
-            var interval = dob.interval || 30;
-            var total = 0;
+            let start_item = {d: 1};
+            let queue = [];
+            let interval = dob.interval || 30;
+            let total = 0;
 
             if (dob.pages) {
                 dob.pages.forEach((v) => {
-                    var k = v.id;
-                    if (url_map[k] == location.href.replace(/[?#].*$/, '')) {
+                    let k = v.id;
+                    if (urlMap[k] == location.href.replace(/[?#].*$/, '')) {
                         start_item = v;
                         total += v.d;
                     } else {
                         if (v.show) {
                             total += v.d;
-                            queue.push({url: url_map[v.id], duration: v.d * interval});
+                            queue.push({url: urlMap[v.id], duration: v.d * interval});
                         }
                     }
                 });
             } else {
                 queue = [
-                    {url: url_map.ycj, duration: interval * 2},
-                    {url: url_map.ths_new, duration: interval * 1},
-                    {url: url_map.ths_c, duration: interval * 1},
+                    {url: urlMap.ycj, duration: interval * 2},
+                    {url: urlMap.ths_new, duration: interval * 1},
+                    {url: urlMap.ths_c, duration: interval * 1},
                     //{url: url_map.site, duration: interval * 6}
                 ];
             }
@@ -203,7 +204,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    open_by_jhandy ? active_ftnn() : dob.queue && goToNext(next);
+                    open_by_jhandy ? activeFtnn() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
@@ -225,7 +226,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
     //document.documentElement.scrollTop = 38;
 
     setTimeout(function () {
-        var $elm = $('.header .subnav li:nth-child(2) a');
+        let $elm = $('.header .subnav li:nth-child(2) a');
         $elm[0].click();
     }, 4000);
 
