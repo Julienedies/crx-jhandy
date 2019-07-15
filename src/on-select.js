@@ -7,7 +7,8 @@
 
     const shandyHost = 'http://localhost:3300'
     const $doc = $(document)
-    function cancelContextmenu  (e){
+
+    function cancelContextmenu (e) {
         console.log('on click and scroll to hide contextMenu')
         contextMenu.is_show && contextMenu.hide();
         $doc.off('', cancelContextmenu)
@@ -30,11 +31,11 @@
 
             // 交易逻辑记录
             $elm.on('click', '[todo=mark_stock_logic]', function (e) {
-                let type = prompt('添加逻辑标签') || '';
+                let sign = prompt('标记') || '';
                 $.ajax({
                     url: `${ shandyHost }/stock/logic`,
                     type: 'post',
-                    data: {text: that.query, type}
+                    data: {text: `${ that.query } #${ sign }`, type: ''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
                 }).fail(function (err) {
@@ -159,7 +160,7 @@
             $(document).on('mouseup', function (e) {
                 $doc.off('click scroll contextmenu', cancelContextmenu)
                 let selection = window.getSelection();
-                if(selection.isCollapsed) return contextMenu.hide();
+                if (selection.isCollapsed) return contextMenu.hide();
                 let query = window.getSelection().toString().trim();
                 query = $.trim(query);
                 query = query.replace(/^\s+$/img, '')
