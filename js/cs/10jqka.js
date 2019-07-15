@@ -13,6 +13,10 @@ let open_by_jhandy = location.search.match(/\?self[=][1]/);
 let reg = /\/(\d{6})\//;
 let currentCode = location.href.match(reg)[1];
 
+if(!open_by_jhandy && location.href.endsWith('company.html')){
+    throw new Error('结束。');
+}
+
 // 同一时刻只保持一个被jhandy打开的页面
 if (open_by_jhandy) {
     STOCKS = [];
