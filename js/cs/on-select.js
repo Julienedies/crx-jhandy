@@ -35,7 +35,7 @@
                 $.ajax({
                     url: `${ shandyHost }/stock/logic`,
                     type: 'post',
-                    data: {text: `${ that.query } #${ sign }`, type: ''}
+                    data: {text: `${ that.query } \r\n#${ sign }`, type: ''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
                 }).fail(function (err) {
