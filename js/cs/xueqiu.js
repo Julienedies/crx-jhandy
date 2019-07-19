@@ -35,13 +35,13 @@ setTimeout(function(){
     //
     var $chart = $('.chart-container');
 
-    setTimeout(function(){
+/*    setTimeout(function(){
         $chart.find('#fullsize').click(); //全屏
         $chart.find('[data-period="day"]').click(); //日K
         setTimeout(function(){
             $chart.find('#slice').click();  //实体K线
         },300);
-    },  delay * 1000);
+    },  delay * 1000);*/
 
 
     //

@@ -32,10 +32,11 @@
             // 交易逻辑记录
             $elm.on('click', '[todo=mark_stock_logic]', function (e) {
                 let sign = prompt('标记') || '';
+                sign = sign && `\r\n#${ sign }`;
                 $.ajax({
                     url: `${ shandyHost }/stock/logic`,
                     type: 'post',
-                    data: {text: `${ that.query } \r\n#${ sign }`, type: ''}
+                    data: {text: `${ that.query }${ sign }`, type: ''}
                 }).done(function (msg) {
                     chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
                 }).fail(function (err) {
