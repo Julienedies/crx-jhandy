@@ -116,12 +116,25 @@
 
             <!-- -->
             <section ic-ctrl="otherCtrl">
-                <div>
+                <div class="box">
                     <h2>url搜索列表</h2>
                     <div class="field">
                         <label class="label">名称</label>
                         <div class="control">
                             <input class="input" type="text" placeholder="Text input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box" ic-ctrl="setNoteTagCtrl">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" type="text" value="" name="logic_tag">
+                        </div>
+                        <div class="control">
+                            <a class="button is-primary" ic-click="setLogicTag">
+                                设定交易逻辑标签
+                            </a>
                         </div>
                     </div>
                 </div>

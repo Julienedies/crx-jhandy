@@ -13,9 +13,6 @@ let open_by_jhandy = location.search.match(/\?self[=][1]/);
 let reg = /\/(\d{6})\//;
 let currentCode = location.href.match(reg)[1];
 
-if(!open_by_jhandy && location.href.endsWith('company.html')){
-    throw new Error('结束。');
-}
 
 // 同一时刻只保持一个被jhandy打开的页面
 if (open_by_jhandy) {
@@ -170,6 +167,10 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
     createNav();
 
+    if(!open_by_jhandy && location.href.endsWith('company.html')){
+        throw new Error('结束。');
+    }
+
     chrome_storage.get('stock', function (dob) {
 
         console.log(dob);
@@ -185,7 +186,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
             if (dob.pages) {
                 dob.pages.forEach((v) => {
                     let k = v.id;
-                    if (urlMap[k] == location.href.replace(/[?#].*$/, '')) {
+                    if (urlMap[k] === location.href.replace(/[?#].*$/, '')) {
                         start_item = v;
                         total += v.d;
                     } else {

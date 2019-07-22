@@ -125,4 +125,35 @@ brick.controllers.reg('downloadCtrl', function(){
 
 brick.reg('otherCtrl', function(){
     let scope = this;
+
+
+});
+
+brick.reg('setNoteTagCtrl', function (scope) {
+
+    let key = '';
+    let $input = scope.$elm.find('[name=logic_tag]');
+
+    scope.setLogicTag = function(e){
+        let val = $input.val();
+        val && chrome_storage.set(key, val);
+        console.log(key, val);
+    }
+
+    chrome.tabs.getSelected(function(tab){
+
+        key = `noteTag.${btoa(tab.url).substr(-17)}`;
+
+        chrome_storage.get(key, function (val) {
+            if(val){
+                $input.val(val)
+            }
+
+        });
+
+
+    });
+
+
+
 });
