@@ -23,7 +23,7 @@ function on_scroll_end(callback){
 
 function cailianpress() {
 
-    var $more = $("div.contentLeft > div >div:last-child").css({border: 'solid 1px green'});
+    var $more = $("div.contentLeft > div >div:last-child div").css({border: 'solid 1px green'});
 
     on_scroll_end(function(){
         $more[0].click();
