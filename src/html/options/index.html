@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>扩展选项页面</title>
+    <link rel="stylesheet" type="text/css" href="../../css/vendor/bulma/bulma.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/common.scss"/>
+</head>
+<body>
+    <div class="container" ic-ctrl="mainCtrl">
+
+        <div class="tabs is-large" ic-tabs="a" ic-tab-select="li" ic-tabc-select="section" ic-tab-cla="is-active">
+            <ul>
+                <li><a>股票资料浏览</a></li>
+                <li><a>财联社</a></li>
+                <li><a>下载</a></li>
+                <li><a>其它</a></li>
+            </ul>
+        </div>
+
+        <div class="content" ic-tabc="a">
+            <section ic-ctrl="stockCtrl">
+                <div ic-tpl="stock">
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="stock.queue" ic-checked="model.queue" ic-click="on_checkbox_changed">
+                                股票列表自动切换
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="stock.manual" ic-checked="model.manual" ic-click="on_checkbox_changed">
+                                股票列表手动切换
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped">
+                        <div class="control">
+                            <input class="input" type="text" name="interval" placeholder="设置自动切换间隔">
+                        </div>
+                        <div class="control">
+                            <button class="button is-primary" ic-click="set_interval">确定</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <p class="help">当前自动切换间隔为<i id="show_interval">{{model.interval}}</i></p>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <label class="checkbox">
+                                <input type="checkbox" name="stock.relation" ic-checked="model.relation" ic-click="on_checkbox_changed">
+                                个股相关页面自动切换
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">要显示的相关页面</label>
+                    </div>
+                    <div class="field" id="stock_pages" ic-tpl="pages">
+                        <div class="control is-expanded" ic-for="i,v in model.pages" id="page_{{v.id}}" style="margin:3px 0;">
+                            <label class="checkbox" style="min-width:7em;">
+                                <input type="checkbox" name="stock.pages" data-name="{{v.name}}" data-d="{{v.d}}" value="{{v.id}}" ic-click="on_page_changed" ic-checked="v.show">
+                                {{v.name}}
+                            </label>
+                            <button class="button is-primary is-small" ic-click="edit" data-id="{{v.id}}">修改</button>
+                            <button class="button is-primary is-small" ic-click="up" data-id="{{v.id}}">前移</button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">添加/修改页面队列</label>
+                    </div>
+                    <div class="field is-grouped">
+                        <div class="control is-expanded">
+                            <input class="input is-primary" type="text" name="page" placeholder="云财经,ycj"/>
+                        </div>
+                        <div class="control">
+                            <button class="button is-primary" ic-click="save">保存</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            <section ic-ctrl="clsCtrl">
+                <h3>财联社</h3>
+                <div ic-tpl="cls">
+                    <label class="checkbox">
+                        <input type="checkbox" ic-checked="model.notify" name="cls.notify" ic-click="set_cls">
+                        桌面通知
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" ic-checked="model.speak" name="cls.speak" ic-click="set_cls">
+                        新财经消息自动朗读
+                    </label>
+                </div>
+            </section>
+
+            <section ic-ctrl="downloadCtrl">
+                <h3>下载</h3>
+                <div>
+                    <div class="control">
+                        <button class="button is-primary" ic-click="download">下载本页图片</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- -->
+            <section ic-ctrl="otherCtrl">
+                <div class="box">
+                    <h2>url搜索列表</h2>
+                    <div class="field">
+                        <label class="label">名称</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="Text input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box" ic-ctrl="setNoteTagCtrl">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" type="text" value="" name="logic_tag">
+                        </div>
+                        <div class="control">
+                            <a class="button is-primary" ic-click="setLogicTag">
+                                设定交易逻辑标签
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+</body>
+</html>
