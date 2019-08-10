@@ -2,10 +2,11 @@
  * Created by j on 15/6/23.
  */
 
+import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
+
 import './contextMenus'
 import './google-search'
 import './webRequest'
-
 
 
 const shandyHost = 'http://localhost:3300';

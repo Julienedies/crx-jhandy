@@ -4,9 +4,12 @@
  * 2.同步新浪或雪球个股页面K线显示
  */
 
+import $ from 'jquery';
+import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
+
 console.log('I am 10jqka.js.');
 
-STOCKS = STOCKS || [];
+let STOCKS = window.STOCKS || [];
 
 let open_by_jhandy = location.search.match(/\?self[=][1]/);
 
@@ -20,7 +23,7 @@ if (open_by_jhandy) {
     chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
 }
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
-    if(msg.event == 'open_by_jhandy' && msg.code != currentCode){
+    if(msg.event === 'open_by_jhandy' && msg.code !== currentCode){
         chrome.runtime.sendMessage({
             event: 'close_tab',
             code: currentCode,
@@ -56,7 +59,7 @@ let $body = $(document.body);
 
 function getNameByCode(code) {
     let item = STOCKS.filter(function (item) {
-        return item && item[0] == code;
+        return item && item[0] === code;
     });
     return item[0] && item[0][1];
 }

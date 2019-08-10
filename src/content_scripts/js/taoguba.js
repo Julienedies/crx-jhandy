@@ -3,6 +3,8 @@
  * 修改淘股吧实盘比赛选手实盘纪录个股链接，方便复盘。
  */
 
+import $ from 'jquery';
+
 console.log('I am reset-stock-link.js.');
 
 let w; //新窗口引用。
@@ -48,20 +50,19 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     console.log(that.href, arr, code, event);
     chrome.runtime.sendMessage({event: event, code: code});
     return false;
-}).on('click', 'a[href*=https://www.taoguba.com.cn/quotes/], a[href^="/public/static/img/p/"]', function (e) {
-    var that = e.target;
-    var code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
+}).on('click', 'a[href*="https://www.taoguba.com.cn/quotes/"]', function (e) {
+    let that = e.target;
+    let code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
     console.log(code);
     chrome.runtime.sendMessage({event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
     return false;
-
-    if (!that._href) {
+    /*if (!that._href) {
         if (location.host === "127.0.0.1:3300") {
             code = that.href.match(/[^/]{6}(?=\.png)/i)[0];
             code = /^6\d{5}$/.test(code) ? 'sh' + code : 'sz' + code;
         } else {
             code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
-            //chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*/img,'')});
+            //chrome.runtime.sendMessage({event: 'tdx_view', code: code.replace(/[szh]*!/img,'')});
         }
 
         //富途股票页面
@@ -81,7 +82,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
         w = window.open(that._href);
     }
 
-    return false;
+    return false;*/
 });
 
 
@@ -94,7 +95,7 @@ if (location.href.includes('https://www.taoguba.com.cn/getMoreListAction')) {
         $loadMore.click();
     };
 
-    function onScrollEnd (callback) {
+    let onScrollEnd = function (callback) {
 
         let clientHeight = $(window).height();
         let $doc = $(document);

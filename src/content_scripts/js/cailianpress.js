@@ -3,12 +3,14 @@
  * 财联社页面有新消息，朗读出来。
  */
 
-import 'jquery'
+import $ from 'jquery';
+import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
+import utils from '../../js/lib/utils.js';
 
 console.log('I am cailianpress.js');
 
 // 当滚动到页面底部
-function on_scroll_end (callback) {
+function onScrollEnd (cb) {
 
     let clientHeight = $(window).height();
     let $doc = $(document);
@@ -18,7 +20,7 @@ function on_scroll_end (callback) {
         console.log(clientHeight, scrollTop, $doc.height());
         if (clientHeight + scrollTop + 70 >= $doc.height()) {
             console.log('滚动到了页面底部');
-            callback();
+            cb();
         }
     });
 }
@@ -27,7 +29,7 @@ function cailianpress () {
 
     let $more = $("div.contentLeft > div >div:last-child div").css({border: 'solid 1px green'});
 
-    on_scroll_end(function () {
+    utils.onScrollEnd(function () {
         $more[0].click();
     });
 
@@ -119,22 +121,25 @@ function cailianpress () {
 
 }
 
+// 云财经页面
 function yuncaijing () {
 
     let $more = $("#newslist >li.loading-list a").css({border: 'solid 1px green'});
 
-    on_scroll_end(function () {
+    utils.onScrollEnd(function () {
         $more[0].click();
     });
 
 }
 
+
+
 // 财联社
-if (location.hostname == 'www.cls.cn') {
+if (location.hostname === 'www.cls.cn') {
     $(cailianpress);
 } else
 // 云财经
-if (location.hostname == 'www.yuncaijing.com') {
+if (location.hostname === 'www.yuncaijing.com') {
     $(yuncaijing);
 }
 

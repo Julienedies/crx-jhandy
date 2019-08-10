@@ -2,7 +2,7 @@
  * Created by j on 17/9/10.
  */
 
-//alert('I am back-top.js.');
+console.log('I am back-top.js.');
 
 let div = document.createElement('div');
 div.style.cssText = `
