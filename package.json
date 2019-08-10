@@ -4,7 +4,7 @@
   "description": "personal use; chrome-extension.",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --config ./.build/webpack/index.js --watch",
-    "pro": "cross-env NODE_ENV=production webpack --config ./.build/webpack/index.js"
+    "pro": "cross-env NODE_ENV=production webpack --config ./.build/webpack/index.js --watch"
   },
   "author": "julienedies",
   "license": "ISC",

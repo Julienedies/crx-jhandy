@@ -37,7 +37,8 @@ const nodeSassIncludePaths = [path.resolve(__dirname, '../../../')]
 const entry = {
     'options': ['./html/options/main.js'],
     'background': ['./html/background/main.js'],
-    'lib/chrome': ['./js/lib/chrome.js']
+    'lib/chromeApi': ['./js/lib/chromeApi.js'],
+    'lib/utils': ['./js/lib/utils.js']
 }
 // 生成 content_scripts 入口文件
 utils.createEntryForContentScriptsJs(glob.sync(path.join(srcPath, 'content_scripts/js/**.js')) || [], entry);
@@ -51,7 +52,11 @@ const output = {
     publicPath: publicPath,
     filename: '[name].js',
     chunkFilename: '[name].js',
-    sourceMapFilename: '[file].map'
+    sourceMapFilename: '[file].map',
+    //libraryTarget: 'umd',
+    //globalObject: 'this',
+    //libraryExport: 'default',
+    //library: '[name]'
 }
 
 const plugins = [
@@ -135,6 +140,7 @@ if (isPro) {
 module.exports = {
     mode: config.mode,
     devtool: config.devtool,
+    target: 'web',
     projectRoot,
     context: srcPath,
     publicPath,
@@ -151,5 +157,30 @@ module.exports = {
         },
         extensions: ['.js', '.vue', '.json', '.scss', '.css']
     },
-    externals: {}
+    externals: {
+        /*jquery: {
+            commonjs: 'jquery',
+            commonjs2: 'jquery',
+            amd: 'jquery',
+            root: '$'
+        },
+        lodash: {
+            commonjs: 'lodash',
+            commonjs2: 'lodash',
+            amd: 'lodash',
+            root: '_'
+        },
+        moment: {
+            commonjs: 'moment',
+            commonjs2: 'moment',
+            amd: 'moment',
+            root: 'moment'
+        },
+        '@julienedies/brick': {
+            commonjs: '@julienedies/brick',
+            commonjs2: '@julienedies/brick',
+            amd: 'brick',
+            root: 'brick'
+        },*/
+    }
 }

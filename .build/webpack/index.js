@@ -57,7 +57,6 @@ module.exports = {
                         attrs: ['img:src', 'img:data-src', 'audio:src', 'link:href']
                     }
                 },
-                    //inlineHtmlLoader
                 ]
             },
             {

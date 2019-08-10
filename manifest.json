@@ -67,6 +67,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/cailianpress.js"
       ]
     },
@@ -110,7 +111,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
-        "dist/lib/chrome.js",
+        "dist/common.js",
         "dist/content_scripts/js/all.js",
         "dist/content_scripts/js/on-select.js"
       ]
@@ -125,6 +126,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/baidu.js"
       ]
     },
@@ -145,6 +147,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/ycj.js"
       ]
     },
@@ -155,6 +158,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/jhandy.js"
       ]
     },
@@ -166,6 +170,7 @@
         "data/stock-list.js",
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/back-top.js",
         "dist/content_scripts/js/taoguba.js"
       ]
@@ -188,6 +193,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/xueqiu.js"
       ]
     },
@@ -201,6 +207,7 @@
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
+        "dist/common.js",
         "dist/content_scripts/js/iwencai.js"
       ]
     },
@@ -214,9 +221,10 @@
         "dist/content_scripts/css/10jqka.css"
       ],
       "js": [
+        "data/T.js",
         "dist/runtime.js",
         "dist/vendors.js",
-        "data/T.js",
+        "dist/common.js",
         "dist/content_scripts/js/10jqka.js"
       ]
     }
