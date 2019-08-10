@@ -2,11 +2,16 @@
  * Created by j on 18/6/23.
  */
 
-/*let config = {"cls.speak":false,"stock.interval":"10","stock.pages":[{"d":1,"id":"ths_p","name":" 同花顺资料"},{"d":1.5,"id":"ycj","name":"云财经","show":true},{"d":1,"id":"ths_news","name":"同花顺新闻","show":true},{"d":1,"id":"ths_new","name":"同花顺动态","show":true},{"d":1,"id":"ths_c","name":"同花顺概念","show":true},{"d":1.5,"id":"site","name":"个股站点","show":false}],"stock.queue":false,"stock.relation":true};
+/*let config = {"cls.notify":true,"cls.speak":false,"noteTag.FNCVCQiU5OS5odG1s":"瑞鹤仙","noteTag.FNSVBRSVCNi5odG1s":"炒股养家","noteTag.aHR0cDovL":"炒股养家","noteTag.aHR0cHM6L":"xxxx","noteTag.zZXJJRD00OTQ0Njk=":"令胡冲","stock.interval":"10","stock.pages":[{"d":0.1,"id":"ths_p","name":" 同花顺资料"},{"d":1,"id":"ycj","name":"云财经","show":true},{"d":2,"id":"wencai","name":"问财","show":false},{"d":4,"id":"ths_new","name":"同花顺动态","show":true},{"d":5,"id":"ths_c","name":"同花顺概念","show":true},{"d":2,"id":"ths_news","name":"同花顺新闻","show":false},{"d":3,"id":"taoguba","name":"淘股吧","show":false},{"d":2,"id":"site","name":"个股站点","show":false}],"stock.queue":false,"stock.relation":true};
 
 for(let i in config){
     chrome_storage.set(i, config[i]);
 }*/
+
+chrome.storage.sync.get(null, function (result) {
+    console.log(JSON.stringify(result));
+});
+
 
 brick.controllers.reg('mainCtrl', function () {
 
