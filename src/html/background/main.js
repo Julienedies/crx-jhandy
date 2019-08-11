@@ -5,7 +5,6 @@
 import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 import './contextMenus'
-import './google-search'
 import './webRequest'
 
 
@@ -66,11 +65,11 @@ const EVENTS = {
 
     notify: function (request) {
         console.info(request);
-        var opt = {
+        let opt = {
             type: 'basic',
             title: request.title || '',
             message: request.msg || 'hello world.',
-            iconUrl: 'img/icon-bitty.png'
+            iconUrl: '/assets/img/icon-bitty.png'
         };
         chrome.notifications.create('', opt, function (id) {
             setTimeout(function () {

@@ -9,10 +9,8 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 import onSelectHtml from './on-select.html';
 
-
-
-const shandyHost = 'http://localhost:3300'
-const $doc = $(document)
+const shandyHost = 'http://localhost:3300';
+const $doc = $(document);
 
 let noteTag = '';
 
@@ -33,7 +31,6 @@ const contextMenu = {
     $elm: null,
     width: 0,
     height: 0,
-    // oncontextmenu_view: __inline('oncontextmenu.html'),
     on_select_view: onSelectHtml,
     render: function (view_name) {
         this.$elm.html(this[view_name]);
@@ -93,7 +90,7 @@ const contextMenu = {
                     url: `${ shandyHost }/stock/c/${ code }`,
                     type: 'post',
                     data: {
-                        "链接": location.href
+                        '链接': location.href
                     }
                 }).done(function (msg) {
                     let name = msg['名称'];

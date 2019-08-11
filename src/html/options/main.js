@@ -9,7 +9,7 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi'
 
 import $ from 'jquery'
 import brick from '@julienedies/brick'
-//import '@julienedies/brick/dist/brick.css'
+import '@julienedies/brick/dist/brick.css'
 
 import '../../css/common.scss'
 

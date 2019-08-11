@@ -3,7 +3,7 @@
  * webRequest 请求处理
  */
 
-function callback(details) {
+function callback (details) {
     console.log(details.url);
     // https://www.iwencai.com/stockpick/cache?token=f190db02092f28a9ef60be6c926616c0&p=1&perpage=50&changeperpage=1&showType=
     let reg = /[&]perpage[=](?:10|30|50)/;
