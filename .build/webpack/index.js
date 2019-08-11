@@ -41,7 +41,8 @@ module.exports = {
                 use: [
                     {
                         loader: 'babel-loader',
-                        /*options: {
+                        /*  配置见 .babelrc
+                        options: {
                             presets: ['@babel/preset-env'],
                             plugins: ['@babel/plugin-syntax-dynamic-import']
                         }*/
@@ -95,7 +96,7 @@ module.exports = {
                         options: {
                             name: '[path][name].css',
                             outputPath: '',
-                            publicPath: config.publicPath + ''
+                            publicPath: config.publicPath
                         }
                     },
                     {loader: "extract-loader"},
@@ -113,8 +114,8 @@ module.exports = {
                     }
                 ]
             },
-            /*{
-                test: /\.(sa|sc|c)ss$/,
+            {
+                test: /node_modules\/.*\.(sa|sc|c)ss$/,
                 use: [
                     config.cssLoader,
                     {
@@ -128,7 +129,7 @@ module.exports = {
                         }
                     }
                 ]
-            }*/
+            }
         ]
     },
     optimization: {

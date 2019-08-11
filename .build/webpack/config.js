@@ -44,7 +44,6 @@ const entry = {
 utils.createEntryForContentScriptsJs(glob.sync(path.join(srcPath, 'content_scripts/js/**.js')) || [], entry);
 utils.createEntryForContentScriptsCss(glob.sync(path.join(srcPath, 'content_scripts/css/**.css')) || [], entry);
 
-console.log(111111111111111111)
 console.log(entry)
 
 const output = {
@@ -53,10 +52,6 @@ const output = {
     filename: '[name].js',
     chunkFilename: '[name].js',
     sourceMapFilename: '[file].map',
-    //libraryTarget: 'umd',
-    //globalObject: 'this',
-    //libraryExport: 'default',
-    //library: '[name]'
 }
 
 const plugins = [
@@ -91,7 +86,7 @@ const plugins = [
 let devServer = {}
 let cssLoader
 
-const devServerPort = 9083
+const devServerPort = 9084
 
 if (isPro) {
 
@@ -124,7 +119,7 @@ if (isPro) {
         disableHostCheck: true
     }
 
-    // hmr
+    // hmr  暂时取消，对content_scripts js 不需要hmr
 /*    Object.entries(entry).forEach(([k, v]) => {
         v = Array.isArray(v) ? v : [v]
         //v.push(`webpack-hot-middleware/client?noInfo=true&reload=true&path=http://localhost:${ devServerPort }/__webpack_hmr`)
@@ -141,8 +136,8 @@ module.exports = {
     mode: config.mode,
     devtool: config.devtool,
     target: 'web',
-    projectRoot,
     context: srcPath,
+    projectRoot,
     publicPath,
     devServer,
     entry,
@@ -152,35 +147,9 @@ module.exports = {
     nodeSassIncludePaths,
     resolve: {
         alias: {
-            //basic: path.resolve(__dirname, '../../../basic/'),
-            //bulma: path.resolve(context, './vendor/bulma/'),
         },
         extensions: ['.js', '.vue', '.json', '.scss', '.css']
     },
     externals: {
-        /*jquery: {
-            commonjs: 'jquery',
-            commonjs2: 'jquery',
-            amd: 'jquery',
-            root: '$'
-        },
-        lodash: {
-            commonjs: 'lodash',
-            commonjs2: 'lodash',
-            amd: 'lodash',
-            root: '_'
-        },
-        moment: {
-            commonjs: 'moment',
-            commonjs2: 'moment',
-            amd: 'moment',
-            root: 'moment'
-        },
-        '@julienedies/brick': {
-            commonjs: '@julienedies/brick',
-            commonjs2: '@julienedies/brick',
-            amd: 'brick',
-            root: 'brick'
-        },*/
     }
 }
