@@ -1,11 +1,12 @@
 /**
- * Created by j on 18/2/11.
  * 修改淘股吧实盘比赛选手实盘纪录个股链接，方便复盘。
+ * Created by j on 18/2/11.
  */
 
 import $ from 'jquery';
+import utils from '../../js/lib/utils.js'
 
-console.log('I am reset-stock-link.js.');
+console.log('I am taoguba.js.');
 
 let w; //新窗口引用。
 
@@ -27,7 +28,7 @@ function fix_links () {
     let code = arr[0];
     if (code) {
         for (let i in STOCK_LIST) {
-            if (STOCK_LIST[i][0] == code) {
+            if (STOCK_LIST[i][0] === code) {
                 console.log(code);
                 $th.text(code + '(*)'.replace('*', STOCK_LIST[i][1]));
                 isReadInfo && $th.after(`<a href="view_in_ftnn/${ code }">ftnn</a> `);
@@ -41,6 +42,7 @@ function fix_links () {
 setTimeout(function () {
     $('a').each(fix_links);
 }, 2800);
+
 
 $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     let that = e.target;
@@ -86,30 +88,15 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
 });
 
 
-// ------------------------------------------------------------------------- 滚动到页面底部自动加载更多 start
-
+// ------------------------------------- 滚动到页面底部自动加载更多 start --------------------------------------------
+// 淘股吧超级动态页面
 if (location.href.includes('https://www.taoguba.com.cn/getMoreListAction')) {
 
     let $loadMore = $('#clickLoadmore');
-    let cb = () => {
+
+    utils.onScrollEnd( () => {
         $loadMore.click();
-    };
-
-    let onScrollEnd = function (callback) {
-
-        let clientHeight = $(window).height();
-        let $doc = $(document);
-
-        $doc.on('scroll', function (e) {
-            // 如果窗口高 + 向上滚动高度 = 文档高度, 则表示滚动到了页面底部;
-            if (clientHeight + $doc.scrollTop() + 170 >= $doc.height()) {
-                console.log('滚动到了页面底部');
-                callback();
-            }
-        });
-    }
-
-    onScrollEnd(cb);
+    });
 }
 
-// ------------------------------------------------------------------------- 滚动到页面底部自动加载更多 end
+// --------------------------------------- 滚动到页面底部自动加载更多 end ----------------------------------------

@@ -3,15 +3,15 @@
  * 股票K线页面样式调整。
  */
 
-//alert('fix-stock-k-line.js');
+import $ from 'jquery';
 
 //接收同花顺页面发来的个股code
-function on_message_callback(message, sender, sendResponse) {
-    var code = message.code;
+function on_message_callback (message, sender, sendResponse) {
+    let code = message.code;
     if (code) {
         code = /^6/.test(code) ? 'sh' + code : 'sz' + code;
-        var _href = location.href.replace(/[sS][hHzZ]\d{6}/, code);
-        if(_href !=location.href) {
+        let _href = location.href.replace(/[sS][hHzZ]\d{6}/, code);
+        if (_href !== location.href) {
             location.href = _href;
         }
     }
@@ -20,10 +20,10 @@ function on_message_callback(message, sender, sendResponse) {
 //接收同花顺页面发来的个股code
 chrome.runtime.onMessage.addListener(on_message_callback);
 
-var host = location.host;
+let host = location.host;
 
 //新浪财经个股页面 http://finance.sina.com.cn/realstock/company/sz000702/nc.shtml
-if(host.match('sina')){
+if (host.match('sina')) {
 
     $('[data-id="KKE_tab_kd"]').click();
     $('.kke_cfg_fullscreen').click();
@@ -43,10 +43,10 @@ if(host.match('sina')){
         $('.stockChart .enter-fs a').click();
 
         //
-        var f = function(){
+        let f = function(){
             $('table.quote-info td').each(function(){
-                var $th = $(this);
-                var text = $th.text();
+                let $th = $(this);
+                let text = $th.text();
                 if(/(成交额)|(换手率)|(流通市值)/img.test(text)){
                     $th.css({
                         background:'#06c',
@@ -60,12 +60,12 @@ if(host.match('sina')){
 
         //
         setTimeout(function(){
-            var $widgets = $('.float-right.stock__side .stock-widget');
-            var $widget_1 = $widgets.eq(1);
+            let $widgets = $('.float-right.stock__side .stock-widget');
+            let $widget_1 = $widgets.eq(1);
 
             $widgets.each(function(index){
-                var $th = $(this);
-                var title = $th.find('.widget-header .title').text();
+                let $th = $(this);
+                let title = $th.find('.widget-header .title').text();
                 if(title.match('行业：')){
                     $th.insertAfter($widget_1);
                 }else if(title.match('大家还关注')){

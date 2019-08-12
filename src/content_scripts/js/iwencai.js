@@ -2,6 +2,8 @@
  * Created by j on 18/5/13.
  */
 
+import $ from 'jquery';
+
 $(function(){
     //
     setTimeout(function(){

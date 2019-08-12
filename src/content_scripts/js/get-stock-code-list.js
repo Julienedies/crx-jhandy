@@ -2,7 +2,7 @@
  * Created by j on 18/3/9.
  */
 
-    //alert(' I am get-stock-code-list.js.');
+import $ from 'jquery';
 
 var $99 = $('<div id="99" style="position: fixed;top:0;left:10px;width:200px;height:100%;border:blue;background:white;z-index:100000;"><textarea style="display:block;width:100%;height:100%;"></textarea></div>').appendTo(document.body);
 

@@ -1,6 +1,6 @@
 /**
- * Created by j on 18/5/9.
  * 财联社页面有新消息，朗读出来。
+ * Created by j on 18/5/9.
  */
 
 import $ from 'jquery';
@@ -9,22 +9,7 @@ import utils from '../../js/lib/utils.js';
 
 console.log('I am cailianpress.js');
 
-// 当滚动到页面底部
-function onScrollEnd (cb) {
-
-    let clientHeight = $(window).height();
-    let $doc = $(document);
-
-    $doc.on('scroll', function (e) {
-        let scrollTop = $doc.scrollTop();
-        console.log(clientHeight, scrollTop, $doc.height());
-        if (clientHeight + scrollTop + 70 >= $doc.height()) {
-            console.log('滚动到了页面底部');
-            cb();
-        }
-    });
-}
-
+// 财联社
 function cailianpress () {
 
     let $more = $("div.contentLeft > div >div:last-child div").css({border: 'solid 1px green'});
@@ -131,7 +116,6 @@ function yuncaijing () {
     });
 
 }
-
 
 
 // 财联社

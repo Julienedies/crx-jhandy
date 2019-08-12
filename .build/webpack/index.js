@@ -87,7 +87,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(sa|sc|c)ss$/,
+                test: /(?:(?:css\/vendor\/)|content_scripts).+\.(sa|sc|c)ss$/,
                 exclude: /node_modules/,
                 use: [
                     //cssLoader,
@@ -115,7 +115,8 @@ module.exports = {
                 ]
             },
             {
-                test: /node_modules\/.*\.(sa|sc|c)ss$/,
+                test: /\.(sa|sc|c)ss$/,
+                exclude: /(?:css\/vendor)|content_scripts/,
                 use: [
                     config.cssLoader,
                     {

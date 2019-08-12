@@ -5,7 +5,7 @@
 import $ from 'jquery';
 import utils from '../../js/lib/utils'
 
-console.log('I am jhandy.js', utils.isTradingTime);
+console.log('I am jhandy.js');
 
 
 let $notify_news = $('#notify_news');
