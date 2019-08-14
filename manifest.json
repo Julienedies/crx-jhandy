@@ -58,21 +58,6 @@
     },
     {
       "matches": [
-        "https://www.cls.cn/*",
-        "http://www.yuncaijing.com/insider/simple.html"
-      ],
-      "css": [
-        "dist/content_scripts/css/cailianpress.css"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/cailianpress.js"
-      ]
-    },
-    {
-      "matches": [
         "*://www3.55188.com/*"
       ],
       "css": [
@@ -87,33 +72,6 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/content_scripts/js/ng.js"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "exclude_matches": [
-        "https://www.zhihu.com/*"
-      ],
-      "js": [
-        "dist/content_scripts/js/back-top.js"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "exclude_matches": [],
-      "css": [
-        "dist/content_scripts/css/all.css"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/all.js",
-        "dist/content_scripts/js/on-select.js"
       ]
     },
     {
@@ -142,41 +100,6 @@
     },
     {
       "matches": [
-        "http://www.yuncaijing.com/quote/*"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/ycj.js"
-      ]
-    },
-    {
-      "matches": [
-        "http://localhost:3300/*"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/jhandy.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://www.taoguba.com.cn/*"
-      ],
-      "js": [
-        "data/stock-list.js",
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/back-top.js",
-        "dist/content_scripts/js/taoguba.js"
-      ]
-    },
-    {
-      "matches": [
         "https://gupiao.baidu.com/stock/*",
         "http://finance.sina.com.cn/realstock/company/*"
       ],
@@ -188,12 +111,122 @@
     },
     {
       "matches": [
+        "*://*/*"
+      ],
+      "css": [
+        "dist/content_scripts/css/all.css"
+      ],
+      "js": [
+        "dist/content_scripts/js/all.js"
+      ]
+    },
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "exclude_matches": [
+        "https://www.zhihu.com/*"
+      ],
+      "js": [
+        "dist/content_scripts/js/back-top.js"
+      ]
+    },
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "exclude_matches": [
+        "http://localhost:3300/*",
+        "https://www.cls.cn/*",
+        "https://www.taoguba.com.cn/*",
+        "https://xuangubao.cn/*",
+        "https://xueqiu.com/S/*",
+        "https://www.iwencai.com/data-robot/*",
+        "http://basic.10jqka.com.cn/*/*",
+        "http://www.yuncaijing.com/quote/*",
+        "http://www.yuncaijing.com/insider/simple.html"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://localhost:3300/*"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
+        "dist/content_scripts/js/jhandy.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.cls.cn/*",
+        "http://www.yuncaijing.com/insider/simple.html"
+      ],
+      "css": [
+        "dist/content_scripts/css/cailianpress.css"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
+        "dist/content_scripts/js/cailianpress.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://xuangubao.cn/*"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
+        "dist/content_scripts/js/xuangubao.js"
+      ]
+    },
+    {
+      "matches": [
+        "http://www.yuncaijing.com/quote/*"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
+        "dist/content_scripts/js/ycj.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.taoguba.com.cn/*"
+      ],
+      "js": [
+        "data/stock-list.js",
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
+        "dist/content_scripts/js/taoguba.js"
+      ]
+    },
+    {
+      "matches": [
         "https://xueqiu.com/S/*"
       ],
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/xueqiu.js"
       ]
     },
@@ -208,6 +241,7 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/iwencai.js"
       ]
     },
@@ -225,6 +259,7 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
+        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/10jqka.js"
       ]
     }

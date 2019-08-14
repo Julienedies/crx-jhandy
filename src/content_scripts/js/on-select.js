@@ -9,6 +9,8 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 import onSelectHtml from './on-select.html';
 
+console.log('I am on-select.js.');
+
 const shandyHost = 'http://localhost:3300';
 const $doc = $(document);
 
