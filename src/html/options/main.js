@@ -128,7 +128,7 @@ brick.reg('downloadCtrl', function () {
     let scope = this;
 
     scope.download = function () {
-        chrome_tabs.inject(['dist/runtime.js', 'dist/vendors.js', 'dist/content_scripts/js/download-img.js']);
+        chrome_tabs.inject(['dist/runtime.js', 'dist/vendors.js', 'dist/common.js', 'dist/content_scripts/js/download-img.js']);
         $(this).text('start');
         setTimeout(() => {
             window.close();
@@ -139,8 +139,18 @@ brick.reg('downloadCtrl', function () {
 
 
 
-brick.reg('otherCtrl', function () {
-    let scope = this;
+brick.reg('otherCtrl', function (scope) {
+
+    scope.speak = function () {
+        chrome_tabs.inject(['dist/runtime.js', 'dist/vendors.js', 'dist/common.js', 'dist/content_scripts/js/speak.js']);
+        //$(this).text('start');
+        $.icMsg('已经开启');
+        setTimeout(() => {
+            window.close();
+        }, 1000);
+
+    }
+
 
 });
 
