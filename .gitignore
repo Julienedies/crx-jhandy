@@ -21,7 +21,7 @@ test.html
 
 src/css/vendor/
 dist/
-
+*.zip
 
 !.gitkeep
 

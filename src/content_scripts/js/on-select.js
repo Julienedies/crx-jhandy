@@ -17,7 +17,6 @@ const $doc = $(document);
 let noteTag = '';
 
 chrome_storage.get(`noteTag.${ btoa(location.href).substr(-17) }`, function (val) {
-    console.log('noteTag', val)
     noteTag = val;
 });
 
