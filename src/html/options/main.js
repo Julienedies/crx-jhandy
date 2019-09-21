@@ -138,7 +138,6 @@ brick.reg('downloadCtrl', function () {
 });
 
 
-
 brick.reg('otherCtrl', function (scope) {
 
     scope.speak = function () {
@@ -151,7 +150,6 @@ brick.reg('otherCtrl', function (scope) {
 
     }
 
-
 });
 
 
@@ -159,12 +157,6 @@ brick.reg('setNoteTagCtrl', function (scope) {
 
     let key = '';
     let $input = scope.$elm.find('[name=logic_tag]');
-
-    scope.setLogicTag = function (e) {
-        let val = $input.val();
-        val && chrome_storage.set(key, val);
-        console.log(key, val);
-    }
 
     chrome.tabs.getSelected(function (tab) {
 
@@ -177,6 +169,14 @@ brick.reg('setNoteTagCtrl', function (scope) {
 
         });
 
+
+        scope.setLogicTag = function (e) {
+            let val = $input.val();
+            if (val.trim() !== '') {
+                val && chrome_storage.set(key, val);
+                $.icMsg(`已经设定${ key } ：${ val }`);
+            }
+        }
 
     });
 

@@ -36,4 +36,4 @@ setTimeout( () => {
 
     document.body.appendChild(div);
 
-}, 3000);
+}, 1000);

@@ -42,18 +42,18 @@ const contextMenu = {
 
         // 交易逻辑记录
         $elm.on('click', '[todo=mark_stock_logic]', function (e) {
-            let sign = '';
+            let tag = '';
             if (noteTag) {
-                sign = `\r\n#${ noteTag }`;
+                tag = `${ noteTag }`;
             } else {
-                sign = prompt('标记') || '';
-                sign = sign && `\r\n#${ sign }`;
+                tag = prompt('添加标记') || '';
+                tag = tag && `${ tag }`;
             }
 
             $.ajax({
                 url: `${ shandyHost }/stock/logic`,
                 type: 'post',
-                data: {text: `${ that.query }${ sign }`, type: '', tag: sign, source: {url: location.href, title: $('title').text()}}
+                data: {text: `${ that.query }\r\n#${ tag }`, type: '', tag: tag, source: {url: location.href, title: $('title').text()}}
             }).done(function (msg) {
                 chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
             }).fail(function (err) {
