@@ -14,7 +14,7 @@ let $active_ftnn = $('#active_ftnn');
 
 chrome.runtime.onMessage.addListener(function (msg) {
 
-    console.info('onMessage =>', msg);
+    console.info(msg.event, msg);
 
     let e = msg.event;
 

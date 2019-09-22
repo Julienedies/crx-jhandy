@@ -210,7 +210,7 @@
         "https://www.taoguba.com.cn/*"
       ],
       "js": [
-        "data/stock-list.js",
+        "data/stocks.js",
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
