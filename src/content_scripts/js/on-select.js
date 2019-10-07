@@ -42,6 +42,7 @@ const contextMenu = {
 
         // 交易逻辑记录
         $elm.on('click', '[todo=mark_stock_logic]', function (e) {
+            let text = that.query;
             let tag = '';
             if (noteTag) {
                 tag = `${ noteTag }`;
@@ -50,10 +51,14 @@ const contextMenu = {
                 tag = tag && `${ tag }`;
             }
 
+            if (tag) {
+                text = `${ text }\\r\\n#${ tag }`
+            }
+
             $.ajax({
                 url: `${ shandyHost }/stock/logic`,
                 type: 'post',
-                data: {text: `${ that.query }\r\n#${ tag }`, type: '', tag: tag, source: {url: location.href, title: $('title').text()}}
+                data: {text: `${ text }`, type: '', tag: tag, source: {url: location.href, title: $('title').text()}}
             }).done(function (msg) {
                 chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
             }).fail(function (err) {
@@ -198,7 +203,6 @@ const contextMenu = {
         });
     }
 };
-
 
 
 contextMenu.init();
