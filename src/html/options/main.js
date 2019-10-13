@@ -27,7 +27,12 @@ brick.reg('mainCtrl', function () {
     // 用于子控制器继承
     scope.on_checkbox_changed = function () {
         let $th = $(this);
-        chrome_storage.set($th.attr('name'), $th.prop('checked'));
+        let name = $th.attr('name');
+        let checked = $th.prop('checked');
+        console.log(name, checked);
+        chrome_storage.set(name, checked, (...args)=> {
+            console.log(args);
+        });
     };
 });
 
@@ -66,7 +71,7 @@ brick.reg('stockCtrl', function () {
     scope.edit = function () {
         let $th = $(this);
         let id = $th.data('id');
-        let p = list.get(id)[0];
+        let p = list.get(id);
         console.log(p);
         let arr = [p.name, p.id, p.d, p.show];
         $elm.find('input[name=page]').val(arr.join(','));
@@ -100,6 +105,7 @@ brick.reg('stockCtrl', function () {
 
         chrome_storage.set('stock.pages', pages);
         console.table(list.get());
+        $.icMsg('保存成功！');
     }
 
 });
@@ -156,7 +162,7 @@ brick.reg('otherCtrl', function (scope) {
 brick.reg('setNoteTagCtrl', function (scope) {
 
     let key = '';
-    let $input = scope.$elm.find('[name=logic_tag]');
+    let $input = scope.$elm.find('[name=logicTag]');
 
     chrome.tabs.getSelected(function (tab) {
 

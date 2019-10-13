@@ -118,8 +118,8 @@ function yuncaijing () {
 }
 
 
-// 财联社
-if (location.hostname === 'www.cls.cn') {
+// 财联社首页
+if (location.hostname === 'www.cls.cn' && location.pathname === '/') {
     $(cailianpress);
 } else
 // 云财经

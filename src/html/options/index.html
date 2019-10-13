@@ -117,8 +117,8 @@
 
         <!-- -->
         <section ic-ctrl="otherCtrl">
-            <div class="box">
-                <h2>url搜索列表</h2>
+            <div class="box hide">
+                <h2 class="title is-6">url搜索列表</h2>
                 <div class="field">
                     <label class="label">名称</label>
                     <div class="control">
@@ -128,14 +128,20 @@
             </div>
 
             <div class="box" ic-ctrl="setNoteTagCtrl">
-                <div class="control">
-                    <input class="input" type="text" name="logic_tag_key" placeholder="logic标签key，默认页面url">
+                <h6 class="title is-6">设置logic标签</h6>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" name="logicUrl" placeholder="logic标签key，默认页面url">
+                    </div>
                 </div>
 
-                <div class="field has-addons">
+                <div class="field">
                     <div class="control is-expanded">
-                        <input class="input" type="text" value="" name="logic_tag">
+                        <input class="input" type="text" value="" name="logicTag">
                     </div>
+                </div>
+
+                <div class="field">
                     <div class="control">
                         <a class="button is-primary" ic-click="setLogicTag">
                             设定交易逻辑标签
