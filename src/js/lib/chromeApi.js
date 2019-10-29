@@ -79,7 +79,7 @@ const chrome_tabs = {
         console.log(url, ' --------- ', _url);
         chrome.tabs.query({url: _url}, function (tabs) {
             tabs = tabs.filter(tab => {
-                console.log(tab);
+                console.info('tab =>', tab);
                 return pattern || tab.url.indexOf(url) > -1;
             });
             callback(tabs);

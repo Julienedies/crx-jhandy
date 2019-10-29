@@ -62,12 +62,14 @@ function cailianpress () {
         if (f1 || f2) {
 
             let $elm = $("div.contentLeft > div").css({border: 'solid 1px blue'});
-            let $child = $elm.find(' > div:eq(1)>div:eq(2) .tele-right-text').css({border: 'solid 1px red'});
+            let selector = ' >div.p-r+div .tele-right-text';
+            let $child = $elm.find(selector).css({border: 'solid 1px red'});
 
             let MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
             let observer = new MutationObserver(function (mutations) {
 
+                console.table(mutations);
                 let m = mutations[0];
 
                 if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略
@@ -79,7 +81,7 @@ function cailianpress () {
                 clearTimeout(timer);
 
                 timer = setTimeout(function () {
-                    let $child = $elm.find(' > div:eq(1) > div:eq(2) .tele-right-text');
+                    let $child = $elm.find(selector);
                     text = text || $child.text();
                     console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
                     let arr = text.match(/^[【]([^】]+)[】]/);
@@ -93,13 +95,13 @@ function cailianpress () {
             });
 
             let MutationObserverConfig = {
-                //childList: true,
+                childList: true,
                 subtree: true,
-                characterData: true,
+                //characterData: true,
                 characterDataOldValue: true
             };
 
-            observer.observe($elm[0], MutationObserverConfig);
+            observer.observe(document.body, MutationObserverConfig);
 
         }
     });
