@@ -65,6 +65,8 @@ function cailianpress () {
             let selector = ' >div.p-r+div .tele-right-text';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
 
+            let oldText = '';
+
             let MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
             let observer = new MutationObserver(function (mutations) {
@@ -87,7 +89,9 @@ function cailianpress () {
                     let arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
                     //text = arr ? arr[1] : text;
+                    if(text === oldText) return;
                     if (text === '点击加载更多') return;
+                    oldText = text;
                     f1 && f1(text);
                     f2 && f2(text);
                 }, 2000);
