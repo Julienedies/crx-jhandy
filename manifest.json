@@ -76,7 +76,7 @@
     },
     {
       "matches": [
-        "*://www.baidu.com/*"
+        "*://*.baidu.com/*"
       ],
       "css": [
         "dist/content_scripts/css/baidu.css"
