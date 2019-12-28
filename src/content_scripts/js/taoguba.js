@@ -41,7 +41,7 @@ function fix_links () {
 //将淘股吧里的股票code添加股票名称，方便识别。
 setTimeout(function () {
     $('a').each(fix_links);
-}, 2800);
+}, 2400);
 
 
 $(document.body).on('click', 'a[href^=view_in_]', function (e) {

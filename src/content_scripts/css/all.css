@@ -1,35 +1,42 @@
 #crx_jhandy_oncontextmenu {
-    display: none;
-    position: fixed;
-    z-index: 10001;
-    top: 200px;
-    left: 300px;
-    padding: 5px;
-    text-align: left !important;
-    background: rgba(0, 0, 0, 0.6);
-    border-radius: 5px;
-    font: 10px/16px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
-    -webkit-user-select: none;
-    user-select: none;
+  display: none;
+  position: fixed;
+  z-index: 10001;
+  top: 200px;
+  left: 300px;
+  padding: 5px;
+  text-align: left !important;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 5px;
+  font: 10px/16px "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif !important;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #crx_jhandy_oncontextmenu button {
-    display: inline-block;
-    margin: 4px 4px;
-    padding: 0 3px;
-    cursor: pointer;
-    border: none;
-    color: #040404;
-    background: white;
-    font: inherit !important;
+  display: inline-block;
+  margin: 4px 4px;
+  padding: 0 3px;
+  cursor: pointer;
+  border: none;
+  color: #040404;
+  background: white;
+  font: inherit !important;
 }
 
 
-.gitbook-plugin-modal {
-    display: none !important;
+.gitbook-plugin-modal, .xgb-tools {
+  display: none !important;
 }
 
 
 .stocklist-container .stocklist-main .stocklist-pool-table {
-    background-image: none !important;
+  background-image: none !important;
+  font-size: inherit;
 }
+
+
+.xgb-tools {
+  display: none!important;
+}
+

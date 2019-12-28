@@ -87,10 +87,10 @@ module.exports = {
                 ]
             },
             {
-                test: /(?:(?:css\/vendor\/)|content_scripts).+\.(sa|sc|c)ss$/,
+                test: /(?:(?:css\/vendor\/)|content_scripts\/).+\.(?:sa|sc|c)ss$/,
                 exclude: /node_modules/,
                 use: [
-                    //cssLoader,
+                    //config.cssLoader,
                     {
                         loader: "file-loader",
                         options: {
