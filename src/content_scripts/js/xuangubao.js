@@ -13,5 +13,5 @@ console.log('I am xuangubao.js.');
 let $loadmore = $('.home-news-footer-loadmore');
 
 utils.onScrollEnd(() => {
-    $loadmore[0].click();
+    $loadmore.length && $loadmore[0].click();
 });

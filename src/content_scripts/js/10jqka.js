@@ -41,7 +41,8 @@ let index = stocks.indexOf(currentCode);
 let prev = stocks[index - 1] || stocks[stocks.length - 1];
 let next = stocks[index + 1] || stocks[0];
 
-let prefixCode = (/^6/.test(currentCode) ? 'sh' : 'sz') + currentCode;
+let stockPrefix = /^6/.test(currentCode) ? 'sh' : 'sz';
+let prefixCode = stockPrefix + currentCode;
 
 let urlMap = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefixCode),
@@ -51,6 +52,7 @@ let urlMap = {
     ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
     ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
     wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', currentCode),
+    xuangubao: `https://xuangubao.cn/stock/${currentCode}.${ stockPrefix.toLocaleUpperCase().replace('SH','SS') }`,
     taoguba: `https://www.taoguba.com.cn/quotes/${prefixCode}`,
     site: ''
 };
@@ -103,11 +105,12 @@ let createNav = function () {
 };
 
 let createLinks = function () {
-    let html = `
-            <span> &nbsp; <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
+    let html = `<div> 
             <a href="${urlMap.ycj}" target="_blank">云财经</a>
+            <a href="${urlMap.xuangubao}" target="_blank">选股宝</a>
             <a href="${urlMap.taoguba}" target="_blank">淘股吧</a>
-            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义数据</a></span>`;
+            <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
+            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义</a></div>`;
     //$url = $('iframe').contents().find('#detail a').eq(0);
     let $td = $('#detail table:first td:last');
     let site_url = $td.find('a:first').attr('href');

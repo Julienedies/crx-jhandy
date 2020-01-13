@@ -185,6 +185,9 @@
       "matches": [
         "https://xuangubao.cn/*"
       ],
+      "css": [
+        "dist/content_scripts/css/xuangubao.css"
+      ],
       "js": [
         "dist/runtime.js",
         "dist/vendors.js",
