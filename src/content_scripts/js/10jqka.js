@@ -9,7 +9,7 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 console.log('I am 10jqka.js.');
 
-let STOCKS = window.STOCKS || [];
+let STOCKS = window.STOCKS || [];  // 主要用于股票列表自动切换功能
 
 let open_by_jhandy = location.search.match(/\?self[=][1]/);
 
@@ -105,11 +105,14 @@ let createNav = function () {
 };
 
 let createLinks = function () {
+    let name = document.title.match(/\S+(?=.\d{6})/img);
+    let wd = `${name?name[0]:currentCode} A股`;
     let html = `<div> 
             <a href="${urlMap.ycj}" target="_blank">云财经</a>
             <a href="${urlMap.xuangubao}" target="_blank">选股宝</a>
             <a href="${urlMap.taoguba}" target="_blank">淘股吧</a>
             <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
+            <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${encodeURIComponent(wd)}", target="_blank">百度</a></div>
             <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义</a></div>`;
     //$url = $('iframe').contents().find('#detail a').eq(0);
     let $td = $('#detail table:first td:last');

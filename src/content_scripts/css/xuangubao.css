@@ -1,3 +1,10 @@
-.stock-info-bkj{
+/*.stock-info-bkj{
     width:84%!important;
 }
+
+.stock-info-bkj .swiper-wrapper{
+    display: inline-block!important;
+}
+.stock-info-bkj .swiper-slide{
+    width: auto!important;
+}*/
