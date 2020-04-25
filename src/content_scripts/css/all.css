@@ -40,3 +40,6 @@
   display: none!important;
 }
 
+#nuxt-layout-container{
+  overflow: visible!important;
+}
