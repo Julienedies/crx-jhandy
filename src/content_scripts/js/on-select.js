@@ -144,6 +144,7 @@ const contextMenu = {
         $elm.on('click', (e) => {
             setTimeout(() => {
                 contextMenu.hide();
+                window.getSelection().empty();
             }, 100);
             return false;
         });
