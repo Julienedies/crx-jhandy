@@ -48,6 +48,11 @@ const contextMenu = {
                 tag = `${ noteTag }`;
             } else {
                 tag = prompt('添加标记') || '';
+                if (tag) {
+                    let key = `noteTag.${ btoa(location.href).substr(-17) }`;
+                    noteTag = tag;
+                    chrome_storage.set(key, noteTag);
+                }
                 tag = tag && `${ tag }`;
             }
 

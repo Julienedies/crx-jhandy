@@ -172,7 +172,6 @@ brick.reg('setNoteTagCtrl', function (scope) {
             if (val) {
                 $input.val(val)
             }
-
         });
 
 
