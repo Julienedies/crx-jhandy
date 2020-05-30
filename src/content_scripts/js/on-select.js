@@ -57,7 +57,7 @@ const contextMenu = {
             }
 
             if (tag) {
-                text = `${ text }\r\n#${ tag }`
+                text = `${ text }`
             }
 
             $.ajax({
