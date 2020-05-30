@@ -117,7 +117,8 @@
         "dist/content_scripts/css/all.css"
       ],
       "js": [
-        "dist/content_scripts/js/all.js"
+        "dist/content_scripts/js/all.js",
+        "dist/content_scripts/js/open-link-in-new-window.js"
       ]
     },
     {
