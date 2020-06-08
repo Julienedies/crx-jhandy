@@ -242,7 +242,12 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
     setTimeout(function () {
         let $elm = $('.header .subnav li:nth-child(2) a');
         $elm[0].click();
-    }, 4000);
+
+        let $more = $('#compareCompanyList .more-company-btn').eq(0);
+        $more[0].click();
+       // let xx=$('#chinaCompanyListAll').css('display','block').hide().show();
+        console.log($more);
+    }, 3600);
 
     $('#profile table td a.alltext').attr('target', '_blank');
 
