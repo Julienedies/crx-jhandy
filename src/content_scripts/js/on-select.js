@@ -188,13 +188,13 @@ const contextMenu = {
         this.width = this.$elm.width();
         this.height = this.$elm.height();
         $(document).on('mouseup', function (e) {
-            $doc.off('click scroll contextmenu', cancelContextmenu)
+            $doc.off('click scroll contextmenu', cancelContextmenu);
             let selection = window.getSelection();
             if (selection.isCollapsed) return contextMenu.hide();
             let query = window.getSelection().toString().trim();
             query = $.trim(query);
-            query = query.replace(/^\s+$/img, '')
-            console.log('selection is:', query, query.length, window.getSelection())
+            query = query.replace(/^\s+$/img, '');
+            console.log('selection is:', query, query.length, window.getSelection());
             if (!query.length) return contextMenu.hide();
             if (query === contextMenu.query && contextMenu.is_show) return;
             document.execCommand('copy');
@@ -212,4 +212,20 @@ const contextMenu = {
 
 
 contextMenu.init();
+
+// 接收popup发过来的消息，是否开启右键菜单
+chrome.extension.onRequest.addListener(
+    function (request, sender, sendResponse) {
+
+        //console.info('isEnableContextMenu', request);
+        if (request.name === 'isEnableContextMenu') {
+            if (request.isEnableContextMenu) {
+                contextMenu.$elm.css({opacity: 1, 'pointer-events': 'auto'});
+            } else {
+                contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
+            }
+        }
+
+    }
+);
 

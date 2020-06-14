@@ -23,6 +23,7 @@ if (open_by_jhandy) {
     chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
 }
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
+    console.log('是否关闭前标签页', msg.event, msg.code, currentCode);
     if(msg.event === 'open_by_jhandy' && msg.code !== currentCode){
         chrome.runtime.sendMessage({
             event: 'close_tab',
@@ -245,9 +246,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
         let $more = $('#compareCompanyList .more-company-btn').eq(0);
         $more[0].click();
-       // let xx=$('#chinaCompanyListAll').css('display','block').hide().show();
-        console.log($more);
-    }, 3600);
+    }, 3000);
 
     $('#profile table td a.alltext').attr('target', '_blank');
 

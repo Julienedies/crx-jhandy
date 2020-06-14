@@ -153,8 +153,24 @@ brick.reg('otherCtrl', function (scope) {
         setTimeout(() => {
             window.close();
         }, 1000);
+    };
 
-    }
+    scope.toggleContextMenu = function (e) {
+        let val = $(this).prop('checked');
+        $.icMsg(val + ' ');
+        //发消息给content scripts
+        chrome.tabs.getSelected(null, function (tab) {
+
+            chrome.tabs.sendRequest(tab.id, {
+                name: 'isEnableContextMenu',
+                isEnableContextMenu: val
+            }, function (response) {
+                console.log(response);
+            });
+            console.log(val);
+        });
+    };
+
 
 });
 

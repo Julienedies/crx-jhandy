@@ -112,7 +112,7 @@ const EVENTS = {
  */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    console.log(request);
+    console.info(request.todo || request.event, request);
 
     let events = (request.todo || request.event).split(',');
 
