@@ -15,6 +15,11 @@ export default {
         return z > 0 && z < 6 && h > 8 && h < 15;
     },
 
+    // 生成key
+    createUrlKey (url) {
+        return btoa(url || location.href).substr(-17);
+    },
+
     // 当滚动到页面底部, 执行回调函数
     onScrollEnd (cb) {
 

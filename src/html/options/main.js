@@ -3,6 +3,7 @@
  */
 
 import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi'
+import utils from '../../js/lib/utils';
 
 import 'bulma/bulma.sass'
 import './style.scss'
@@ -17,6 +18,13 @@ for(let i in config){
     chrome_storage.set(i, config[i]);
 }*/
 
+let urlKey = '';
+let tabId;
+
+chrome.tabs.getSelected(function (tab) {
+    tabId = tab.id;
+    urlKey = utils.createUrlKey(tab.url);
+});
 
 brick.set('render.wrapModel', true);
 
@@ -155,19 +163,26 @@ brick.reg('otherCtrl', function (scope) {
         }, 1000);
     };
 
+
+
+    // ====================================================
+    let contextMenuKey = `isEnableContextMenu.${ urlKey }`;
+
+    chrome_storage.get(contextMenuKey, function (val) {
+        if(val === undefined) return;
+        $('#toggleContextMenu').prop('checked', !!val);
+    });
+
     scope.toggleContextMenu = function (e) {
         let val = $(this).prop('checked');
         $.icMsg(val + ' ');
-        //发消息给content scripts
-        chrome.tabs.getSelected(null, function (tab) {
-
-            chrome.tabs.sendRequest(tab.id, {
-                name: 'isEnableContextMenu',
-                isEnableContextMenu: val
-            }, function (response) {
-                console.log(response);
-            });
-            console.log(val);
+        chrome_storage.set(contextMenuKey, val);
+        //发消息给content scripts, 启用或禁用右键菜单
+        chrome.tabs.sendRequest(tabId, {
+            name: 'isEnableContextMenu',
+            isEnableContextMenu: val
+        }, function (response) {
+            console.log(response);
         });
     };
 
@@ -180,9 +195,8 @@ brick.reg('setNoteTagCtrl', function (scope) {
     let key = '';
     let $input = scope.$elm.find('[name=logicTag]');
 
-    chrome.tabs.getSelected(function (tab) {
 
-        key = `noteTag.${ btoa(tab.url).substr(-17) }`;
+        key = `noteTag.${ urlKey }`;
 
         chrome_storage.get(key, function (val) {
             if (val) {
@@ -198,8 +212,5 @@ brick.reg('setNoteTagCtrl', function (scope) {
                 $.icMsg(`已经设定${ key } ：${ val }`);
             }
         }
-
-    });
-
 
 });

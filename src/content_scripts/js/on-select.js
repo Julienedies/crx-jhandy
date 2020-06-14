@@ -6,6 +6,7 @@
 import $ from 'jquery';
 
 import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
+import utils from '../../js/lib/utils';
 
 import onSelectHtml from './on-select.html';
 
@@ -14,16 +15,23 @@ console.log('I am on-select.js.');
 const shandyHost = 'http://localhost:3300';
 const $doc = $(document);
 
+let urlKey = utils.createUrlKey();
 let noteTag = '';
+let isEnableContextMenu = true;
 
-chrome_storage.get(`noteTag.${ btoa(location.href).substr(-17) }`, function (val) {
+chrome_storage.get(`noteTag.${ urlKey }`, function (val) {
     noteTag = val;
 });
 
+chrome_storage.get(`isEnableContextMenu.${ urlKey }`, function (val) {
+    isEnableContextMenu = val;
+    console.log('isEnableContextMenu', val);
+});
+
 function cancelContextmenu (e) {
-    console.log('on click and scroll to hide contextMenu')
+    console.log('on click and scroll to hide contextMenu');
     contextMenu.is_show && contextMenu.hide();
-    $doc.off('', cancelContextmenu)
+    $doc.off('', cancelContextmenu);
 }
 
 const contextMenu = {
@@ -188,6 +196,7 @@ const contextMenu = {
         this.width = this.$elm.width();
         this.height = this.$elm.height();
         $(document).on('mouseup', function (e) {
+            if(isEnableContextMenu===false) return;  // 如果当前页面右键菜单禁用，不做操作
             $doc.off('click scroll contextmenu', cancelContextmenu);
             let selection = window.getSelection();
             if (selection.isCollapsed) return contextMenu.hide();
@@ -219,11 +228,12 @@ chrome.extension.onRequest.addListener(
 
         //console.info('isEnableContextMenu', request);
         if (request.name === 'isEnableContextMenu') {
-            if (request.isEnableContextMenu) {
+            isEnableContextMenu = request.isEnableContextMenu;
+/*            if (isEnableContextMenu) {
                 contextMenu.$elm.css({opacity: 1, 'pointer-events': 'auto'});
             } else {
                 contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
-            }
+            }*/
         }
 
     }
