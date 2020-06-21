@@ -12,13 +12,16 @@ bower_components/
 node_modules/
 
 #私有配置文件
-js/data/
+data/
 
 #临时使用测试
 test.js
 */test.js
 test.html
 
+src/css/vendor/
+dist/
+*.zip
 
 !.gitkeep
 
