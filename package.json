@@ -1,6 +1,6 @@
 {
   "name": "crx-jhandy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "personal use; chrome-extension.",
   "scripts": {
     "dev": "cross-env NODE_ENV=production webpack --config ./.build/webpack/index.js --watch",

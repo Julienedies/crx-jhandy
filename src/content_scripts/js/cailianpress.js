@@ -62,13 +62,13 @@ function cailianpress () {
         if (f1 || f2) {
 
             let $elm = $("div.content-left").css({border: 'solid 1px blue'});
-            let selector = '>div .telegraph-list:first-child';
+            let selector = '>div .telegraph-list:first-child .telegraph-content-box';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
 
             setTimeout( function (){
                 $elm.css({border:'none'});
                 $child.css({border:'none'});
-            }, 4 * 1000);
+            }, 5 * 1000);
 
             let oldText = '';
 
