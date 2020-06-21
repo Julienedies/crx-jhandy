@@ -7,12 +7,12 @@ import $ from 'jquery';
 import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 import utils from '../../js/lib/utils.js';
 
-console.log('I am cailianpress.js');
+console.log('I am cailianpress.js 1');
 
 // 财联社
 function cailianpress () {
 
-    let $more = $("div.contentLeft > div >div:last-child div").css({border: 'solid 1px green'});
+    let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
         $more[0].click();
@@ -61,9 +61,14 @@ function cailianpress () {
 
         if (f1 || f2) {
 
-            let $elm = $("div.contentLeft > div").css({border: 'solid 1px blue'});
-            let selector = ' >div.p-r+div .tele-right-text';
+            let $elm = $("div.content-left").css({border: 'solid 1px blue'});
+            let selector = '>div .telegraph-list:first-child';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
+
+            setTimeout( function (){
+                $elm.css({border:'none'});
+                $child.css({border:'none'});
+            }, 4 * 1000);
 
             let oldText = '';
 
@@ -125,7 +130,7 @@ function yuncaijing () {
 
 
 // 财联社首页
-if (location.hostname === 'www.cls.cn' && location.pathname === '/') {
+if (location.hostname === 'www.cls.cn' && location.pathname === '/telegraph') {
     $(cailianpress);
 } else
 // 云财经
