@@ -15,6 +15,7 @@ function cailianpress () {
     let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
+        console.log('onScrollEnd');
         $more[0].click();
     });
 
@@ -84,6 +85,8 @@ function cailianpress () {
                 console.info(+new Date, m, m.oldValue, m.target.nodeValue);
 
                 let text = m.target.nodeValue;
+
+                if(text && text.length < 10) return;
 
                 clearTimeout(timer);
 

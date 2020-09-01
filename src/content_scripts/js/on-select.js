@@ -55,7 +55,7 @@ const contextMenu = {
             if (noteTag) {
                 tag = `${ noteTag }`;
             } else {
-                tag = prompt('添加标记') || '';
+                //tag = prompt('添加author:') || '';
                 if (tag) {
                     let key = `noteTag.${ btoa(location.href).substr(-17) }`;
                     noteTag = tag;
@@ -64,14 +64,10 @@ const contextMenu = {
                 tag = tag && `${ tag }`;
             }
 
-            if (tag) {
-                text = `${ text }`
-            }
-
             $.ajax({
                 url: `${ shandyHost }/stock/logic`,
                 type: 'post',
-                data: {text: `${ text }`, type: '', tag: tag, source: {url: location.href, title: $('title').text()}}
+                data: {text: `${ text }`, type: '', author: tag, source: {url: location.href, title: $('title').text()}}
             }).done(function (msg) {
                 chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!'});
             }).fail(function (err) {
@@ -235,6 +231,12 @@ chrome.extension.onRequest.addListener(
                 contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
             }*/
         }
+
+
+        if(request.name === 'setNoteTag') {
+            noteTag = request.noteTag;
+        }
+
 
     }
 );

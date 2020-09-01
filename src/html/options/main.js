@@ -210,6 +210,16 @@ brick.reg('setNoteTagCtrl', function (scope) {
             if (val.trim() !== '') {
                 val && chrome_storage.set(key, val);
                 $.icMsg(`已经设定${ key } ：${ val }`);
+
+                //发消息给content scripts, 启用或禁用右键菜单
+                chrome.tabs.sendRequest(tabId, {
+                    name: 'setNoteTag',
+                    noteTag: val
+                }, function (response) {
+                    console.log(response);
+                });
+
+
             }
         }
 
