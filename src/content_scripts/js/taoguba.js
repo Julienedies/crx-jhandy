@@ -23,7 +23,7 @@ function view_in_ftnn (code) {
 function fix_links () {
     let $th = $(this);
     let str = $th.text();
-    console.log(str);
+    //console.log(str);
     let arr = str.match(/[036]\d{5}/img) || []; // $th.text().replace(/(^\s+)|(\s+$)/img, '');
     let code = arr[0];
     if (code) {

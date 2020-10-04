@@ -87,20 +87,30 @@ const EVENTS = {
         let urls = Array.isArray(request.url) ? request.url : [request.url];
         let folder = request.folder.replace(/[|\\-\\/:*?"'<>=%$@#+-;,!^]/g, "_");
         folder = folder.replace(/\s+/img, '');
-        urls.map((url, index) => {
 
-            // setTimeout(function(){
-            let filename = url.match(/[^/]+\.\w+$/)[0];
-            filename = `${ folder }/${ filename }`;
-            let options = {
-                url: url,
-                filename: filename
-            };
-            console.log(options);
-            chrome.downloads.download(options, function (result) {
-                console.log(result);
-            });
-            // }, index * 1000);
+        let delay = 500;
+
+        if(urls.length > 20 ) {
+            delay = 1000;
+        }
+        if(urls.length > 30 ) {
+            delay = 2000;
+        }
+
+        urls.forEach((url, index) => {
+
+            setTimeout(function(){
+                let filename = url.match(/[^/]+\.\w+$/)[0];
+                filename = `${ folder }/${ filename }`;
+                let options = {
+                    url: url,
+                    filename: filename
+                };
+                console.log(options);
+                chrome.downloads.download(options, function (result) {
+                    console.log(result);
+                });
+            }, index * delay);
 
         });
 
