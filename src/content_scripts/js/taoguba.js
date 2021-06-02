@@ -90,7 +90,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
 
 // ------------------------------------- 滚动到页面底部自动加载更多 start --------------------------------------------
 // 淘股吧超级动态页面
-if (location.href.includes('https://www.taoguba.com.cn/getMoreListAction')) {
+if (location.href.includes('https://www.taoguba.com.cn/user/getMoreListAction')) {
 
     let $loadMore = $('#clickLoadmore');
 

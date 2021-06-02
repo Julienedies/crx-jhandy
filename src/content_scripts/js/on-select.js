@@ -192,6 +192,7 @@ const contextMenu = {
         this.width = this.$elm.width();
         this.height = this.$elm.height();
         $(document).on('mouseup', function (e) {
+            console.log(e.target,e);
             if(isEnableContextMenu===false) return;  // 如果当前页面右键菜单禁用，不做操作
             $doc.off('click scroll contextmenu', cancelContextmenu);
             let selection = window.getSelection();
