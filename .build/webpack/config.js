@@ -42,7 +42,7 @@ const entry = {
 }
 // 生成 content_scripts 入口文件
 utils.createEntryForContentScriptsJs(glob.sync(path.join(srcPath, 'content_scripts/js/**.js')) || [], entry);
-utils.createEntryForContentScriptsCss(glob.sync(path.join(srcPath, 'content_scripts/css/**.css')) || [], entry);
+//utils.createEntryForContentScriptsCss(glob.sync(path.join(srcPath, 'content_scripts/css/**.css')) || [], entry);
 
 console.log(entry)
 
@@ -66,21 +66,21 @@ const plugins = [
         chunks: ['runtime', 'vendors', 'common', 'background']
     }),
     new webpack.DefinePlugin({}),
-    new webpack.NoEmitOnErrorsPlugin(),
+    //new webpack.NoEmitOnErrorsPlugin(),
     new VueLoaderPlugin(),
     new CleanPlugin(['dist'], {
         root: projectRoot
     }),
-/*    new FileManagerPlugin({
+    new FileManagerPlugin({
         onEnd: [
             {
-                copy: [ { source: './assets/!*', destination: './dist/' }]
+                copy: [ { source: './src/content_scripts/css/*', destination: './dist/content_scripts/css/' }]
             },
-            {
+            /*{
                 copy: [ { source: './manifest.json', destination: './dist/' }]
-            }
+            }*/
         ]
-    }),*/
+    }),
 ]
 
 let devServer = {}
