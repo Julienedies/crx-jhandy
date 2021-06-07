@@ -11,17 +11,18 @@ console.log('I am 10jqka.js.');
 
 let STOCKS = window.STOCKS || [];  // 主要用于股票列表自动切换功能
 
-let open_by_jhandy = location.search.match(/\?self[=][1]/);
+let openByShandy = location.search.match(/\?self[=][1]/);
 
 let reg = /\/(\d{6})\//;
 let currentCode = location.href.match(reg)[1];
 
 
 // 同一时刻只保持一个被jhandy打开的页面
-if (open_by_jhandy) {
+if (openByShandy) {
     STOCKS = [];
     chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
 }
+
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
     console.log('是否关闭前标签页', msg.event, msg.code, currentCode);
     if(msg.event === 'open_by_jhandy' && msg.code !== currentCode){
@@ -177,13 +178,14 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
     createNav();
 
-    if(!open_by_jhandy && location.href.endsWith('company.html')){
+    if(!openByShandy && location.href.endsWith('company.html')){
         throw new Error('结束。');
     }
 
+
     chrome_storage.get('stock', function (dob) {
 
-        console.log(dob);
+        return console.log(dob);
 
         // 自动显示页面列表
         if (dob.relation) {
@@ -219,7 +221,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    open_by_jhandy ? activeFtnn() : dob.queue && goToNext(next);
+                    openByShandy ? activeFtnn() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 

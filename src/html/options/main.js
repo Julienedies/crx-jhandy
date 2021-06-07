@@ -18,9 +18,9 @@ for(let i in config){
     chrome_storage.set(i, config[i]);
 }*/
 
-chrome_storage.get(function (dob) {
-    console.log(JSON.stringify(dob));
-});
+// chrome_storage.get(function (dob) {
+//     console.log(JSON.stringify(dob));
+// });
 
 let urlKey = '';
 let tabId;
