@@ -10,11 +10,16 @@ import utils from '../../js/lib/utils'
 console.log('I am xuangubao.js.');
 
 // 如果当前页面是选股宝首页，每分钟刷新一次
-if(location.href === 'https://xuangubao.cn/'){
-    console.log('刷新', +new Date);
-    setInterval( () => {
-        location.reload();
-    }, 45 * 1000);
+if (location.href === 'https://xuangubao.cn/') {
+    let d = new Date().getHours();
+    if (d > 8 && d < 15) {
+        console.log('刷新', +new Date);
+        setInterval(() => {
+            location.reload();
+        }, 45 * 1000);
+    }
+
+
 }
 
 
