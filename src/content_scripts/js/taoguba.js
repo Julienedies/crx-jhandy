@@ -57,7 +57,7 @@ $(document.body).on('click', 'a[href^=view_in_]', function (e) {
     let code = that.href.match(/\w{2}\d{6}(?!\d)/)[0];
     console.log(code);
     chrome.runtime.sendMessage({event: 'view_in_tdx', code: code.replace(/[szh]/img, '')});
-    return false;
+    //return false;
     /*if (!that._href) {
         if (location.host === "127.0.0.1:3300") {
             code = that.href.match(/[^/]{6}(?=\.png)/i)[0];

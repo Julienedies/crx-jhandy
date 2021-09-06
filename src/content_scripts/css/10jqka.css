@@ -76,3 +76,8 @@ iframe:hover{
 .comPoint.none, .check_else.performance_trailer{
     display:block!important;
 }
+
+/* 新闻公告页面 */
+.subnews .m_dlbox dt .title {
+    margin-left: 0!important;
+}
