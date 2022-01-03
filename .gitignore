@@ -18,6 +18,7 @@ data/
 test.js
 */test.js
 test.html
+ls.js
 
 src/css/vendor/
 dist/

@@ -12,22 +12,24 @@ import $ from 'jquery'
 import brick from '@julienedies/brick'
 import '@julienedies/brick/dist/brick.css'
 
-/*let config = {"cls.notify":true,"cls.speak":false,"isEnableContextMenu.5NzA3Ni5zaHRtbA==":true,"isEnableContextMenu.ja19kaWFyeS5odG1s":false,"isEnableContextMenu.yNSVFMyU4MCU4Mg==":true,"noteTag.0NiM0NTQyMDM0Ng==":"短线至上","noteTag.1ZS9qdWJpYW4uaHRt":"走出幻觉走向成熟","noteTag.3MiM0NTQxODE3Mg==":"管手剁","noteTag.4MTU5JnBhZ2VObz0y":"92科比","noteTag.4MTU5JnBhZ2VObz0z":"92科比","noteTag.4aW56aHVhbmcuaHRt":"走出幻觉走向成熟","noteTag.4dWVzaGVuZy5odG0=":"金融帝国","noteTag.5OCM0NTQzNjk5OA==":"A短线女王","noteTag.FNCVCQiU5OS5odG1s":"瑞鹤仙","noteTag.FNSVBRSVCNi5odG1s":"炒股养家","noteTag.aHR0cDovL":"炒股养家","noteTag.aHR0cHM6L":"xxxx","noteTag.iaW5nc2hhbi5odG0=":"走出幻觉走向成熟","noteTag.ocD9pZD01NzQxMTA=":"1715891782g_hello/gz/2014","noteTag.ocD9pZD1rdW42bTc=":"hello/gz/2014","noteTag.sZS81NzA4NDUvMQ==":"好运2008","noteTag.sZS82Mzk4NDEvMQ==":"小鳄鱼","noteTag.sZS83MjM2ODkvMQ==":"小鳄鱼","noteTag.sZS85NTg5NjYvMQ==":"zhouyu1933","noteTag.sZS8xMDIxMjMxLzE=":"骑在牛股上","noteTag.sZS8xMTIzMTMzLzE=":"yxkrrhx","noteTag.sZS8xMTQ1Mzk2LzE=":"小鳄鱼","noteTag.sZS8xMTQ5NjQ5LzE=":"令胡冲","noteTag.sZS8xMTY5OTc0LzE=":"zhouyu1933","noteTag.sZS8xMTk0NjYwLzE=":"zhouyu1933","noteTag.sZS8xMjQ0ODE3LzE=":"zhouyu1933","noteTag.sZS8xMjQ1NzcxLzE=":"绝对客观","noteTag.sZS8xMzUyNzI5LzE=":"龙飞虎","noteTag.sZS8xNDQxMTU3LzE=":"Linsanity016","noteTag.sZS8xNDYwODU0LzE=":"骑在牛股上","noteTag.sZS8xNDc3NjI5LzE=":"涅盘重升","noteTag.sZS8xNTk0NDc4LzE=":"阿猪","noteTag.sZS8xNjI4OTEwLzE=":"退学炒股","noteTag.sZS8xNjQ4MTgwLzE=":"排头兵","noteTag.sZS8xNzA0ODg0LzE=":"作手新一 ","noteTag.sZS8xNzExMTMyLzE=":"飞扬1 ","noteTag.sZS8xNzEzODk1LzE=":"作手新一 ","noteTag.sZS8xNzU1MDEwLzE=":"古月湖","noteTag.sZS8xNzU2MDAvMQ==":"龙飞虎","noteTag.sZS8xNzgzNTcxLzE=":"ertdfg123456","noteTag.sZS8xODU0NDE3LzE=":"赣M城管希","noteTag.sZS8xODk4MDEwLzE=":"大成路旁","noteTag.sZS8xOTE2Mjc3LzE=":"管手剁","noteTag.sZS8yMDIyODQwLzE=":"Linsanity016","noteTag.sZS8yMjUyMTQxLzE=":"爱学习的人","noteTag.sZS8yNTM1NjQ3LzE=":" 轮回666","noteTag.sZS8yNTgxNjQzLzE=":"古月湖","noteTag.sZS8yNjc0OTE2LzE=":"管手剁","noteTag.sZS8yNzYwMDc2LzE=":"古月湖","noteTag.sZS8yOTMzMzM5LzE=":"zz_行者9966","noteTag.sZS8yOTk5NjIyLzE=":"Stkking","noteTag.sZS8zMDAwOTE4LzE=":"Stkking","noteTag.sZS8zMTk1OTgzLzE=":"闻少","noteTag.sZS8zMjA5MzY3LzE=":"最勤奋的股民","noteTag.sZS8zMjQyNzMzLzE=":"只会做龙头","noteTag.ucG9ybmh1Yi5jb20v":"hello_bp_2014","noteTag.wNCM0NDkxNzQwNA==":"短线至上","noteTag.wNSM0NTM4ODMwNQ==":"短线至上","noteTag.xNSM0OTQyNTIxNQ==":"yinfei5551","noteTag.ySUQ9MTExNjU4NQ==":"涅盘重升","noteTag.yZWFkZXIuaHRtbA==":"令胡冲","noteTag.zMCM0NTIyNzczMA==":"短线至上","noteTag.zZXJJRD00OTQ0Njk=":"令胡冲","noteTag.zZXJJRD04MjcyNjQ=":"作手新一","noteTag.zZXJJRD0xMTE2NTg1":"涅盘重升","noteTag.zZXJJRD0xNTkyNjg2":"退学炒股","noteTag.zZXJJRD0xOTQ4MDQ1":"短线至上","noteTag.zZXJJRD0yMTE1Mjgy":"rxybgb","stock.interval":"10","stock.pages":[{"d":0.1,"id":"ths_p","name":" 同花顺资料"},{"d":1.5,"id":"ycj","name":"云财经","show":false},{"d":2,"id":"wencai","name":"问财","show":false},{"d":19,"id":"ths_new","name":"同花顺动态","show":true},{"d":7,"id":"ths_c","name":"同花顺概念","show":false},{"d":6,"id":"ths_news","name":"同花顺新闻","show":false},{"d":3,"id":"taoguba","name":"淘股吧","show":false},{"d":1,"id":"xuangubao","name":"选股宝"}],"stock.queue":false,"stock.relation":true};
-
-for(let i in config){
-    chrome_storage.set(i, config[i]);
-}*/
 
 // chrome_storage.get(function (dob) {
 //     console.log(JSON.stringify(dob));
 // });
 
+let CURRENT_URL = '';
 let urlKey = '';
 let tabId;
 
+console.log(CURRENT_URL);
+
+brick.set('bootstrap.auto', false);
+
 chrome.tabs.getSelected(function (tab) {
     tabId = tab.id;
-    urlKey = utils.createUrlKey(tab.url);
+    CURRENT_URL = tab.url;
+    urlKey = utils.createUrlKey(CURRENT_URL);
+    brick.bootstrap();
 });
 
 brick.set('render.wrapModel', true);
@@ -42,7 +44,7 @@ brick.reg('mainCtrl', function () {
         let name = $th.attr('name');
         let checked = $th.prop('checked');
         console.log(name, checked);
-        chrome_storage.set(name, checked, (...args)=> {
+        chrome_storage.set(name, checked, (...args) => {
             console.log(args);
         });
     };
@@ -168,12 +170,11 @@ brick.reg('otherCtrl', function (scope) {
     };
 
 
-
     // ====================================================
-    let contextMenuKey = `isEnableContextMenu.${ urlKey }`;
+    let contextMenuKey = `isEnableContextMenu.${ CURRENT_URL }`;
 
     chrome_storage.get(contextMenuKey, function (val) {
-        if(val === undefined) return;
+        if (val === undefined) return;
         $('#toggleContextMenu').prop('checked', !!val);
     });
 
@@ -199,32 +200,59 @@ brick.reg('setNoteTagCtrl', function (scope) {
     let key = '';
     let $input = scope.$elm.find('[name=logicTag]');
 
+    key = `noteTag.${ urlKey }`;
 
-        key = `noteTag.${ urlKey }`;
-
-        chrome_storage.get(key, function (val) {
-            if (val) {
-                $input.val(val)
-            }
-        });
-
-
-        scope.setLogicTag = function (e) {
-            let val = $input.val();
-            if (val.trim() !== '') {
-                val && chrome_storage.set(key, val);
-                $.icMsg(`已经设定${ key } ：${ val }`);
-
-                //发消息给content scripts, 启用或禁用右键菜单
-                chrome.tabs.sendRequest(tabId, {
-                    name: 'setNoteTag',
-                    noteTag: val
-                }, function (response) {
-                    console.log(response);
-                });
-
-
-            }
+    chrome_storage.get(key, function (val) {
+        if (val) {
+            $input.val(val)
         }
+    });
 
+
+    scope.setLogicTag = function (e) {
+        let val = $input.val();
+        if (val.trim() !== '') {
+            val && chrome_storage.set(key, val);
+            $.icMsg(`已经设定${ key } ：${ val }`);
+
+            //发消息给content scripts, 更新noteTag
+            chrome.tabs.sendRequest(tabId, {
+                name: 'setNoteTag',
+                noteTag: val
+            }, function (response) {
+                console.log(response);
+            });
+
+
+        }
+    }
+
+});
+
+
+brick.reg('setPsCtrl', function (scope) {
+    let key = CURRENT_URL.split('/')[2].replaceAll('.', '_');
+    let $name = scope.$elm.find('[name=nameForPs]');
+    let $ps = scope.$elm.find('[name=psForPs]');
+
+    key = `ps_${ key }`;
+
+    chrome_storage.get(key, function (val) {
+        if (val) {
+            let arr = val.split('#');
+            $name.val(arr[0]);
+            $ps.val(arr[1]);
+        }
+    });
+
+
+    scope.setPs = function (e) {
+        let name = $name.val() || '';
+        let ps = $ps.val();
+        if (ps.trim() !== '') {
+            let val = `${ name }#${ ps }`;
+            chrome_storage.set(key, val);
+            $.icMsg(`已经设定${ key } ：${ ps }`);
+        }
+    }
 });

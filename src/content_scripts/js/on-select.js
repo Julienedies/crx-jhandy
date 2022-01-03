@@ -193,7 +193,7 @@ const contextMenu = {
         this.width = this.$elm.width();
         this.height = this.$elm.height();
         $(document).on('mouseup', function (e) {
-            console.log(e.target,e);
+            //console.log(e.target,e);
             if(isEnableContextMenu===false) return;  // 如果当前页面右键菜单禁用，不做操作
             $doc.off('click scroll contextmenu', cancelContextmenu);
             let selection = window.getSelection();
@@ -201,7 +201,7 @@ const contextMenu = {
             let query = window.getSelection().toString().trim();
             query = $.trim(query);
             query = query.replace(/^\s+$/img, '');
-            console.log('selection is:', query, query.length, window.getSelection());
+            //console.log('selection is:', query, query.length, window.getSelection());
             if (!query.length) return contextMenu.hide();
             if (query === contextMenu.query && contextMenu.is_show) return;
             document.execCommand('copy');
