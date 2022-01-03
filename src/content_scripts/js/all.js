@@ -27,10 +27,11 @@
 
 /**
  * 4分钟后刷新monitor页面
+ * 这样做等于是搞了个无限循环，4分钟后刷新页面
  */
-if(location.pathname === '/web/monitor.html'){
+/*if(location.pathname === '/web/monitor.html'){
     setTimeout(() => {
         location.reload();
     },1000 * 60 * 4);
-}
+}*/
 
