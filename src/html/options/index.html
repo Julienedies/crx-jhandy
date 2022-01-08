@@ -9,7 +9,7 @@
 <body>
 <div class="container" ic-ctrl="mainCtrl">
 
-    <div class="tabs is-large" ic-tabs="a" ic-tab-select="li" ic-tabc-select="section" ic-tab-cla="is-active">
+    <div class="tabs is-large" ic-tabs="a" ic-tab-select="li" ic-tabc-select="section" ic-tab-active="3" ic-tab-cla="is-active">
         <ul>
             <li><a>股票资料浏览</a></li>
             <li><a>财联社</a></li>
@@ -107,7 +107,6 @@
         </section>
 
         <section ic-ctrl="downloadCtrl">
-            <h3>下载</h3>
             <div>
                 <div class="control">
                     <button class="button is-primary" ic-click="download">下载本页图片</button>
@@ -128,7 +127,6 @@
             </div>
 
             <div class="box" ic-ctrl="setNoteTagCtrl">
-                <h6 class="title is-6">设置logic标签</h6>
                 <div class="field">
                     <div class="control">
                         <input class="input" type="text" name="logicUrl" placeholder="logic标签key，默认页面url">
@@ -144,14 +142,13 @@
                 <div class="field">
                     <div class="control">
                         <a class="button is-primary" ic-click="setLogicTag">
-                            设定交易逻辑标签
+                            设定logic标签
                         </a>
                     </div>
                 </div>
             </div>
 
             <div class="box" ic-ctrl="setPsCtrl">
-                <h6 class="title is-6">设置PS</h6>
                 <div class="field">
                     <div class="control">
                         <input class="input" type="text" name="hostFoPs" placeholder="host">
