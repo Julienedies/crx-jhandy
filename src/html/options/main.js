@@ -255,4 +255,10 @@ brick.reg('setPsCtrl', function (scope) {
             $.icMsg(`已经设定${ key } ：${ ps }`);
         }
     }
+
+    scope.onFocus = function (e) {
+        $(this).select();
+        document.execCommand("Copy");
+    }
+
 });
