@@ -19,6 +19,7 @@ const $doc = $(document);
 let urlKey = utils.createUrlKey();
 let noteTag = '';
 let isEnableContextMenu = true;
+let QUERY = '';
 
 chrome_storage.get(`noteTag.${ urlKey }`, function (val) {
     noteTag = val;
@@ -141,7 +142,8 @@ const contextMenu = {
         // 以选择的文本转到特定url
         $elm.on('click', '[data-url]', function (e) {
             let url = this.dataset.url;
-            url = url.replace('*', encodeURIComponent(that.query));
+            console.log(that.query, QUERY);
+            url = url.replace('*', encodeURIComponent(that.query || QUERY));
             window.open(url);
         });
 
@@ -179,13 +181,14 @@ const contextMenu = {
         this.is_show = true;
         this.query = query;
         this.set_position(x, y, offset);
+        console.log(query, this.query);
         setTimeout(function () {
             contextMenu.hide();
         }, 13 * 1000);
     },
     hide: function () {
         this.$elm.hide();
-        this.query = '';
+        //this.query = '';
         contextMenu.is_show = false;
     },
     init: function () {
@@ -193,22 +196,23 @@ const contextMenu = {
         this.width = this.$elm.width();
         this.height = this.$elm.height();
         $(document).on('mouseup', function (e) {
-            //console.log(e.target,e);
-            if(isEnableContextMenu===false) return;  // 如果当前页面右键菜单禁用，不做操作
+            //console.log(e.target, e);
+            if (isEnableContextMenu === false) return;  // 如果当前页面右键菜单禁用，不做操作
             $doc.off('click scroll contextmenu', cancelContextmenu);
             let selection = window.getSelection();
             if (selection.isCollapsed) return contextMenu.hide();
             let query = window.getSelection().toString().trim();
             query = $.trim(query);
             query = query.replace(/^\s+$/img, '');
-            //console.log('selection is:', query, query.length, window.getSelection());
+            console.log('selection is:', query, query.length, window.getSelection());
             if (!query.length) return contextMenu.hide();
             if (query === contextMenu.query && contextMenu.is_show) return;
+            QUERY = query;
             document.execCommand('copy');
             contextMenu.render('on_select_view');
             contextMenu.show(query, e.clientX, e.clientY);
             setTimeout(() => {
-                $doc.on('click scroll contextmenu', cancelContextmenu)
+                $doc.on('click scroll contextmenu', cancelContextmenu);
             }, 1000)
         }).on('contextmenu', function (e) {
             //cm.render('oncontextmenu_view');
@@ -227,15 +231,15 @@ chrome.extension.onRequest.addListener(
         //console.info('isEnableContextMenu', request);
         if (request.name === 'isEnableContextMenu') {
             isEnableContextMenu = request.isEnableContextMenu;
-/*            if (isEnableContextMenu) {
-                contextMenu.$elm.css({opacity: 1, 'pointer-events': 'auto'});
-            } else {
-                contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
-            }*/
+            /*            if (isEnableContextMenu) {
+                            contextMenu.$elm.css({opacity: 1, 'pointer-events': 'auto'});
+                        } else {
+                            contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
+                        }*/
         }
 
 
-        if(request.name === 'setNoteTag') {
+        if (request.name === 'setNoteTag') {
             noteTag = request.noteTag;
         }
 
