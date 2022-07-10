@@ -171,7 +171,7 @@ brick.reg('otherCtrl', function (scope) {
 
 
     // ====================================================
-    let contextMenuKey = `isEnableContextMenu.${ CURRENT_URL }`;
+    let contextMenuKey = `isEnableContextMenu.${ urlKey }`;
 
     chrome_storage.get(contextMenuKey, function (val) {
         if (val === undefined) return;
@@ -180,7 +180,7 @@ brick.reg('otherCtrl', function (scope) {
 
     scope.toggleContextMenu = function (e) {
         let val = $(this).prop('checked');
-        $.icMsg(val + ' ');
+        $.icMsg(val + ' ' + contextMenuKey);
         chrome_storage.set(contextMenuKey, val);
         //发消息给content scripts, 启用或禁用右键菜单
         chrome.tabs.sendRequest(tabId, {

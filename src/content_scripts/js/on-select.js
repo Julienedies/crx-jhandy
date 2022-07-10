@@ -227,22 +227,16 @@ contextMenu.init();
 // 接收popup发过来的消息，是否开启右键菜单
 chrome.extension.onRequest.addListener(
     function (request, sender, sendResponse) {
-
+        console.log(111,request);
         //console.info('isEnableContextMenu', request);
         if (request.name === 'isEnableContextMenu') {
             isEnableContextMenu = request.isEnableContextMenu;
-            /*            if (isEnableContextMenu) {
-                            contextMenu.$elm.css({opacity: 1, 'pointer-events': 'auto'});
-                        } else {
-                            contextMenu.$elm.css({opacity: 0, 'pointer-events': 'none'});
-                        }*/
+            console.log(isEnableContextMenu);
         }
-
 
         if (request.name === 'setNoteTag') {
             noteTag = request.noteTag;
         }
-
 
     }
 );
