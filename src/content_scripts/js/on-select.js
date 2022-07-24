@@ -95,6 +95,21 @@ const contextMenu = {
             );
         });
 
+        // 笔记标记2
+        $elm.on('click', '[todo=mark_note2]', function (e) {
+            $.ajax({
+                url: `${ shandyHost }/note2`,
+                type: 'post',
+                data: {text: that.query, type: ''}
+            }).done(function (msg) {
+                chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!'});
+            }).fail(function (err) {
+                    console.error(err);
+                    alert('笔记标记出错.');
+                }
+            );
+        });
+
         // 添加股票资料链接
         $elm.on('click', '[todo=mark_stock_link]', function (e) {
             chrome.runtime.sendMessage({todo: 'get_global'}, function (response) {
