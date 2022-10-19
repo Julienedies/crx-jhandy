@@ -9,6 +9,7 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 console.log('I am 10jqka.js.');
 
+
 let STOCKS = window.STOCKS || [];  // 主要用于股票列表自动切换功能
 
 let openByShandy = location.search.match(/\?self[=][1]/);
@@ -46,6 +47,9 @@ let next = stocks[index + 1] || stocks[0];
 let stockPrefix = /^6/.test(currentCode) ? 'sh' : 'sz';
 let prefixCode = stockPrefix + currentCode;
 
+let name = document.title.match(/\S+(?=.\d{6})/img);
+let wd = `${name?name[0]:currentCode}`;
+
 let urlMap = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefixCode),
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefixCode),
@@ -58,6 +62,16 @@ let urlMap = {
     taoguba: `https://www.taoguba.com.cn/quotes/${prefixCode}`,
     site: ''
 };
+
+
+let html = `<a href="${ urlMap.ycj }" target="_blank">云财经</a>
+            <a href="${ urlMap.xuangubao }" target="_blank">选股宝</a>
+            <a href="${ urlMap.taoguba }" target="_blank">淘股吧</a>
+            <a href="${ urlMap.xueqiu }" target="_blank">雪球</a>
+            <a href="https://www.jiuyangongshe.com/search/563ed50d65d645219329a3c9b45289e7?type=1&k=${ encodeURIComponent(wd) }", target="_blank">韭研</a>
+            <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${ encodeURIComponent(wd + ' A股') }", target="_blank">百度</a>
+            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${ currentCode }&edit=1", target="_blank">自定义</a>`;
+
 
 let $body = $(document.body);
 
@@ -107,20 +121,12 @@ let createNav = function () {
 };
 
 let createLinks = function () {
-    let name = document.title.match(/\S+(?=.\d{6})/img);
-    let wd = `${name?name[0]:currentCode} A股`;
-    let html = `<div> 
-            <a href="${urlMap.ycj}" target="_blank">云财经</a>
-            <a href="${urlMap.xuangubao}" target="_blank">选股宝</a>
-            <a href="${urlMap.taoguba}" target="_blank">淘股吧</a>
-            <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
-            <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${encodeURIComponent(wd)}", target="_blank">百度</a></div>
-            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义</a></div>`;
+
     //$url = $('iframe').contents().find('#detail a').eq(0);
     let $td = $('#detail table:first td:last');
     let site_url = $td.find('a:first').attr('href');
     urlMap.site =  site_url && site_url + '?close=400';
-    $td.append(html);
+    $td.append(`<div>${html}</div>`);
 };
 
 let createIframe = function () {
@@ -254,6 +260,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
     //$('.wrapper').addClass('J');
     //$body.append('<iframe src="*"></iframe>'.replace('*', url));
+    $body.append(`<div style="position:fixed;top:30%;right:0;width:80px;display: flex;flex-direction: column; font-size:1.2em;line-height:2;">${html}</div>`)
 
 }
 
