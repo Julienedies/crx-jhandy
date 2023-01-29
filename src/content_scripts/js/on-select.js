@@ -13,7 +13,7 @@ import onSelectHtml from './on-select.html';
 console.log('I am on-select.js.');
 
 //const shandyHost = 'https://localhost:3301';
-const shandyHost = 'http://localhost:3300';
+const shandyHost = 'http://127.0.0.1:3300';
 const $doc = $(document);
 
 let urlKey = utils.createUrlKey();
