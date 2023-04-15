@@ -21,7 +21,7 @@
     "@julienedies/brick": "^0.8.93",
     "bulma": "^0.7.5",
     "hint.css": "^2.6.0",
-    "jquery": "^3.3.0",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
