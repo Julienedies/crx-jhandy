@@ -70,7 +70,9 @@ let html = `<a href="${ urlMap.ycj }" target="_blank">云财经</a>
             <a href="${ urlMap.taoguba }" target="_blank">淘股吧</a>
             <a href="${ urlMap.xueqiu }" target="_blank">雪球</a>
             <a href="${ urlMap.dfyb }" target="_blank">东方研报</a>
-            <a href="https://www.jiuyangongshe.com/search/563ed50d65d645219329a3c9b45289e7?type=1&k=${ encodeURIComponent(wd) }", target="_blank">韭研</a>
+
+            <a href="https://www.jiuyangongshe.com/search/new?k=${ encodeURIComponent(wd) }", target="_blank">韭研</a>
+            <a href="http://www.hibor.com.cn/newweb/HuiSou/s?gjc=${ encodeURIComponent(wd) }&sslb=1&sjfw=24&cxzd=qb%28qw%29&px=zh&bgys=&gs=&sdhy=&sdgs=&sdhgcl=&mhss=&hy=&gp=" target="_blank">慧博研报</a>      
             <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${ encodeURIComponent(wd + ' A股') }", target="_blank">百度</a>
             <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${ currentCode }&edit=1", target="_blank">自定义</a>`;
 
