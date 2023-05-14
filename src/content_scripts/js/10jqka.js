@@ -69,11 +69,11 @@ let html = `<a href="${ urlMap.ycj }" target="_blank">云财经</a>
             <a href="${ urlMap.xuangubao }" target="_blank">选股宝</a>
             <a href="${ urlMap.taoguba }" target="_blank">淘股吧</a>
             <a href="${ urlMap.xueqiu }" target="_blank">雪球</a>
-            <a href="${ urlMap.dfyb }" target="_blank">东方研报</a>
-
             <a href="https://www.jiuyangongshe.com/search/new?k=${ encodeURIComponent(wd) }", target="_blank">韭研</a>
-            <a href="http://www.hibor.com.cn/newweb/HuiSou/s?gjc=${ encodeURIComponent(wd) }&sslb=1&sjfw=24&cxzd=qb%28qw%29&px=zh&bgys=&gs=&sdhy=&sdgs=&sdhgcl=&mhss=&hy=&gp=" target="_blank">慧博研报</a>      
+            <a href="http://www.hibor.com.cn/newweb/HuiSou/s?gjc=${ encodeURIComponent(wd) }&sslb=1&sjfw=24&cxzd=qb%28qw%29&px=zh&bgys=&gs=&sdhy=&sdgs=&sdhgcl=&mhss=&hy=&gp=" target="_blank">慧博研报</a>     
+            <a href="https://www.iwencai.com/stockpick/search?typed=1&preParams=&ts=1&f=1&qs=index_rewrite&selfsectsn=&querytype=stock&searchfilter=&tid=stockpick&w=${ encodeURIComponent(wd) }" target="_blank">问财</a>
             <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${ encodeURIComponent(wd + ' A股') }", target="_blank">百度</a>
+             <a href="${ urlMap.dfyb }" target="_blank">东方研报</a> 
             <a href="http://127.0.0.1:3300/web/stock_c.html?code=${ currentCode }&edit=1", target="_blank">自定义</a>`;
 
 
