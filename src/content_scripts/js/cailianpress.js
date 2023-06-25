@@ -135,11 +135,23 @@ function yuncaijing () {
 // 财联社首页
 if (location.hostname === 'www.cls.cn' && location.pathname === '/telegraph') {
     $(cailianpress);
-} else
+}
+ // 财联社主题页面
+else  if (location.href.includes('https://www.cls.cn/subject/')) {
+
+    let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
+
+    utils.onScrollEnd(function () {
+        console.log('onScrollEnd');
+        $more[0].click();
+    });
+}
 // 云财经
-if (location.hostname === 'www.yuncaijing.com') {
+else if (location.hostname === 'www.yuncaijing.com') {
     $(yuncaijing);
 }
+
+
 
 
 
