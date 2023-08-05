@@ -236,6 +236,7 @@ brick.reg('setPsCtrl', function (scope) {
     let $ps = scope.$elm.find('[name=psForPs]');
 
     key = `ps_${ key }`;
+    //key = 'ps_www_bitznetuk_com';
 
     chrome_storage.get(key, function (val) {
         if (val) {
@@ -259,6 +260,7 @@ brick.reg('setPsCtrl', function (scope) {
     scope.onFocus = function (e) {
         $(this).select();
         document.execCommand("Copy");
-    }
+    };
+
 
 });

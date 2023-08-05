@@ -39,9 +39,14 @@ function fix_links () {
 }
 
 //将淘股吧里的股票code添加股票名称，方便识别。
-setTimeout(function () {
-    $('a').each(fix_links);
-}, 2400);
+$.get('http://127.0.0.1:3300/stock/list', function (data) {
+    console.log(typeof window.STOCK_LIST);
+    window.STOCK_LIST = data;
+    setTimeout(function () {
+        $('a').each(fix_links);
+    }, 70);
+}, 'json');
+
 
 
 $(document.body).on('click', 'a[href^=view_in_]', function (e) {
