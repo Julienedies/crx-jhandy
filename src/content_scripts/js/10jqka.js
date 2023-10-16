@@ -21,7 +21,7 @@ let currentCode = location.href.match(reg)[1];
 // 同一时刻只保持一个被jhandy打开的页面
 if (openByShandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
+    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'https://basic.10jqka.com.cn/*'});
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
@@ -53,10 +53,10 @@ let wd = `${name?name[0]:currentCode}`;
 let urlMap = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefixCode),
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefixCode),
-    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', currentCode),
-    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', currentCode),
-    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
-    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
+    ths_p: 'https://basic.10jqka.com.cn/*/company.html'.replace('*', currentCode),
+    ths_new: 'https://basic.10jqka.com.cn/*/'.replace('*', currentCode),
+    ths_c: 'https://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
+    ths_news: 'https://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
     wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', currentCode),
     xuangubao: `https://xuangubao.cn/stock/${currentCode}.${ stockPrefix.toLocaleUpperCase().replace('SH','SS') }`,
     taoguba: `https://www.taoguba.com.cn/quotes/${prefixCode}`,
