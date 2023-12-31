@@ -20,7 +20,9 @@ const _global = {
 const EVENTS = {
 
     relay: function (req) {
-        chrome_tabs.sendMessage(req.url || `${ shandyHost }/*`, req);
+        chrome_tabs.sendMessage(req.url || `${ shandyHost }/*`, req, function (res) {
+            console.log(response);
+        });
         if (req.event === 'open_by_jhandy' && req.code) {
             _global.code = req.code;
             console.log(_global);
@@ -90,16 +92,16 @@ const EVENTS = {
 
         let delay = 500;
 
-        if(urls.length > 20 ) {
+        if (urls.length > 20) {
             delay = 1000;
         }
-        if(urls.length > 30 ) {
+        if (urls.length > 30) {
             delay = 2000;
         }
 
         urls.forEach((url, index) => {
 
-            setTimeout(function(){
+            setTimeout(function () {
                 let filename = url.match(/[^/]+\.\w+$/)[0];
                 filename = `${ folder }/${ filename }`;
                 let options = {

@@ -27,9 +27,10 @@ chrome.runtime.onMessage.addListener(function (msg) {
         $tdx_view.attr('code', msg.code).attr('event', e).click();
 
     } else if (e === 'cls_news') {
-
+        // 接收chrome.runtime.sendMessage 或 chrome.tabs.sendMessage 发过来的cls news；
         $notify_news.data('news', msg);
         $notify_news.text(msg.msg);
+        // 触发socket动作, 通过socket上传cls news给服务器
         $notify_news.click();
 
     }

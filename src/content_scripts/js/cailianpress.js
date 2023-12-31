@@ -12,6 +12,7 @@ console.log('I am cailianpress.js 1');
 // 财联社
 function cailianpress () {
 
+    // 滚动到底，自动显示
     let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
@@ -40,13 +41,16 @@ function cailianpress () {
 
             });
         }
-
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
     function notify (msg) {
+        // 在monitor页面可以通过socket传给服务器
         chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
     }
 
+    // 从检查默认配置开始，在回调函数里开启主程序
     chrome_storage.get('cls', function (result) {
 
         console.log(result);
@@ -54,14 +58,19 @@ function cailianpress () {
         let timer;
         let speechSU = new window.SpeechSynthesisUtterance();
 
-        let f1 = result.speak && function (text) {
-            speechSU.text = text;
+        // 回调函数，语音播报新财经消息；
+        let callback1 = result.speak && function (text) {
+            speechSU.text = text.slice(0, 32);
             speechSynthesis.speak(speechSU);
         };
-        let f2 = result.notify && notify;
 
-        if (f1 || f2) {
+        // 回调函数，广播新财经消息；
+        let callback2 = result.notify && notify;
 
+
+        if (callback1 || callback2) {
+
+            // 显示红色边框和蓝色边框，测试页面dom结构没有改变
             let $elm = $("div.content-left").css({border: 'solid 1px blue'});
             let selector = '>div .telegraph-list:first-child .telegraph-content-box';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
@@ -100,11 +109,12 @@ function cailianpress () {
                     if(text === oldText) return;
                     if (text === '点击加载更多') return;
                     oldText = text;
-                    f1 && f1(text);
-                    f2 && f2(text);
+                    callback1 && callback1(text);
+                    callback2 && callback2(text);
                 }, 2000);
 
             });
+
 
             let MutationObserverConfig = {
                 childList: true,
@@ -113,12 +123,14 @@ function cailianpress () {
                 characterDataOldValue: true
             };
 
+            // 监控dom变化，检测新财经消息
             observer.observe(document.body, MutationObserverConfig);
 
         }
     });
 
 }
+
 
 // 云财经页面
 function yuncaijing () {
@@ -150,6 +162,7 @@ else  if (location.href.includes('https://www.cls.cn/subject/')) {
 else if (location.hostname === 'www.yuncaijing.com') {
     $(yuncaijing);
 }
+
 
 
 
