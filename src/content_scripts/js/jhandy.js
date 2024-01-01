@@ -12,6 +12,9 @@ let $notify_news = $('#notify_news');
 let $tdx_view = $('#tdx_view');
 let $active_ftnn = $('#active_ftnn');
 
+
+console.log('chrome => ', chrome);
+
 chrome.runtime.onMessage.addListener(function (msg) {
 
     console.info(msg.event, msg);

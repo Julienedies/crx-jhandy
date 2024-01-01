@@ -60,7 +60,9 @@ function cailianpress () {
 
         // 回调函数，语音播报新财经消息；
         let callback1 = result.speak && function (text) {
-            speechSU.text = text.slice(0, 32);
+            let str = text.slice(8, 80);
+            console.log(str, str.length);
+            speechSU.text = str;
             speechSynthesis.speak(speechSU);
         };
 
