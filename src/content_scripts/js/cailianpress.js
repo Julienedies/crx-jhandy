@@ -60,15 +60,18 @@ function cailianpress () {
 
         // 回调函数，语音播报新财经消息；
         let callback1 = result.speak && function (text) {
-            let str = text.slice(8, 80);
-            console.log(str, str.length);
-            speechSU.text = str;
-            speechSynthesis.speak(speechSU);
+            // 检测是不是交易时间
+            if(utils.isTradingTime()){
+                let str = text.slice(8, 80);
+                let str2 = str.slice(0, 40);
+                console.log(str, str.length);
+                speechSU.text = `${ str } ;; ${ str2 }`;
+                speechSynthesis.speak(speechSU);
+            }
         };
 
         // 回调函数，广播新财经消息；
         let callback2 = result.notify && notify;
-
 
         if (callback1 || callback2) {
 
@@ -77,9 +80,9 @@ function cailianpress () {
             let selector = '>div .telegraph-list:first-child .telegraph-content-box';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
 
-            setTimeout( function (){
-                $elm.css({border:'none'});
-                $child.css({border:'none'});
+            setTimeout(function () {
+                $elm.css({border: 'none'});
+                $child.css({border: 'none'});
             }, 5 * 1000);
 
             let oldText = '';
@@ -97,7 +100,7 @@ function cailianpress () {
 
                 let text = m.target.nodeValue;
 
-                if(text && text.length < 10) return;
+                if (text && text.length < 10) return;
 
                 clearTimeout(timer);
 
@@ -108,7 +111,7 @@ function cailianpress () {
                     let arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
                     //text = arr ? arr[1] : text;
-                    if(text === oldText) return;
+                    if (text === oldText) return;
                     if (text === '点击加载更多') return;
                     oldText = text;
                     callback1 && callback1(text);
@@ -150,8 +153,8 @@ function yuncaijing () {
 if (location.hostname === 'www.cls.cn' && location.pathname === '/telegraph') {
     $(cailianpress);
 }
- // 财联社主题页面
-else  if (location.href.includes('https://www.cls.cn/subject/')) {
+// 财联社主题页面
+else if (location.href.includes('https://www.cls.cn/subject/')) {
 
     let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
 
