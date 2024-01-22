@@ -61,9 +61,20 @@ function cailianpress () {
         // 回调函数，语音播报新财经消息；
         let callback1 = result.speak && function (text) {
             // 检测是不是交易时间
-            if(utils.isTradingTime()){
-                let str = text.slice(8, 80);
-                let str2 = str.slice(0, 40);
+            if (utils.isTradingTime()) {
+                let reg1 = /【[\s\S]+】/im;
+                let reg2 = /[，。].+$/im;
+                let str = text.slice(8, 48).replace(/财联社\d+月\d+日电/, '');
+                let str2 = str.slice(0, 24);
+                let arr = str.match(reg1) || [];
+                if (arr[0]) {
+                    str = arr[0];
+                    str2 = str;
+                } else {
+                    str = str.replace(reg2, '');
+                    str2 = str2.replace(reg2, '');
+                }
+
                 console.log(str, str.length);
                 speechSU.text = `${ str } ;; ${ str2 }`;
                 speechSynthesis.speak(speechSU);
