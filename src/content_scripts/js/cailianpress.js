@@ -87,14 +87,14 @@ function cailianpress () {
         if (callback1 || callback2) {
 
             // 显示红色边框和蓝色边框，测试页面dom结构没有改变
-            let $elm = $("div.content-left").css({border: 'solid 1px blue'});
-            let selector = '>div .telegraph-list:first-child .telegraph-content-box';
+            let $elm = $("div.content-left .telegraph-content-left +div").css({border: 'solid 1px blue'});
+            let selector = '.telegraph-list:first-child .telegraph-content-box';
             let $child = $elm.find(selector).css({border: 'solid 1px red'});
 
             setTimeout(function () {
-                $elm.css({border: 'none'});
+                //$elm.css({border: 'none'});
                 $child.css({border: 'none'});
-            }, 5 * 1000);
+            }, 9 * 1000);
 
             let oldText = '';
 
@@ -140,7 +140,7 @@ function cailianpress () {
             };
 
             // 监控dom变化，检测新财经消息
-            observer.observe(document.body, MutationObserverConfig);
+            observer.observe($elm[0], MutationObserverConfig);
 
         }
     });
