@@ -7,6 +7,13 @@ import $ from 'jquery';
 
 export default {
 
+     formatDate () {
+        let d = new Date;
+        return d.toLocaleDateString().split('/').map((v) => {
+            return v.length > 1 ? v : '0' + v;
+        }).join('-');
+    },
+
     // 是否股市交易时间
     isTradingTime () {
         let d = new Date();

@@ -169,8 +169,31 @@ brick.reg('otherCtrl', function (scope) {
         }, 1000);
     };
 
+    // 备份所有数据
+    scope.export = function () {
+        // 获取所有存储的数据
+        chrome_storage.get(function (data) {
+            let str = JSON.stringify(data, null, '\t');
+            console.log(str);
+
+            let options = {};
+            options.url = window.URL.createObjectURL(new Blob([str], {type: 'text/plain;charset=utf-8'}));
+            options.filename = `handy-crx-bak-${ utils.formatDate() }.json`;
+            chrome.downloads.download(options, function() {
+                console.log('Text saved.');
+            });
+        });
+
+    };
+
+    // 从备份的j_handy-bak.json恢复数据
+    scope.import = function () {
+
+    };
+
 
     // ====================================================
+    // 是否开启onselect右键菜单
     let contextMenuKey = `isEnableContextMenu.${ urlKey }`;
 
     chrome_storage.get(contextMenuKey, function (val) {
@@ -194,7 +217,7 @@ brick.reg('otherCtrl', function (scope) {
 
 });
 
-
+// 设置logic笔记标签
 brick.reg('setNoteTagCtrl', function (scope) {
 
     let key = '';
@@ -207,7 +230,6 @@ brick.reg('setNoteTagCtrl', function (scope) {
             $input.val(val)
         }
     });
-
 
     scope.setLogicTag = function (e) {
         let val = $input.val();
@@ -222,7 +244,6 @@ brick.reg('setNoteTagCtrl', function (scope) {
             }, function (response) {
                 console.log(response);
             });
-
 
         }
     }

@@ -46,8 +46,11 @@ function cailianpress () {
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     function notify (msg) {
-        // 在monitor页面可以通过socket传给服务器
+        // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad；
+        console.log('广播新消息=> ', msg);
         chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
+        chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://192.168.3.2:3300/*', title: '财经资讯', msg: msg});
+        console.log('广播新消息 end=> ');
     }
 
     // 从检查默认配置开始，在回调函数里开启主程序
@@ -81,7 +84,7 @@ function cailianpress () {
             }
         };
 
-        // 回调函数，广播新财经消息；
+        // 回调函数，传递新财经消息；
         let callback2 = result.notify && notify;
 
         if (callback1 || callback2) {
