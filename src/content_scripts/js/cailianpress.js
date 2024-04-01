@@ -50,6 +50,7 @@ function cailianpress () {
         console.log('广播新消息=> ', msg);
         chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
         chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://192.168.3.2:3300/*', title: '财经资讯', msg: msg});
+        chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'https://xuangubao.cn', title: '财经资讯', msg: msg});
         console.log('广播新消息 end=> ');
     }
 
@@ -64,24 +65,22 @@ function cailianpress () {
         // 回调函数，语音播报新财经消息；
         let callback1 = result.speak && function (text) {
             // 检测是不是交易时间
-            if (utils.isTradingTime()) {
-                let reg1 = /【[\s\S]+】/im;
-                let reg2 = /[，。].+$/im;
-                let str = text.slice(8, 48).replace(/财联社\d+月\d+日电/, '');
-                let str2 = str.slice(0, 24);
-                let arr = str.match(reg1) || [];
-                if (arr[0]) {
-                    str = arr[0];
-                    str2 = str;
-                } else {
-                    str = str.replace(reg2, '');
-                    str2 = str2.replace(reg2, '');
-                }
-
-                console.log(str, str.length);
-                speechSU.text = `${ str } ;; ${ str2 }`;
-                speechSynthesis.speak(speechSU);
+            let reg1 = /【[\s\S]+】/im;
+            let reg2 = /[，。].+$/im;
+            let str = text.slice(8, 48).replace(/财联社\d+月\d+日电/, '');
+            let str2 = str.slice(0, 24);
+            let arr = str.match(reg1) || [];
+            if (arr[0]) {
+                str = arr[0];
+                str2 = str;
+            } else {
+                str = str.replace(reg2, '');
+                str2 = str2.replace(reg2, '');
             }
+
+            console.log(str, str.length);
+            speechSU.text = `${ str } ;; ${ str2 }`;
+            speechSynthesis.speak(speechSU);
         };
 
         // 回调函数，传递新财经消息；
@@ -128,8 +127,12 @@ function cailianpress () {
                     if (text === oldText) return;
                     if (text === '点击加载更多') return;
                     oldText = text;
-                    callback1 && callback1(text);
-                    callback2 && callback2(text);
+
+                    // 只在交易时间进行消息提示和语言播报；
+                    if (utils.isTradingTime()) {
+                        callback1 && callback1(text);
+                        callback2 && callback2(text);
+                    }
                 }, 2000);
 
             });
