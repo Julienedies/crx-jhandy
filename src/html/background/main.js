@@ -25,7 +25,7 @@ const EVENTS = {
         });
         if (req.event === 'open_by_jhandy' && req.code) {
             _global.code = req.code;
-            console.log(_global);
+            //console.log(_global);
         }
     },
 
@@ -124,7 +124,7 @@ const EVENTS = {
  */
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    console.info(request.todo || request.event, request);
+    console.info('onMessage Listener => ',request.todo || request.event, request);
 
     let events = (request.todo || request.event).split(',');
 

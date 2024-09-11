@@ -21,11 +21,12 @@ let currentCode = location.href.match(reg)[1];
 // 同一时刻只保持一个被jhandy打开的页面
 if (openByShandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'https://basic.10jqka.com.cn/*'});
+    console.log(9999999, 'openByShandy');
+    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: '*://basic.10jqka.com.cn/*'});
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
-    console.log('是否关闭前标签页', msg.event, msg.code, currentCode);
+    console.log(111111111, '是否关闭前标签页', msg.event, msg.code, currentCode);
     if(msg.event === 'open_by_jhandy' && msg.code !== currentCode){
         chrome.runtime.sendMessage({
             event: 'close_tab',

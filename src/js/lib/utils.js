@@ -29,7 +29,7 @@ export default {
         let m = now.getMinutes();
 
         let isWorkDay = d > 0 && d < 6; // 工作日，周一到周五
-        let isOpenMarket = (h >= 9 && h < 11) || (h === 11 && m < 30) || (h >= 13 && h <= 15); // 开盘交易时间
+        let isOpenMarket = (h >= 9 && h < 11) || (h === 11 && m < 30) || (h >= 13 && h < 15); // 开盘交易时间
 
         return isWorkDay && isOpenMarket;
     },
