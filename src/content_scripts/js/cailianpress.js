@@ -9,6 +9,8 @@ import utils from '../../js/lib/utils.js';
 
 console.log('I am cailianpress.js 1');
 
+const shandyHost = 'http://127.0.0.1:3300';
+
 // 财联社
 function cailianpress () {
 
@@ -48,9 +50,20 @@ function cailianpress () {
     function notify (msg) {
         // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad；
         console.log('广播新消息=> ', msg);
+        $.ajax({
+            url: `${ shandyHost }/cls_news`,
+            type: 'post',
+            data: {msg: `${ msg }`}
+        }).done(function (msg) {
+            chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '财联社新消息广播 OK!'});
+        }).fail(function (err) {
+                console.error(err);
+                //alert('财联社新消息广播失败.');
+            }
+        );
         chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
-        chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://192.168.3.2:3300/*', title: '财经资讯', msg: msg});
-        chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'https://xuangubao.cn', title: '财经资讯', msg: msg});
+        //chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://192.168.3.2:3300/*', title: '财经资讯', msg: msg});
+        //chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'https://xuangubao.cn', title: '财经资讯', msg: msg});
         console.log('广播新消息 end=> ');
     }
 
@@ -89,9 +102,9 @@ function cailianpress () {
         if (callback1 || callback2) {
 
             // 显示红色边框和蓝色边框，测试页面dom结构没有改变
-            let $elm = $("div.content-left .telegraph-content-left +div").css({border: 'solid 1px blue'});
+            let $elm = $("div.content-left .telegraph-content-left +div").css({border: 'solid 1px red'});
             let selector = '.telegraph-list:first-child .telegraph-content-box';
-            let $child = $elm.find(selector).css({border: 'solid 1px red'});
+            let $child = $elm.find(selector).css({border: 'solid 1px blue'});
 
             setTimeout(function () {
                 //$elm.css({border: 'none'});
@@ -104,7 +117,7 @@ function cailianpress () {
 
             let observer = new MutationObserver(function (mutations) {
 
-                console.table(mutations);
+                //console.table(mutations);
                 let m = mutations[0];
 
                 if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略

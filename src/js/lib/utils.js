@@ -53,7 +53,7 @@ export default {
 
         $doc.on('scroll', function (e) {
             let scrollTop = $doc.scrollTop();
-            console.log(clientHeight, scrollTop, $doc.height());
+            //console.log(clientHeight, scrollTop, $doc.height());
             if (clientHeight + scrollTop + 170 >= $doc.height()) {
                 console.log('滚动到了页面底部');
                 cb();
