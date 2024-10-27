@@ -137,8 +137,9 @@ function cailianpress () {
                     let arr = text.match(/^[【]([^】]+)[】]/);
                     console.info(arr);
                     //text = arr ? arr[1] : text;
-                    if (text === oldText) return;
+                    if (text === oldText) return console.log(text === oldText, text, oldText);
                     if (text === '点击加载更多') return;
+                    if (text === '') return;
                     oldText = text;
 
                     // 只在交易时间进行消息提示和语言播报；
