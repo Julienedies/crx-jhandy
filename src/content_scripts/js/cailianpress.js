@@ -15,7 +15,7 @@ const shandyHost = 'http://127.0.0.1:3300';
 function cailianpress () {
 
     // 滚动到底，自动显示
-    let $more = $("div.content-main-box .content-left .list-more-button.more-button").css({border: 'solid 2px red'});
+    let $more = $(".f-l.w-894 > div.list-more-button.more-button").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
         console.log('onScrollEnd');
@@ -23,7 +23,7 @@ function cailianpress () {
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    // 弹出框
     function notify_2 (body, d) {
         let title = "";
         let options = {
@@ -46,16 +46,16 @@ function cailianpress () {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-
+    // 弹出提醒框 +  广播消息
+    // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad；
     function notify (msg) {
-        // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad；
         console.log('广播新消息=> ', msg);
         $.ajax({
             url: `${ shandyHost }/cls_news`,
             type: 'post',
             data: {msg: `${ msg }`}
         }).done(function (msg) {
-            chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '财联社新消息广播 OK!'});
+            //chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '财联社新消息广播 OK!'});
         }).fail(function (err) {
                 console.error(err);
                 //alert('财联社新消息广播失败.');
@@ -77,7 +77,7 @@ function cailianpress () {
 
         // 回调函数，语音播报新财经消息；
         let callback1 = result.speak && function (text) {
-            // 检测是不是交易时间
+
             let reg1 = /【[\s\S]+】/im;
             let reg2 = /[，。].+$/im;
             let str = text.slice(8, 48).replace(/财联社\d+月\d+日电/, '');
@@ -102,8 +102,9 @@ function cailianpress () {
         if (callback1 || callback2) {
 
             // 显示红色边框和蓝色边框，测试页面dom结构没有改变
-            let $elm = $("div.content-left .telegraph-content-left +div").css({border: 'solid 1px red'});
-            let selector = '.telegraph-list:first-child .telegraph-content-box';
+            // div.content-left .telegraph-content-left +div
+            let $elm = $(".f-l.w-894 > div:nth-child(2)").css({border: 'solid 1px red'});
+            let selector = '.p-t-20:first-child .telegraph-content-box';
             let $child = $elm.find(selector).css({border: 'solid 1px blue'});
 
             setTimeout(function () {
@@ -122,7 +123,7 @@ function cailianpress () {
 
                 if (/^\d{2}.\d{2}.\d{2}$/.test(m.oldValue)) return;  //时间字符串变化,忽略
 
-                console.info(+new Date, m, m.oldValue, m.target.nodeValue);
+                //console.info(+new Date, m, m.oldValue, m.target.nodeValue);
 
                 let text = m.target.nodeValue;
 
@@ -142,8 +143,9 @@ function cailianpress () {
                     if (text === '') return;
                     oldText = text;
 
-                    // 只在交易时间进行消息提示和语言播报；
-                    if (utils.isTradingTime()) {
+                    // 检测是不是交易时间;   只在交易时间进行消息提示和语言播报;
+                    if (!utils.isTradingTime()) {
+                        console.log('callback', text);
                         callback1 && callback1(text);
                         callback2 && callback2(text);
                     }

@@ -154,6 +154,21 @@ const contextMenu = {
             );
         });
 
+        // 财经资讯标记2
+        $elm.on('click', '[todo=mark_news2]', function (e) {
+            $.ajax({
+                url: `${ shandyHost }/stock/replay/news`,
+                type: 'post',
+                data: {text: that.query, date: (new Date).toLocaleDateString()}
+            }).done(function (msg) {
+                chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '资讯标记 OK!'});
+            }).fail(function (err) {
+                    console.error(err);
+                    alert('财经资讯标记出错.');
+                }
+            );
+        });
+
         // 以选择的文本转到特定url
         $elm.on('click', '[data-url]', function (e) {
             let url = this.dataset.url;
