@@ -144,7 +144,7 @@ function cailianpress () {
                     oldText = text;
 
                     // 检测是不是交易时间;   只在交易时间进行消息提示和语言播报;
-                    if (!utils.isTradingTime()) {
+                    if (utils.isTradingTime()) {
                         console.log('callback', text);
                         callback1 && callback1(text);
                         callback2 && callback2(text);
