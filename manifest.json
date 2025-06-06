@@ -1,36 +1,64 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "jHandy",
   "description": "自用工具集合",
-  "version": "1.1",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "permissions": [
-    "tabs",
-    "notifications",
-    "contextMenus",
-    "downloads",
-    "storage",
-    "webRequest",
-    "webRequestBlocking",
-    "\u003Call_urls\u003E",
-    "http://*/*",
-    "https://*/*",
-    "file:///*/*"
-  ],
+  "version": "1.2.0",
+  "author": "Your Name/Organization",
+  // 图标配置
   "icons": {
     "16": "assets/img/icon-bitty.png",
     "48": "assets/img/icon-small.png",
     "128": "assets/img/icon-large.png"
   },
-  "browser_action": {
-    "default_icon": "assets/img/icon-large.png",
+  // 浏览器操作配置
+  "action": {
+    "default_icon": {
+      "16": "assets/img/icon-bitty.png",
+      "32": "assets/img/icon-small.png",
+      "48": "assets/img/icon-large.png"
+    },
     "default_popup": "dist/options.html",
-    "default_title": "自定义页面"
+    "default_title": "jHandy 工具集"
   },
+  // 选项页面
   "options_page": "dist/options.html",
+  // 后台服务
   "background": {
-    "page": "dist/background.html"
+    "service_worker": "dist/background.js",
+    "type": "module"
   },
+  // 权限声明
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "downloads",
+    "notifications"
+  ],
+  // 主机权限
+  "host_permissions": [
+    "http://es6.ruanyifeng.com/*",
+    "http://www.maofou.com/*",
+    "https://www.taoguba.com.cn/*",
+    "http://taobao.cjcp.com.cn/*",
+    "*://*.baidu.com/*",
+    "http://www.bbc.com/*",
+    "https://gupiao.baidu.com/stock/*",
+    "http://finance.sina.com.cn/realstock/company/*",
+    "http://localhost:3300/*",
+    "http://127.0.0.1:3300/*",
+    "https://www.cls.cn/*",
+    "https://xuangubao.cn/*",
+    "https://xueqiu.com/S/*",
+    "https://www.iwencai.com/data-robot/*",
+    "http://basic.10jqka.com.cn/*/*",
+    "http://www.yuncaijing.com/*"
+  ],
+  // 内容安全策略
+  "content_security_policy": {
+     "extension_pages": "script-src 'self' 'wasm-unsafe-eval' http://localhost:* http://127.0.0.1:*; object-src 'self'",
+    "sandbox": "sandbox allow-scripts; script-src 'self'"
+  },
+  // 内容脚本
   "content_scripts": [
     {
       "matches": [
@@ -54,6 +82,12 @@
       ],
       "css": [
         "dist/content_scripts/css/taoguba.css"
+      ],
+      "js": [
+        "dist/runtime.js",
+        "dist/vendors.js",
+        "dist/common.js",
+        "dist/content_scripts/js/taoguba.js"
       ]
     },
     {
@@ -118,24 +152,9 @@
       ],
       "js": [
         "dist/content_scripts/js/all.js"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
       ],
       "exclude_matches": [
-        "https://www.zhihu.com/*"
-      ],
-      "js": [
-        "dist/content_scripts/js/back-top.js"
-      ]
-    },
-    {
-      "matches": [
-        "*://*/*"
-      ],
-      "exclude_matches": [
+        "https://www.zhihu.com/*",
         "http://localhost:3300/*",
         "https://www.cls.cn/*",
         "https://www.taoguba.com.cn/*",
@@ -145,24 +164,17 @@
         "http://basic.10jqka.com.cn/*/*",
         "http://www.yuncaijing.com/quote/*",
         "http://www.yuncaijing.com/insider/simple.html"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/on-select.js"
       ]
     },
     {
       "matches": [
-        "http://localhost:3300/*"
+        "*://*/*"
       ],
       "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
-        "dist/content_scripts/js/jhandy.js"
+        "dist/content_scripts/js/back-top.js"
+      ],
+      "exclude_matches": [
+        "https://www.zhihu.com/*"
       ]
     },
     {
@@ -177,7 +189,6 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/cailianpress.js"
       ]
     },
@@ -192,7 +203,6 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/xuangubao.js"
       ]
     },
@@ -204,21 +214,7 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/ycj.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://www.taoguba.com.cn/*"
-      ],
-      "js": [
-        "data/stocks.js",
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
-        "dist/content_scripts/js/taoguba.js"
       ]
     },
     {
@@ -229,7 +225,6 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/xueqiu.js"
       ]
     },
@@ -244,27 +239,37 @@
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/iwencai.js"
       ]
     },
     {
       "matches": [
-        "http://basic.10jqka.com.cn/*/*"
-      ],
-      "exclude_matches": [
+        "*://basic.10jqka.com.cn/*/*"
       ],
       "css": [
         "dist/content_scripts/css/10jqka.css"
       ],
       "js": [
-        "data/T.js",
         "dist/runtime.js",
         "dist/vendors.js",
         "dist/common.js",
-        "dist/content_scripts/js/on-select.js",
         "dist/content_scripts/js/10jqka.js"
       ]
     }
-  ]
+  ],
+  // 网络可访问资源
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*",
+        "dist/*",
+        "data/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  // 最低Chrome版本要求
+  "minimum_chrome_version": "88"
 }
