@@ -4,6 +4,6 @@
 
 module.exports = {
     mode: 'production',
-    devtool: 'source-map', // 'cheap-module-source-map',
+    devtool: 'source-map',
     publicPath: ''
 }

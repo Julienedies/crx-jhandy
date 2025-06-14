@@ -9,21 +9,24 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 
 console.log('I am 10jqka.js.');
 
+
 let STOCKS = window.STOCKS || [];  // 主要用于股票列表自动切换功能
 
-let open_by_jhandy = location.search.match(/\?self[=][1]/);
+let openByShandy = location.search.match(/\?self[=][1]/);
 
 let reg = /\/(\d{6})\//;
 let currentCode = location.href.match(reg)[1];
 
 
 // 同一时刻只保持一个被jhandy打开的页面
-if (open_by_jhandy) {
+if (openByShandy) {
     STOCKS = [];
-    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: 'http://basic.10jqka.com.cn/*'});
+    console.log(9999999, 'openByShandy');
+    chrome.runtime.sendMessage({todo:'relay', event: 'open_by_jhandy', code: currentCode, url: '*://basic.10jqka.com.cn/*'});
 }
+
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse){
-    console.log('是否关闭前标签页', msg.event, msg.code, currentCode);
+    console.log(111111111, '是否关闭前标签页', msg.event, msg.code, currentCode);
     if(msg.event === 'open_by_jhandy' && msg.code !== currentCode){
         chrome.runtime.sendMessage({
             event: 'close_tab',
@@ -45,18 +48,35 @@ let next = stocks[index + 1] || stocks[0];
 let stockPrefix = /^6/.test(currentCode) ? 'sh' : 'sz';
 let prefixCode = stockPrefix + currentCode;
 
+let name = document.title.match(/\S+(?=.\d{6})/img);
+let wd = `${name?name[0]:currentCode}`;
+
 let urlMap = {
     ycj: 'http://www.yuncaijing.com/quote/*.html'.replace('*', prefixCode),
     xueqiu: 'https://xueqiu.com/S/*'.replace('*', prefixCode),
-    ths_p: 'http://basic.10jqka.com.cn/*/company.html'.replace('*', currentCode),
-    ths_new: 'http://basic.10jqka.com.cn/*/'.replace('*', currentCode),
-    ths_c: 'http://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
-    ths_news: 'http://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
+    ths_p: 'https://basic.10jqka.com.cn/*/company.html'.replace('*', currentCode),
+    ths_new: 'https://basic.10jqka.com.cn/*/'.replace('*', currentCode),
+    ths_c: 'https://basic.10jqka.com.cn/*/concept.html'.replace('*', currentCode),
+    ths_news: 'https://basic.10jqka.com.cn/*/news.html'.replace('*', currentCode),
     wencai:'https://www.iwencai.com/data-robot/extract-new?qs=pc_~soniu~others~resultpage~datarobot~input&w=*&querytype=stock&dataSource=send_click'.replace('*', currentCode),
     xuangubao: `https://xuangubao.cn/stock/${currentCode}.${ stockPrefix.toLocaleUpperCase().replace('SH','SS') }`,
     taoguba: `https://www.taoguba.com.cn/quotes/${prefixCode}`,
+    dfyb: `https://data.eastmoney.com/report/${currentCode}.html`,
     site: ''
 };
+
+
+let html = `<a href="${ urlMap.ycj }" target="_blank">云财经</a>
+            <a href="${ urlMap.xuangubao }" target="_blank">选股宝</a>
+            <a href="${ urlMap.taoguba }" target="_blank">淘股吧</a>
+            <a href="${ urlMap.xueqiu }" target="_blank">雪球</a>
+            <a href="https://www.jiuyangongshe.com/search/new?k=${ encodeURIComponent(wd) }", target="_blank">韭研</a>
+            <a href="http://www.hibor.com.cn/newweb/HuiSou/s?gjc=${ encodeURIComponent(wd) }&sslb=1&sjfw=24&cxzd=qb%28qw%29&px=zh&bgys=&gs=&sdhy=&sdgs=&sdhgcl=&mhss=&hy=&gp=" target="_blank">慧博研报</a>     
+            <a href="https://www.iwencai.com/stockpick/search?typed=1&preParams=&ts=1&f=1&qs=index_rewrite&selfsectsn=&querytype=stock&searchfilter=&tid=stockpick&w=${ encodeURIComponent(wd) }" target="_blank">问财</a>
+            <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${ encodeURIComponent(wd + ' A股') }", target="_blank">百度</a>
+             <a href="${ urlMap.dfyb }" target="_blank">东方研报</a> 
+            <a href="http://127.0.0.1:3300/web/stock_c.html?code=${ currentCode }&edit=1", target="_blank">自定义</a>`;
+
 
 let $body = $(document.body);
 
@@ -106,20 +126,12 @@ let createNav = function () {
 };
 
 let createLinks = function () {
-    let name = document.title.match(/\S+(?=.\d{6})/img);
-    let wd = `${name?name[0]:currentCode} A股`;
-    let html = `<div> 
-            <a href="${urlMap.ycj}" target="_blank">云财经</a>
-            <a href="${urlMap.xuangubao}" target="_blank">选股宝</a>
-            <a href="${urlMap.taoguba}" target="_blank">淘股吧</a>
-            <a href="${urlMap.xueqiu}" target="_blank">雪球</a>
-            <a href="https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1rsv_idx=1&tn=baidu&wd=${encodeURIComponent(wd)}", target="_blank">百度</a></div>
-            <a href="http://localhost:2018/public/static/html/stock/c/index.html?code=${currentCode}&edit=1", target="_blank">自定义</a></div>`;
+
     //$url = $('iframe').contents().find('#detail a').eq(0);
     let $td = $('#detail table:first td:last');
     let site_url = $td.find('a:first').attr('href');
     urlMap.site =  site_url && site_url + '?close=400';
-    $td.append(html);
+    $td.append(`<div>${html}</div>`);
 };
 
 let createIframe = function () {
@@ -177,13 +189,14 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
     createNav();
 
-    if(!open_by_jhandy && location.href.endsWith('company.html')){
+    if(!openByShandy && location.href.endsWith('company.html')){
         throw new Error('结束。');
     }
 
+
     chrome_storage.get('stock', function (dob) {
 
-        console.log(dob);
+        return console.log(dob);
 
         // 自动显示页面列表
         if (dob.relation) {
@@ -219,7 +232,7 @@ if (/^\/\d{6}\/company.html/img.test(location.pathname)) {
 
             setTimeout(function () {
                 g(queue, function () {
-                    open_by_jhandy ? activeFtnn() : dob.queue && goToNext(next);
+                    openByShandy ? activeFtnn() : dob.queue && goToNext(next);
                 });
             }, 1000 * interval * start_item.d);
 
@@ -252,6 +265,7 @@ if (/^\/\d{6}\/?$/img.test(location.pathname)) {
 
     //$('.wrapper').addClass('J');
     //$body.append('<iframe src="*"></iframe>'.replace('*', url));
+    $body.append(`<div style="position:fixed;top:30%;right:0;width:80px;display: flex;flex-direction: column; font-size:1.2em;line-height:2;">${html}</div>`)
 
 }
 

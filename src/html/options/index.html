@@ -9,7 +9,7 @@
 <body>
 <div class="container" ic-ctrl="mainCtrl">
 
-    <div class="tabs is-large" ic-tabs="a" ic-tab-select="li" ic-tabc-select="section" ic-tab-cla="is-active">
+    <div class="tabs is-large" ic-tabs="a" ic-tab-select="li" ic-tabc-select="section" ic-tab-active="3" ic-tab-cla="is-active">
         <ul>
             <li><a>股票资料浏览</a></li>
             <li><a>财联社</a></li>
@@ -107,7 +107,6 @@
         </section>
 
         <section ic-ctrl="downloadCtrl">
-            <h3>下载</h3>
             <div>
                 <div class="control">
                     <button class="button is-primary" ic-click="download">下载本页图片</button>
@@ -128,12 +127,11 @@
             </div>
 
             <div class="box" ic-ctrl="setNoteTagCtrl">
-                <h6 class="title is-6">设置logic标签</h6>
-                <div class="field">
+               <!-- <div class="field">
                     <div class="control">
                         <input class="input" type="text" name="logicUrl" placeholder="logic标签key，默认页面url">
                     </div>
-                </div>
+                </div>-->
 
                 <div class="field">
                     <div class="control is-expanded">
@@ -144,9 +142,46 @@
                 <div class="field">
                     <div class="control">
                         <a class="button is-primary" ic-click="setLogicTag">
-                            设定交易逻辑标签
+                            设定logic标签
                         </a>
                     </div>
+                </div>
+            </div>
+
+            <div class="box" ic-ctrl="setPsCtrl">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" name="hostFoPs" placeholder="host">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control is-expanded">
+                        <input class="input" type="text" value="" name="nameForPs" placeholder="name" ic-click="onFocus">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control is-expanded">
+                        <input class="input" type="text" value="" name="psForPs" placeholder="ps" ic-click="onFoucus">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <div class="control">
+                        <a class="button is-primary" ic-click="setPs">
+                            设定ps
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="control">
+                    <label>
+                        启用右键菜单
+                        <input type="checkbox" id="toggleContextMenu" class="checkbox" checked ic-change="toggleContextMenu">
+                    </label>
                 </div>
             </div>
 
@@ -158,10 +193,8 @@
 
             <div class="box">
                 <div class="control">
-                    <label>
-                        启用右键菜单
-                        <input type="checkbox" id="toggleContextMenu" class="checkbox" checked ic-change="toggleContextMenu">
-                    </label>
+                    <button class="button is-primary" ic-click="export">备份数据</button>
+                    <button class="button is-primary" ic-click="import">导入数据</button>
                 </div>
             </div>
 
