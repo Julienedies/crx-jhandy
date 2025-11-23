@@ -23,7 +23,7 @@ function cailianpress () {
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
-    // 弹出框
+    // 通知框
     function notify_2 (body, d) {
         let title = "";
         let options = {
@@ -47,24 +47,27 @@ function cailianpress () {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 弹出提醒框 +  广播消息
-    // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad；
+    // 传递消息给monitor页面，在monitor页面可以通过socket传给服务器，服务器再通过socket广播给 IPad;
+    // 之前使用ajax，但因为chrome 插件协议支持不稳定，不推荐使用
     function notify (msg) {
         console.log('广播新消息=> ', msg);
-        $.ajax({
-            url: `${ shandyHost }/cls_news`,
-            type: 'post',
-            data: {msg: `${ msg }`}
-        }).done(function (msg) {
-            //chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '财联社新消息广播 OK!'});
-        }).fail(function (err) {
-                console.error(err);
-                //alert('财联社新消息广播失败.');
-            }
-        );
-        chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
+        // $.ajax({
+        //     url: `${ shandyHost }/cls_news`,
+        //     type: 'post',
+        //     data: {msg: `${ msg }`}
+        // }).done(function (msg) {
+        //     //chrome.runtime.sendMessage({todo: 'notify', duration: 4, title: '', msg: '财联社新消息广播 OK!'});
+        // }).fail(function (err) {
+        //         console.error(err);
+        //         //alert('财联社新消息广播失败.');
+        //     }
+        // );
+        // 新财经消息 先发送到background.js, background再post给 shandy 服务器
+        chrome.runtime.sendMessage({event: 'cls_news',  url: 'http://127.0.0.1:3300/*', title: '财经资讯', data: {msg: msg}});
+        //chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://localhost:3300/*', title: '财经资讯', msg: msg});
         //chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'http://192.168.3.2:3300/*', title: '财经资讯', msg: msg});
         //chrome.runtime.sendMessage({event: 'cls_news', todo: 'relay', url: 'https://xuangubao.cn', title: '财经资讯', msg: msg});
-        console.log('广播新消息 end=> ');
+        
     }
 
     // 从检查默认配置开始，在回调函数里开启主程序
@@ -104,12 +107,12 @@ function cailianpress () {
             // 显示红色边框和蓝色边框，测试页面dom结构没有改变
             // div.content-left .telegraph-content-left +div
             let $elm = $(".f-l.w-894 > div:nth-child(2)").css({border: 'solid 1px red'});
-            let selector = '.p-t-20:first-child .telegraph-content-box';
+            let selector = '.p-t-20:first-child .telegraph-content-box'; 
             let $child = $elm.find(selector).css({border: 'solid 1px blue'});
 
             setTimeout(function () {
-                //$elm.css({border: 'none'});
                 $child.css({border: 'none'});
+                notify($child.text());  // 测试用
             }, 9 * 1000);
 
             let oldText = '';
@@ -134,9 +137,9 @@ function cailianpress () {
                 timer = setTimeout(function () {
                     let $child = $elm.find(selector);
                     text = text || $child.text();
-                    console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
+                    //console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
                     let arr = text.match(/^[【]([^】]+)[】]/);
-                    console.info(arr);
+                    //console.info(arr);
                     //text = arr ? arr[1] : text;
                     if (text === oldText) return console.log(text === oldText, text, oldText);
                     if (text === '点击加载更多') return;

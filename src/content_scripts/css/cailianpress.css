@@ -12,3 +12,30 @@
     font-size:14px!important;
     line-height: 1.5!important;
 }
+
+
+.ad-box {
+  display: none;
+}
+
+.telegraph-content{
+  max-height: 1990px!important;
+}
+.o-h{
+overflow: visible!important;
+}
+table.w-100p.watch-table *{
+  font-size:16px;
+}
+table.w-100p.watch-table td{
+  height: 74px;
+  padding: 18px;
+}
+
+.watch-quote-reason{
+  width: 100%;
+  -webkit-line-clamp: 13;
+  overflow: visible;
+  line-height: 1.4;
+  
+}

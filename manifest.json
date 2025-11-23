@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "jHandy",
   "description": "自用工具集合",
-  "version": "1.2.0",
+  "version": "1.2.45",
   "author": "Julienedies",
 
   "icons": {
@@ -29,6 +29,7 @@
   },
 
   "permissions": [
+    "tabs",
     "storage",
     "contextMenus",
     "downloads",
@@ -36,6 +37,9 @@
   ],
 
   "host_permissions": [
+    "<all_urls>",
+    "http://127.0.0.1:3300/*",
+    "http://localhost:3300/*",
     "http://es6.ruanyifeng.com/*",
     "http://www.maofou.com/*",
     "https://www.taoguba.com.cn/*",
@@ -44,8 +48,6 @@
     "http://www.bbc.com/*",
     "https://gupiao.baidu.com/stock/*",
     "http://finance.sina.com.cn/realstock/company/*",
-    "http://localhost:3300/*",
-    "http://127.0.0.1:3300/*",
     "https://www.cls.cn/*",
     "https://xuangubao.cn/*",
     "https://xueqiu.com/S/*",
@@ -114,16 +116,6 @@
         "dist/vendors.js",
         "dist/common.js",
         "dist/content_scripts/js/baidu.js"
-      ]
-    },
-    {
-      "matches": [
-        "http://www.bbc.com/*"
-      ],
-      "js": [
-        "dist/runtime.js",
-        "dist/vendors.js",
-        "dist/content_scripts/js/open-link-in-new-window.js"
       ]
     },
     {

@@ -9,6 +9,7 @@ import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 import utils from '../../js/lib/utils';
 
 import onSelectHtml from './on-select.html';
+//import { call } from 'file-loader';
 
 console.log('I am on-select.js.');
 
@@ -36,6 +37,7 @@ function cancelContextmenu(e) {
     $doc.off('', cancelContextmenu);
 }
 
+// 选择文本后 自定义菜单
 const contextMenu = {
     is_show: false,
     query: '',
@@ -66,48 +68,80 @@ const contextMenu = {
                 tag = tag && `${tag}`;
             }
 
-            $.ajax({
-                url: `${shandyHost}/stock/logic`,
-                type: 'post',
-                data: { text: `${text}`, type: '', author: tag, source: { url: location.href, title: $('title').text() } }
-            }).done(function (msg) {
-                chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!' });
-            }).fail(function (err) {
-                console.error(err);
-                alert('交易逻辑标记出错.');
-            }
-            );
-
+            let data = { text: `${text}`, type: '', author: tag, source: { url: location.href, title: $('title').text() } };
+            // ajax 因为chrome安全协议改变，已经不能使用
+            // $.ajax({
+            //     url: `${shandyHost}/stock/logic`,
+            //     type: 'post',
+            //     data: { text: `${text}`, type: '', author: tag, source: { url: location.href, title: $('title').text() } }
+            // }).done(function (msg) {
+            //     chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '交易逻辑标记 OK!' });
+            // }).fail(function (err) {
+            //     console.error(err);
+            //     alert('交易逻辑标记出错.');
+            // });
+            let callback = function(response) {
+                console.log(response);
+            };            
+            chrome.runtime.sendMessage({event: 'mark_stock_logic', todo: 'mark_stock_logic', url: 'http://127.0.0.1:3300/*', title: '交易逻辑标记', data: data}, callback);
+        });
+        
+        // 财经资讯标记
+        $elm.on('click', '[todo=mark_news]', function (e) {
+            let data = { text: that.query, date: (new Date).toLocaleDateString() };
+            // $.ajax({
+            //     url: `${shandyHost}/stock/news`,
+            //     type: 'post',
+            //     data: { text: that.query, date: (new Date).toLocaleDateString() }
+            // }).done(function (msg) {
+            //     chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '资讯标记 OK!' });
+            // }).fail(function (err) {
+            //     console.error(err);
+            //     alert('财经资讯标记出错.');
+            // }
+            // );
+            let callback = function(response) {
+                console.log(response);
+            };
+            chrome.runtime.sendMessage({event: 'mark_news', todo: 'mark_news', url: 'http://127.0.0.1:3300/*', title: '交易逻辑标记', data: data}, callback);
         });
 
         // 笔记标记
         $elm.on('click', '[todo=mark_note]', function (e) {
-            $.ajax({
-                url: `${shandyHost}/note`,
-                type: 'post',
-                data: { text: that.query, type: '' }
-            }).done(function (msg) {
-                chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!' });
-            }).fail(function (err) {
-                console.error(err);
-                alert('笔记标记出错.');
-            }
-            );
+            // $.ajax({
+            //     url: `${shandyHost}/note`,
+            //     type: 'post',
+            //     data: { text: that.query, type: '' }
+            // }).done(function (msg) {
+            //     chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!' });
+            // }).fail(function (err) {
+            //     console.error(err);
+            //     alert('笔记标记出错.');
+            // }
+            // );
+            let callback = function(response) {
+                console.log(response);
+            };
+            chrome.runtime.sendMessage({event: 'mark_note', todo: 'mark_note', url: 'http://127.0.0.1:3300/*', title: '笔记标记', data: { text: that.query, type: '' }}, callback);
         });
 
         // 笔记标记2
         $elm.on('click', '[todo=mark_note2]', function (e) {
-            $.ajax({
-                url: `${shandyHost}/note2`,
-                type: 'post',
-                data: { text: that.query, type: '' }
-            }).done(function (msg) {
-                chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!' });
-            }).fail(function (err) {
-                console.error(err);
-                alert('笔记标记出错.');
-            }
-            );
+            // $.ajax({
+            //     url: `${shandyHost}/note2`,
+            //     type: 'post',
+            //     data: { text: that.query, type: '' }
+            // }).done(function (msg) {
+            //     chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '笔记标记 OK!' });
+            // }).fail(function (err) {
+            //     console.error(err);
+            //     alert('笔记标记出错.');
+            // }
+            // );
+            let callback = function(response) {
+                console.log(response);
+            };
+            chrome.runtime.sendMessage({event: 'mark_note2', todo: 'mark_note2', url: 'http://127.0.0.1:3300/*', title: '笔记标记', data: { text: that.query, type: '' }}, callback);
         });
 
         // 添加股票资料链接
@@ -139,35 +173,6 @@ const contextMenu = {
             chrome.runtime.sendMessage({ event: 'view_in_tdx', code: that.query });
         });
 
-        // 财经资讯标记
-        $elm.on('click', '[todo=mark_news]', function (e) {
-            $.ajax({
-                url: `${shandyHost}/stock/news`,
-                type: 'post',
-                data: { text: that.query, date: (new Date).toLocaleDateString() }
-            }).done(function (msg) {
-                chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '资讯标记 OK!' });
-            }).fail(function (err) {
-                console.error(err);
-                alert('财经资讯标记出错.');
-            }
-            );
-        });
-
-        // 财经资讯标记2
-        $elm.on('click', '[todo=mark_news2]', function (e) {
-            $.ajax({
-                url: `${shandyHost}/stock/replay/news`,
-                type: 'post',
-                data: { text: that.query, date: (new Date).toLocaleDateString() }
-            }).done(function (msg) {
-                chrome.runtime.sendMessage({ todo: 'notify', duration: 4, title: '', msg: '资讯标记 OK!' });
-            }).fail(function (err) {
-                console.error(err);
-                alert('财经资讯标记出错.');
-            }
-            );
-        });
 
         // 以选择的文本转到特定url
         $elm.on('click', '[data-url]', function (e) {

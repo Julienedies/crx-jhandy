@@ -60,21 +60,25 @@ const plugins = [
         filename: 'options.html',
         chunks: ['runtime', 'vendors', 'common', 'options']
     }),
-    new HtmlPlugin({
-        template: 'html/background/index.html',
-        filename: 'background.html',
-        chunks: ['runtime', 'vendors', 'common', 'background']
-    }),
+    // 直接使用background.js
+    // new HtmlPlugin({
+    //     template: 'html/background/index.html',
+    //     filename: 'background.html',
+    //     chunks: ['runtime', 'vendors', 'common', 'background']
+    // }),
     new webpack.DefinePlugin({}),
     //new webpack.NoEmitOnErrorsPlugin(),
     new VueLoaderPlugin(),
-    new CleanPlugin(['dist'], {
-        root: projectRoot
-    }),
+    // new CleanPlugin(['dist'], {
+    //     root: projectRoot
+    // }),
     new FileManagerPlugin({
         onEnd: [
             {
                 copy: [ { source: './src/content_scripts/css/*', destination: './dist/content_scripts/css/' }]
+            },
+            {
+                copy: [ { source: './src/background/*', destination: './dist/' }]
             },
             /*{
                 copy: [ { source: './manifest.json', destination: './dist/' }]

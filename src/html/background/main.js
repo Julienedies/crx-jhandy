@@ -13,6 +13,9 @@ const shandyHost = 'http://localhost:3300';
 const _global = {
     code: ''
 };
+
+console.log('######################  I am background.js ###############################');
+
 /*
  * 消息处理器
  * 接收标签页面发来的消息, 处理

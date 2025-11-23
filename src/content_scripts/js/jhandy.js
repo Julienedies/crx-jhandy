@@ -7,6 +7,7 @@ import utils from '../../js/lib/utils'
 
 console.log('I am jhandy.js');
 
+const shandyHost = 'http://127.0.0.1:3300';
 
 let $notify_news = $('#notify_news');
 let $tdx_view = $('#tdx_view');
@@ -15,6 +16,7 @@ let $active_ftnn = $('#active_ftnn');
 
 console.log('chrome => ', chrome);
 
+// 基本用不到了
 chrome.runtime.onMessage.addListener(function (msg) {
 
     console.info(msg.event, msg);
@@ -35,7 +37,43 @@ chrome.runtime.onMessage.addListener(function (msg) {
         $notify_news.text(msg.msg);
         // 触发socket动作, 通过socket上传cls news给服务器
         $notify_news.click();
-
+        
+    } else if(e === 'mark_stock_logic') {
+            $.ajax({
+                url: `${shandyHost}/stock/logic`,
+                type: 'post',
+                data: msg.data
+            }).done(function (msg) {
+                
+            }).fail(function (err) {
+                console.error(err);
+                alert('交易逻辑标记出错.');
+            });   
+            
+    }  else if(e === 'mark_news'){
+           $.ajax({
+                url: `${shandyHost}/stock/news`,
+                type: 'post',
+                data: msg.data
+            }).done(function (msg) {
+                
+            }).fail(function (err) {
+                console.error(err);
+                alert('财经资讯标记出错.');
+            }
+            );
+    } else if(e === 'mark_note'){
+            $.ajax({
+                url: `${shandyHost}/note`,
+                type: 'post',
+                data: msg.data
+            }).done(function (msg) {
+                
+            }).fail(function (err) {
+                console.error(err);
+                alert('笔记标记出错.');
+            }
+            );
     }
 
 });
