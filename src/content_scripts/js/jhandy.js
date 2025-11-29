@@ -16,7 +16,7 @@ let $active_ftnn = $('#active_ftnn');
 
 console.log('chrome => ', chrome);
 
-// 基本用不到了
+// 基本用不到了, 之前作为中转使用，现在通过background直接连接服务器
 chrome.runtime.onMessage.addListener(function (msg) {
 
     console.info(msg.event, msg);

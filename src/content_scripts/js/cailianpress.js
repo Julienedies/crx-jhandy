@@ -7,7 +7,7 @@ import $ from 'jquery';
 import { chrome_storage, chrome_tabs } from '../../js/lib/chromeApi';
 import utils from '../../js/lib/utils.js';
 
-console.log('I am cailianpress.js 1');
+console.log('I am cailianpress.js');
 
 const shandyHost = 'http://127.0.0.1:3300';
 
@@ -15,7 +15,7 @@ const shandyHost = 'http://127.0.0.1:3300';
 function cailianpress () {
 
     // 滚动到底，自动显示
-    let $more = $(".f-l.w-894 > div.list-more-button.more-button").css({border: 'solid 2px red'});
+    let $more = $(".f-l.w-894 > div.t-a-c.m-auto").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
         console.log('onScrollEnd');
