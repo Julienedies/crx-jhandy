@@ -15,7 +15,8 @@ const shandyHost = 'http://127.0.0.1:3300';
 function cailianpress () {
 
     // 滚动到底，自动显示
-    let $more = $(".f-l.w-894 > div.t-a-c.m-auto").css({border: 'solid 2px red'});
+    let $container = $('.f-l.w-894').css({border: 'solid 1px green'});    // 主要容器，要操作的dom都在其中;
+    let $more = $container.find("> div.t-a-c.h-b-c-999").css({border: 'solid 2px red'});
 
     utils.onScrollEnd(function () {
         console.log('onScrollEnd');
@@ -107,7 +108,7 @@ function cailianpress () {
             // 显示红色边框和蓝色边框，测试页面dom结构没有改变
             // div.content-left .telegraph-content-left +div
             let $elm = $(".f-l.w-894 > div:nth-child(2)").css({border: 'solid 1px red'});
-            let selector = '.p-t-20:first-child .telegraph-content-box'; 
+            let selector = '>div:first-child >div:first-child >div:first-child  >div:first-child  >div:first-child'; // 每次dom有变化，就要查找第一个变化的子元素
             let $child = $elm.find(selector).css({border: 'solid 1px blue'});
 
             setTimeout(function () {
@@ -137,6 +138,8 @@ function cailianpress () {
                 timer = setTimeout(function () {
                     let $child = $elm.find(selector);
                     text = text || $child.text();
+                    text = text.trimStart();
+                    text = text.replace(/^\d{2}:\d{2}:\d{2}/, ''); // 删除时间字符串
                     //console.log(text, text.replace(/\.txt\s*\{[^{}]*\}\s*$/img, ''));
                     let arr = text.match(/^[【]([^】]+)[】]/);
                     //console.info(arr);
