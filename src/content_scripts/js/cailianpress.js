@@ -13,6 +13,16 @@ const shandyHost = 'http://127.0.0.1:3300';
 
 // 财联社
 function cailianpress () {
+    
+    // 展开所有隐藏内容
+    function show(delay) {
+        delay = delay || 700
+			setTimeout(() => {
+				$("span.telegraph-content-br-close").click();
+			}, delay);
+	}
+    
+    show(1000)
 
     // 滚动到底，自动显示
     let $container = $('.f-l.w-894').css({border: 'solid 1px green'});    // 主要容器，要操作的dom都在其中;
@@ -21,6 +31,7 @@ function cailianpress () {
     utils.onScrollEnd(function () {
         console.log('onScrollEnd');
         $more[0].click();
+        show();
     });
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,8 +95,8 @@ function cailianpress () {
 
             let reg1 = /【[\s\S]+】/im;
             let reg2 = /[，。].+$/im;
-            let str = text.slice(8, 48).replace(/财联社\d+月\d+日电/, '');
-            let str2 = str.slice(0, 24);
+            let str = text.slice(0, 56).replace(/财联社\d+月\d+日电/, '');
+            let str2 = str.slice(0, 28);
             let arr = str.match(reg1) || [];
             if (arr[0]) {
                 str = arr[0];
