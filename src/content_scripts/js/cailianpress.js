@@ -14,19 +14,21 @@ const shandyHost = 'http://127.0.0.1:3300';
 // 财联社
 function cailianpress () {
     
-    // 展开所有隐藏内容
+    const showBtnSelector = 'span.telegraph-content-br-close';
+    
+    // 展开所有收缩内容
     function show(delay) {
-        delay = delay || 700
-			setTimeout(() => {
-				$("span.telegraph-content-br-close").click();
-			}, delay);
+        delay = delay || 700;
+        setTimeout(() => {
+            $(showBtnSelector).click();  // 展开收缩内容
+        }, delay);
 	}
     
-    show(1000)
+    show(1000);
 
     // 滚动到底，自动显示
     let $container = $('.f-l.w-894').css({border: 'solid 1px green'});    // 主要容器，要操作的dom都在其中;
-    let $more = $container.find("> div.t-a-c.h-b-c-999").css({border: 'solid 2px red'});
+    let $more = $container.find("> div.t-a-c.h-b-c-999").css({border: 'solid 2px red'});  // 查看更多
 
     utils.onScrollEnd(function () {
         console.log('onScrollEnd');
@@ -37,13 +39,13 @@ function cailianpress () {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 通知框
     function notify_2 (body, d) {
-        let title = "";
+        let title = '';
         let options = {
             body: body || 'crx-jhandy test.',
-            icon: ""
+            icon: ''
         };
 
-        if (Notification.permission === "granted") {
+        if (Notification.permission === 'granted') {
             let notification = new Notification(title, options);
             notification.onshow = function () {
                 setTimeout(function () {
@@ -148,6 +150,7 @@ function cailianpress () {
 
                 timer = setTimeout(function () {
                     let $child = $elm.find(selector);
+                    $child.find(showBtnSelector).click();  // 展开收缩内容
                     text = text || $child.text();
                     text = text.trimStart();
                     text = text.replace(/^\d{2}:\d{2}:\d{2}/, ''); // 删除时间字符串
